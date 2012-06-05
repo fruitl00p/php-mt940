@@ -11,7 +11,7 @@ straight forward.
 Requirements
 ------------
 
-* Atleat php5 :) (possibly even PHP5.3+ i haven't tested it below 5.3)
+* Atleast php5 :) (possibly even PHP5.3+ I haven't tested it below 5.3)
 
 How to use the parsers?
 -------------------
