@@ -341,7 +341,7 @@ class Engine_mt940_banking_parser {
 	 * @return string
 	 */
 	function _sanitizeAccountName($string) {
-		return preg_replace('/[\s]+/', PHP_EOL, trim($string));
+		return trim( $string );
 	}
 
 	/**
@@ -351,6 +351,8 @@ class Engine_mt940_banking_parser {
 	 */
 	function _sanitizeTimestamp($string, $inFormat = 'ymd') {
 		$date = DateTime::createFromFormat($inFormat, $string);
+		$date->setTime(0, 0, 0);
+
 		if ($date !== false) {
 			return $date->format('U');
 		}
