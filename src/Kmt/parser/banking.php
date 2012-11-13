@@ -13,7 +13,7 @@ class Banking_parser {
 	 * Parse the given string into an array of statement_banking objects
 	 * @return array
 	 */
-	function parse() {
+	function parse($string) {
 		return array();
 	}
 }
