@@ -257,7 +257,7 @@ class Engine_mt940_banking_parser {
 	 */
 	function _parseTransactionDebitCredit() {
 		$results = array();
-		if (preg_match('/^:61:.*([CD])/i', $this->getCurrentTransactionData(), $results)
+		if (preg_match('/^:61:.*([CD])([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
 			return $this->_sanitizeDebitCredit($results[1]);
 		}
