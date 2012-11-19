@@ -7,7 +7,7 @@
  * @copyright Copyright (c) Kingsquare BV (http://www.kingsquare.nl)
  * @license http://opensource.org/licenses/gpl-2.0.php  Open Software License (GPLv2)
  */
-class Statement_Banking {
+class Statement_banking {
 	private $_bank = '';
 	private $_account = '';
 	private $_transactions = array();
@@ -27,7 +27,7 @@ class Statement_Banking {
 	public function setAccount($var) { $this->_account = (string) $var; }
 
 	/**
-	 * @param Transaction_Banking[] $transactions
+	 * @param Transaction_banking[] $transactions
 	 */
 	public function setTransactions($transactions) { $this->_transactions = (array) $transactions; }
 
@@ -62,7 +62,7 @@ class Statement_Banking {
 	public function getAccount() { return $this->_account; }
 
 	/**
-	 * @return Transaction_Banking[]
+	 * @return Transaction_banking[]
 	 */
 	public function getTransactions() { return $this->_transactions; }
 
@@ -88,9 +88,9 @@ class Statement_Banking {
 	public function getNumber() { return $this->_number; }
 
 	/**
-	 * @param Transaction_Banking $transaction
+	 * @param Transaction_banking $transaction
 	 */
-	public function addTransaction(Transaction_Banking $transaction) { $this->_transactions[] = $transaction; }
+	public function addTransaction(Transaction_banking $transaction) { $this->_transactions[] = $transaction; }
 
 	/**
 	 * @return int

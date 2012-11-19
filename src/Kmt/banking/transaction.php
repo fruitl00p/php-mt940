@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * @property string rawData A container after parsing a statement containing 'rawdata' if debug was true on the engine
+ *
  * @package Kmt\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @copyright Copyright (c) 2004 - 2012 Kingsquare BV (http://www.kingsquare.nl)
  * @license http://opensource.org/licenses/gpl-2.0.php  Open Software License (GPLv2)
  */
-class Transaction_Banking {
+class Transaction_banking {
 	const DEBIT = 'D';
 	const CREDIT = 'C';
 

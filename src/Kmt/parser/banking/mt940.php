@@ -20,7 +20,7 @@ class Mt940_banking_parser extends Banking_parser {
 		if (!empty($string)) {
 			// load engine
 			$this->engine = Engine_mt940_banking_parser::__getInstance($string);
-			if (is_a($this->engine, 'Engine_mt940_banking_parser')) {
+			if ($this->engine instanceof Engine_mt940_banking_parser) {
 				// parse using the engine
 				return $this->engine->parse();
 			}

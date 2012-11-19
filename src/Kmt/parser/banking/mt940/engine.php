@@ -7,7 +7,7 @@
  * @copyright Copyright (c) Kingsquare BV (http://www.kingsquare.nl)
  * @license http://opensource.org/licenses/gpl-2.0.php  Open Software License (GPLv2)
  */
-class Engine_mt940_banking_parser {
+abstract class Engine_mt940_banking_parser {
 	var $_rawData = '';
 	var $_currentStatementData = '';
 	var $_currentTransactionData = '';
@@ -29,12 +29,11 @@ class Engine_mt940_banking_parser {
 		} else if (strpos($firstline, ':940:') !== false) {
 			$bank = 'Rabo';
 		}
-		require_once __DIR__.'/engine/'.strtolower($bank).'.php';
 		$class = $bank.'_engine_mt940_banking_parser';
 		/* @var Engine_mt940_banking_parser $engine */
 		$engine = new $class();
-		if (is_a($engine, 'Engine_mt940_banking_parser')) {
-			if (is_a($engine, 'Unknown_engine_mt940_banking_parser')) {
+		if ($engine instanceof Engine_mt940_banking_parser) {
+			if ($engine instanceof Unknown_engine_mt940_banking_parser) {
 				trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
 			}
 			$engine->loadString($string);
@@ -55,12 +54,12 @@ class Engine_mt940_banking_parser {
 
 	/**
 	 * actual parsing of the data
-	 * @return Statement_Banking[]
+	 * @return Statement_banking[]
 	 */
 	function parse() {
 		$results = array();
 		foreach ($this->_parseStatementData() as $this->_currentStatementData) {
-			$statement = new Statement_Banking();
+			$statement = new Statement_banking();
 			if ($this->debug) {
 				$statement->rawData = $this->_currentStatementData;
 			}
@@ -72,7 +71,7 @@ class Engine_mt940_banking_parser {
 			$statement->setNumber($this->_parseStatementNumber());
 
 			foreach ($this->_parseTransactionData() as $this->_currentTransactionData) {
-				$transaction = new Transaction_Banking();
+				$transaction = new Transaction_banking();
 				if ($this->debug) {
 					$transaction->rawData = $this->_currentTransactionData;
 				}
@@ -257,7 +256,7 @@ class Engine_mt940_banking_parser {
 	 */
 	function _parseTransactionDebitCredit() {
 		$results = array();
-		if (preg_match('/^:61:.*([CD])/i', $this->getCurrentTransactionData(), $results)
+		if (preg_match('/^:61:\d+([CD])\d+/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
 			return $this->_sanitizeDebitCredit($results[1]);
 		}
@@ -372,12 +371,12 @@ class Engine_mt940_banking_parser {
 	 * @return string
 	 */
 	function _sanitizeDebitCredit($string) {
-		$debitOrCredit = substr(strtoupper($string), 0, 1);
-		if ($debitOrCredit != Transaction_Banking::DEBIT && $debitOrCredit !=  Transaction_Banking::CREDIT) {
+		$debitOrCredit = strtoupper(substr((string) $string, 0, 1));
+		if ($debitOrCredit != Transaction_banking::DEBIT && $debitOrCredit !=  Transaction_banking::CREDIT) {
 			trigger_error('wrong value for debit/credit ('.$string.')', E_USER_ERROR);
 			$debitOrCredit = '';
 		}
-		return (string) $debitOrCredit;
+		return $debitOrCredit;
 	}
 
 	/**

@@ -1,12 +1,12 @@
 <?php
-class GetInstanceTest_engine_mt940_banking_parser extends TestCase_test {
+/**
+ *
+ */
+class GetInstanceTest_engine_mt940_banking_parser extends PHPUnit_Framework_TestCase {
 
-	protected function setUp() {
-		includeClass('banking_parser');
-		includeClass('Mt940_banking_parser');
-		includeClass('Engine_mt940_banking_parser');
-	}
-
+	/**
+	 *
+	 */
 	public function testUnknownEngineRaisesANotice() {
 		$error_reporting = error_reporting();
 		error_reporting(E_ALL);
@@ -22,29 +22,23 @@ class GetInstanceTest_engine_mt940_banking_parser extends TestCase_test {
 		$this->fail('Did not receive the notice');
 	}
 
-	public function testUnknownEngine() {
-		$engine = @Engine_mt940_banking_parser::__getInstance('this is an unknown format :)');
-		$this->assertInstanceOf('Unknown_engine_mt940_banking_parser', $engine);
+	/**
+	 * @dataProvider enginesProvider
+	 */
+	public function testEngine($engineString, $source) {
+		$engine = @Engine_mt940_banking_parser::__getInstance($source);
+		$this->assertInstanceOf($engineString.'_engine_mt940_banking_parser', $engine);
 	}
 
-	public function testAbnEngine() {
-		$sample = file_get_contents(__DIR__ .'/abn/sample');
-		$engine = Engine_mt940_banking_parser::__getInstance($sample);
-
-		$this->assertInstanceOf('Abn_engine_mt940_banking_parser', $engine);
-	}
-
-	public function testIngEngine() {
-		$sample = file_get_contents(__DIR__ .'/ing/sample');
-		$engine = Engine_mt940_banking_parser::__getInstance($sample);
-
-		$this->assertInstanceOf('Ing_engine_mt940_banking_parser', $engine);
-	}
-
-	public function testRaboEngine() {
-		$sample = file_get_contents(__DIR__ .'/rabo/sample');
-		$engine = Engine_mt940_banking_parser::__getInstance($sample);
-
-		$this->assertInstanceOf('Rabo_engine_mt940_banking_parser', $engine);
+	/**
+	 * @return array
+	 */
+	public function enginesProvider() {
+		return array(
+			array('Abn', file_get_contents(__DIR__ .'/abn/sample')),
+			array('Ing', file_get_contents(__DIR__ .'/ing/sample')),
+			array('Rabo', file_get_contents(__DIR__ .'/rabo/sample')),
+			array('Unknown', 'this is an unknown format :)'),
+		);
 	}
 }
