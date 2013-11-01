@@ -3,7 +3,7 @@
 spl_autoload_register(
   function ($class) {
       static $classes = NULL;
-      static $path    = NULL;
+      static $path = NULL;
 
       if ($classes === NULL) {
           $classes = array(

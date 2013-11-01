@@ -26,6 +26,11 @@ class Rabo_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 		if (preg_match('/^:61:.{26}(.{16})/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
 			return $this->_sanitizeAccount($results[1]);
 		}
+
+		// SEPA MT940 Structured
+		if (preg_match('/^:61:.*\n(.*)/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
+			return $this->_sanitizeAccount($results[1]);
+		}
 		return '';
 	}
 
@@ -37,6 +42,11 @@ class Rabo_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 	function _parseTransactionAccountName() {
 		$results = array();
 		if (preg_match('/^:61:.*? (.*)/m', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
+			return $this->_sanitizeAccountName($results[1]);
+		}
+
+		// SEPA MT940 Structured
+		if (preg_match('#^:86:.*/NAME/(.*?)/#m', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
 			return $this->_sanitizeAccountName($results[1]);
 		}
 		return '';
@@ -77,5 +87,19 @@ class Rabo_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 			$account = substr($account, 5);
 		}
 		return $account;
+	}
+
+	/**
+	 * Overloaded: Rabo encapsulates the description with /REMI/ for SEPA
+	 * @param string $string
+	 * @return string
+	 */
+	function _sanitizeDescription($string) {
+		$description = parent::_sanitizeDescription($string);
+		if (strpos($description, '/REMI/') !== false
+				&& preg_match('#/REMI/(.*?)/(ISDT|CSID|RTRN)/#s', $description, $results) && !empty($results[1])) {
+			$description = $results[1];
+		}
+		return $description;
 	}
 }

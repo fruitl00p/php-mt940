@@ -24,19 +24,47 @@ class Abn_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 	 */
 	function _parseTransactionAccount() {
 		$results = parent::_parseTransactionAccount();
-		if (empty($results) && strpos($this->getCurrentTransactionData(), ':86:GIRO') !== false) {
-			$giroAccount = array();
-			if (preg_match('/^:86:(.{13})/im', $this->getCurrentTransactionData(), $giroAccount) && !empty($giroAccount[1])) {
-				$results = $giroAccount[1];
+		if (empty($results)) {
+			$giroMatch = $ibanMatch = array();
+			if (preg_match('/^:86:GIRO(.{9})/im', $this->getCurrentTransactionData(), $giroMatch) && !empty($giroMatch[1])) {
+				$results = $giroMatch[1];
+			}
+
+			if (preg_match('!^:86:/.*/IBAN/(.*?)/!m', $this->getCurrentTransactionData(), $ibanMatch) && !empty($ibanMatch[1])) {
+				$results = $ibanMatch[1];
 			}
 		}
 		return $this->_sanitizeAccount($results);
 	}
 
 	/**
+	 * Overloaded: ABN Amro shows the GIRO and fixes newlines etc
+	 * @return string
+	 * @see Engine_mt940_banking_parser::_sanitizeAccountName
+	 */
+	function _parseTransactionAccountName() {
+		$results = parent::_parseTransactionAccountName();
+		if ($results !== '') {
+			return $results;
+		}
+
+		if (preg_match('/:86:(GIRO|BGC\.)\s+[\d]+ (.+)/', $this->getCurrentTransactionData(), $results)
+				&& !empty($results[2])) {
+			return $this->_sanitizeAccountName($results[2]);
+		}
+
+		if (preg_match('/:86:.+\n(.*)\n/', $this->getCurrentTransactionData(), $results)
+				&& !empty($results[1])) {
+			return $this->_sanitizeAccountName($results[1]);
+		}
+		return '';
+	}
+
+	/**
 	 * Overloaded: ABNAMRO uses the :61: date-part of the field for two values:
 	 * Valuetimestamp (YYMMDD) and Entry date (book date) (MMDD)
-	 * @return string
+	 *
+	 * @return int
 	 */
 	function _parseTransactionEntryTimestamp() {
 		$results = array();

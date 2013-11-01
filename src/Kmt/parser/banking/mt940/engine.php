@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php  Open Software License (GPLv2)
  */
 abstract class Engine_mt940_banking_parser {
-	var $_rawData = '';
+	private $_rawData = '';
 	var $_currentStatementData = '';
 	var $_currentTransactionData = '';
 
@@ -155,6 +155,12 @@ abstract class Engine_mt940_banking_parser {
 				&& !empty($results[1])) {
 			return $this->_sanitizeAccount($results[1]);
 		}
+
+		// SEPA / IBAN
+		if (preg_match('/:25:[A-Z0-9]{8}([\d\.]+)*/', $this->getCurrentStatementData(), $results)
+				&& !empty($results[1])) {
+			return $this->_sanitizeAccount($results[1]);
+		}
 		return '';
 	}
 
@@ -217,7 +223,7 @@ abstract class Engine_mt940_banking_parser {
 	 */
 	function _parseTransactionAccount() {
 		$results = array();
-		if (preg_match('/^:86:([\d\.]+)\s/im', $this->getCurrentTransactionData(), $results)
+		if (preg_match('/^:86: ?([\d\.]+)\s/im', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
 			return $this->_sanitizeAccount($results[1]);
 		}
@@ -230,7 +236,7 @@ abstract class Engine_mt940_banking_parser {
 	 */
 	function _parseTransactionAccountName() {
 		$results = array();
-		if (preg_match('/[\n]:86:[\d\.]+ (.+)/', $this->getCurrentTransactionData(), $results)
+		if (preg_match('/:86: ?[\d\.]+ (.+)/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
 			return $this->_sanitizeAccountName($results[1]);
 		}
@@ -325,13 +331,20 @@ abstract class Engine_mt940_banking_parser {
 			' ' => '',
 			'GIRO' => 'P',
 		);
+		// crude IBAN to 'old' converter
+		if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $string, $results) && !empty($results[1])) {
+			$string = $results[1];
+		}
+
 		$account = ltrim(
 				str_replace(
 					array_keys($crudeReplacements),
 					array_values($crudeReplacements),
 					strip_tags(trim($string))
 				), '0');
-		if (strlen($account)<9) $account = 'P'.$account;
+		if ($account != '' && strlen($account)<9 && strpos($account, 'P') === false) {
+			$account = 'P'.$account;
+		}
 		return $account;
 	}
 
@@ -351,7 +364,6 @@ abstract class Engine_mt940_banking_parser {
 	function _sanitizeTimestamp($string, $inFormat = 'ymd') {
 		$date = DateTime::createFromFormat($inFormat, $string);
 		$date->setTime(0, 0, 0);
-
 		if ($date !== false) {
 			return $date->format('U');
 		}
@@ -372,7 +384,7 @@ abstract class Engine_mt940_banking_parser {
 	 */
 	function _sanitizeDebitCredit($string) {
 		$debitOrCredit = strtoupper(substr((string) $string, 0, 1));
-		if ($debitOrCredit != Transaction_banking::DEBIT && $debitOrCredit !=  Transaction_banking::CREDIT) {
+		if ($debitOrCredit != Transaction_banking::DEBIT && $debitOrCredit != Transaction_banking::CREDIT) {
 			trigger_error('wrong value for debit/credit ('.$string.')', E_USER_ERROR);
 			$debitOrCredit = '';
 		}
