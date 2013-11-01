@@ -4,8 +4,7 @@
  *
  * @package Kmt\Parser\Banking\Mt940
  * @author Kingsquare (source@kingsquare.nl)
- * @copyright Copyright (c) Kingsquare BV (http://www.kingsquare.nl)
- * @license http://opensource.org/licenses/gpl-2.0.php  Open Software License (GPLv2)
+ * @license http://opensource.org/licenses/MIT MIT
  */
 abstract class Engine_mt940_banking_parser {
 	private $_rawData = '';

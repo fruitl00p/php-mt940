@@ -4,8 +4,7 @@
  *
  * @package Kmt\Parser\Banking
  * @author Kingsquare (source@kingsquare.nl)
- * @copyright Copyright (c) 2004 - 2012 Kingsquare BV (http://www.kingsquare.nl)
- * @license http://opensource.org/licenses/gpl-2.0.php  Open Software License (GPLv2)
+ * @license http://opensource.org/licenses/MIT MIT
  */
 class Mt940_banking_parser extends Banking_parser {
 	/* @var Engine_mt940_banking_parser engine */

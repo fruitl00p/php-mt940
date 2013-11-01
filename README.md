@@ -38,3 +38,8 @@ Contact
 -------
 
 This is GitHub, you know where to find me :)
+
+License
+-------
+
+PHP-MT940 is licensed under the MIT License - see the LICENSE file for details

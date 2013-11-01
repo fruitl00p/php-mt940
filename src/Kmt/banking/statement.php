@@ -4,8 +4,7 @@
  * @property array rawData used for debugging purposes
  * @package Kmt\Banking
  * @author Kingsquare (source@kingsquare.nl)
- * @copyright Copyright (c) Kingsquare BV (http://www.kingsquare.nl)
- * @license http://opensource.org/licenses/gpl-2.0.php  Open Software License (GPLv2)
+ * @license http://opensource.org/licenses/MIT MIT
  */
 class Statement_banking {
 	private $_bank = '';
