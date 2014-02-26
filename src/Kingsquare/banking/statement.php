@@ -1,4 +1,5 @@
 <?php
+namespace Kingsquare\Banking;
 
 /**
  * @property array rawData used for debugging purposes
@@ -7,7 +8,7 @@
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Statement_banking {
+class Statement {
 	private $_bank = '';
 	private $_account = '';
 	private $_transactions = array();
@@ -27,7 +28,7 @@ class Statement_banking {
 	public function setAccount($var) { $this->_account = (string) $var; }
 
 	/**
-	 * @param Transaction_banking[] $transactions
+	 * @param Transaction[] $transactions
 	 */
 	public function setTransactions($transactions) { $this->_transactions = (array) $transactions; }
 
@@ -62,7 +63,7 @@ class Statement_banking {
 	public function getAccount() { return $this->_account; }
 
 	/**
-	 * @return Transaction_banking[]
+	 * @return Transaction[]
 	 */
 	public function getTransactions() { return $this->_transactions; }
 
@@ -88,9 +89,9 @@ class Statement_banking {
 	public function getNumber() { return $this->_number; }
 
 	/**
-	 * @param Transaction_banking $transaction
+	 * @param Transaction $transaction
 	 */
-	public function addTransaction(Transaction_banking $transaction) { $this->_transactions[] = $transaction; }
+	public function addTransaction(Transaction $transaction) { $this->_transactions[] = $transaction; }
 
 	/**
 	 * @return int

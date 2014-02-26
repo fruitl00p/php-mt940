@@ -1,4 +1,5 @@
 <?php
+namespace Kingsquare\Banking;
 
 /**
  * @property string rawData A container after parsing a statement containing 'rawdata' if debug was true on the engine
@@ -7,7 +8,7 @@
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Transaction_banking {
+class Transaction {
 	const DEBIT = 'D';
 	const CREDIT = 'C';
 

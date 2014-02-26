@@ -1,11 +1,15 @@
 <?php
 
+namespace Kingsquare\Parser\Banking\Mt940;
+use Kingsquare\Banking\Statement as Statement;
+use Kingsquare\Banking\Transaction as Transaction;
+
 /**
  * @package Kingsquare\Parser\Banking\Mt940
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
-abstract class Engine_mt940_banking_parser {
+abstract class Engine {
 	private $_rawData = '';
 	protected $_currentStatementData = '';
 	protected $_currentTransactionData = '';
@@ -15,29 +19,22 @@ abstract class Engine_mt940_banking_parser {
 	/**
 	 * reads the firstline of the string to guess which engine to use for parsing
 	 * @param string $string
-	 * @return Engine_mt940_banking_parser
+	 * @return Engine
 	 */
 	static function __getInstance($string) {
 		$firstline = strtok($string, "\r\n\t");
-		$bank = 'Unknown';
 		if (strpos($firstline, 'ABNA') !== false) {
-			$bank = 'Abn';
+			$engine = new Engine\Abn;
 		} else if (strpos($firstline, 'INGB') !== false) {
-			$bank = 'Ing';
+			$engine = new Engine\Ing;
 		} else if (strpos($firstline, ':940:') !== false) {
-			$bank = 'Rabo';
+			$engine = new Engine\Rabo;
+		} else {
+			$engine = new Engine\Unknown;
+			trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
 		}
-		$class = $bank.'_engine_mt940_banking_parser';
-		/* @var Engine_mt940_banking_parser $engine */
-		$engine = new $class();
-		if ($engine instanceof Engine_mt940_banking_parser) {
-			if ($engine instanceof Unknown_engine_mt940_banking_parser) {
-				trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
-			}
-			$engine->loadString($string);
-			return $engine;
-		}
-		return null;
+		$engine->loadString($string);
+		return $engine;
 	}
 
 	/**
@@ -52,12 +49,12 @@ abstract class Engine_mt940_banking_parser {
 
 	/**
 	 * actual parsing of the data
-	 * @return Statement_banking[]
+	 * @return Statement[]
 	 */
 	function parse() {
 		$results = array();
 		foreach ($this->_parseStatementData() as $this->_currentStatementData) {
-			$statement = new Statement_banking();
+			$statement = new Statement();
 			if ($this->debug) {
 				$statement->rawData = $this->_currentStatementData;
 			}
@@ -69,7 +66,7 @@ abstract class Engine_mt940_banking_parser {
 			$statement->setNumber($this->_parseStatementNumber());
 
 			foreach ($this->_parseTransactionData() as $this->_currentTransactionData) {
-				$transaction = new Transaction_banking();
+				$transaction = new Transaction();
 				if ($this->debug) {
 					$transaction->rawData = $this->_currentTransactionData;
 				}
@@ -360,7 +357,7 @@ abstract class Engine_mt940_banking_parser {
 	 * @return int
 	 */
 	protected function _sanitizeTimestamp($string, $inFormat = 'ymd') {
-		$date = DateTime::createFromFormat($inFormat, $string);
+		$date = \DateTime::createFromFormat($inFormat, $string);
 		$date->setTime(0, 0, 0);
 		if ($date !== false) {
 			return $date->format('U');
@@ -382,7 +379,7 @@ abstract class Engine_mt940_banking_parser {
 	 */
 	protected function _sanitizeDebitCredit($string) {
 		$debitOrCredit = strtoupper(substr((string) $string, 0, 1));
-		if ($debitOrCredit != Transaction_banking::DEBIT && $debitOrCredit != Transaction_banking::CREDIT) {
+		if ($debitOrCredit != Transaction::DEBIT && $debitOrCredit != Transaction::CREDIT) {
 			trigger_error('wrong value for debit/credit ('.$string.')', E_USER_ERROR);
 			$debitOrCredit = '';
 		}

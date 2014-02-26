@@ -1,4 +1,5 @@
 <?php
+use \Kingsquare\Parser\Banking\Mt940\Engine;
 /**
  *
  */
@@ -11,7 +12,7 @@ class GetInstanceTest_engine_mt940_banking_parser extends PHPUnit_Framework_Test
 		$error_reporting = error_reporting();
 		error_reporting(E_ALL);
 		try {
-			$engine = Engine_mt940_banking_parser::__getInstance('this is an unknown format :)');
+			$engine = Engine::__getInstance('this is an unknown format :)');
 		}
 		catch(PHPUnit_Framework_Error $exptected) {
 			error_reporting($error_reporting);
@@ -26,8 +27,8 @@ class GetInstanceTest_engine_mt940_banking_parser extends PHPUnit_Framework_Test
 	 * @dataProvider enginesProvider
 	 */
 	public function testEngine($engineString, $source) {
-		$engine = @Engine_mt940_banking_parser::__getInstance($source);
-		$this->assertInstanceOf($engineString.'_engine_mt940_banking_parser', $engine);
+		$engine = @Engine::__getInstance($source);
+		$this->assertInstanceOf('\\Kingsquare\\Parser\\Banking\\Mt940\\Engine\\'.$engineString, $engine);
 	}
 
 	/**

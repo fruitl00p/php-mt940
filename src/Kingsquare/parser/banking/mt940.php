@@ -1,11 +1,13 @@
 <?php
+namespace Kingsquare\Parser\Banking;
+use Kingsquare\Parser\Banking;
 
 /**
  * @package Kingsquare\Parser\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Mt940_banking_parser extends Banking_parser {
+class Mt940 extends Banking {
 	/* @var Engine_mt940_banking_parser engine */
 	protected $engine;
 
