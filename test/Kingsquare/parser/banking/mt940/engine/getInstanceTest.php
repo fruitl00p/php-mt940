@@ -14,7 +14,7 @@ class GetInstanceTest_engine_mt940_banking_parser extends PHPUnit_Framework_Test
 		try {
 			$engine = Engine::__getInstance('this is an unknown format :)');
 		}
-		catch(PHPUnit_Framework_Error $exptected) {
+		catch(\PHPUnit_Framework_Error $exptected) {
 			error_reporting($error_reporting);
 			$this->assertInstanceOf('PHPUnit_Framework_Error', $exptected);
 			return;
