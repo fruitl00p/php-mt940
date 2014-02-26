@@ -1,15 +1,14 @@
 <?php
 
 /**
- *
- * @package Kmt\Parser\Banking\Mt940
+ * @package Kingsquare\Parser\Banking\Mt940
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
 abstract class Engine_mt940_banking_parser {
 	private $_rawData = '';
-	var $_currentStatementData = '';
-	var $_currentTransactionData = '';
+	protected $_currentStatementData = '';
+	protected $_currentTransactionData = '';
 
 	var $debug = false;
 
@@ -103,7 +102,7 @@ abstract class Engine_mt940_banking_parser {
 	}
 
 	/**
-	 * split the statment up into transaction chunks
+	 * split the statement up into transaction chunks
 	 * @return array
 	 */
 	function _parseTransactionData() {
@@ -142,13 +141,13 @@ abstract class Engine_mt940_banking_parser {
 	 * return the actual raw data string
 	 * @return string bank
 	 */
-	function _parseStatementBank() { return ''; }
+	protected function _parseStatementBank() { return ''; }
 
 	/**
 	 * uses field 25 to gather accoutnumber
 	 * @return string accountnumber
 	 */
-	function _parseStatementAccount() {
+	protected function _parseStatementAccount() {
 		$results = array();
 		if (preg_match('/:25:([\d\.]+)*/', $this->getCurrentStatementData(), $results)
 				&& !empty($results[1])) {
@@ -167,7 +166,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses field 60F to gather starting amount
 	 * @return float price
 	 */
-	function _parseStatementStartPrice() {
+	protected function _parseStatementStartPrice() {
 		$results = array();
 		if (preg_match('/:60F:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
 				&& !empty($results[1])) {
@@ -180,7 +179,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 62F field to return end price of the statement
 	 * @return float price
 	 */
-	function _parseStatementEndPrice() {
+	protected function _parseStatementEndPrice() {
 		$results = array();
 		if (preg_match('/:62F:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
 				&& !empty($results[1])) {
@@ -193,7 +192,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 60F field to determine the date of the statement
 	 * @return int timestamp
 	 */
-	function _parseStatementTimestamp() {
+	protected function _parseStatementTimestamp() {
 		$results = array();
 		if (preg_match('/:60F:[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
 				&& !empty($results[1])) {
@@ -206,7 +205,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 28C field to determine the statement number
 	 * @return string
 	 */
-	function _parseStatementNumber() {
+	protected function _parseStatementNumber() {
 		$results = array();
 		if (preg_match('/:28C?:(.*)/', $this->getCurrentStatementData(), $results)
 				&& !empty($results[1])) {
@@ -220,7 +219,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 86 field to determine account number of the transaction
 	 * @return string
 	 */
-	function _parseTransactionAccount() {
+	protected function _parseTransactionAccount() {
 		$results = array();
 		if (preg_match('/^:86: ?([\d\.]+)\s/im', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -233,7 +232,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 86 field to determine accountname of the transaction
 	 * @return string
 	 */
-	function _parseTransactionAccountName() {
+	protected function _parseTransactionAccountName() {
 		$results = array();
 		if (preg_match('/:86: ?[\d\.]+ (.+)/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -246,7 +245,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 61 field to determine amount/value of the transaction
 	 * @return int
 	 */
-	function _parseTransactionPrice() {
+	protected function _parseTransactionPrice() {
 		$results = array();
 		if (preg_match('/^:61:.*[CD]([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -259,7 +258,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 61 field to determine debit or credit of the transaction
 	 * @return string
 	 */
-	function _parseTransactionDebitCredit() {
+	protected function _parseTransactionDebitCredit() {
 		$results = array();
 		if (preg_match('/^:61:\d+([CD])\d+/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -272,7 +271,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 86 field to determine retrieve the full description of the transaction
 	 * @return string
 	 */
-	function _parseTransactionDescription() {
+	protected function _parseTransactionDescription() {
 		$results = array();
 		if (preg_match_all('/[\n]:86:(.*?)(?=\n:|$)/s', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -285,7 +284,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 61 field to determine the entry timestamp
 	 * @return int
 	 */
-	function _parseTransactionEntryTimestamp() {
+	protected function _parseTransactionEntryTimestamp() {
 		$results = array();
 		if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -298,7 +297,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 61 field to determine the value timestamp
 	 * @return int
 	 */
-	function _parseTransactionValueTimestamp() {
+	protected function _parseTransactionValueTimestamp() {
 		$results = array();
 		if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -311,7 +310,7 @@ abstract class Engine_mt940_banking_parser {
 	 * uses the 61 field to get the bank specific transaction code
 	 * @return string
 	 */
-	function _parseTransactionCode() {
+	protected function _parseTransactionCode() {
 		$results = array();
 		if (preg_match('/^:61:.*?N(.{3}).*/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
@@ -324,7 +323,7 @@ abstract class Engine_mt940_banking_parser {
 	 * @param string $string
 	 * @return string
 	 */
-	function _sanitizeAccount($string) {
+	protected function _sanitizeAccount($string) {
 		static $crudeReplacements = array(
 			'.' => '',
 			' ' => '',
@@ -351,7 +350,7 @@ abstract class Engine_mt940_banking_parser {
 	 * @param string $string
 	 * @return string
 	 */
-	function _sanitizeAccountName($string) {
+	protected function _sanitizeAccountName($string) {
 		return preg_replace('/[\s]+/', PHP_EOL, trim($string));
 	}
 
@@ -360,7 +359,7 @@ abstract class Engine_mt940_banking_parser {
 	 * @param string $inFormat
 	 * @return int
 	 */
-	function _sanitizeTimestamp($string, $inFormat = 'ymd') {
+	protected function _sanitizeTimestamp($string, $inFormat = 'ymd') {
 		$date = DateTime::createFromFormat($inFormat, $string);
 		$date->setTime(0, 0, 0);
 		if ($date !== false) {
@@ -373,7 +372,7 @@ abstract class Engine_mt940_banking_parser {
 	 * @param string $string
 	 * @return string
 	 */
-	function _sanitizeDescription($string) {
+	protected function _sanitizeDescription($string) {
 		return preg_replace('/[\r\n]+/', PHP_EOL, trim($string));
 	}
 
@@ -381,7 +380,7 @@ abstract class Engine_mt940_banking_parser {
 	 * @param string $string
 	 * @return string
 	 */
-	function _sanitizeDebitCredit($string) {
+	protected function _sanitizeDebitCredit($string) {
 		$debitOrCredit = strtoupper(substr((string) $string, 0, 1));
 		if ($debitOrCredit != Transaction_banking::DEBIT && $debitOrCredit != Transaction_banking::CREDIT) {
 			trigger_error('wrong value for debit/credit ('.$string.')', E_USER_ERROR);
@@ -394,7 +393,7 @@ abstract class Engine_mt940_banking_parser {
 	 * @param string $string
 	 * @return float
 	 */
-	function _sanitizePrice($string) {
+	protected function _sanitizePrice($string) {
 		$floatPrice = ltrim(str_replace(',', '.', strip_tags(trim($string))), '0');
 		return (float) $floatPrice;
 	}

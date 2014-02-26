@@ -3,7 +3,7 @@
 /**
  * empty class for fallback purposes
  *
- * @package Kmt\Parser\Banking\Mt940\Engine
+ * @package Kingsquare\Parser\Banking\Mt940\Engine
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */

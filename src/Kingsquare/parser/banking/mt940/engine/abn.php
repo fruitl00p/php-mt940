@@ -1,8 +1,7 @@
 <?php
 
 /**
- *
- * @package Kmt\Parser\Banking\Mt940\Engine
+ * @package Kingsquare\Parser\Banking\Mt940\Engine
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -11,7 +10,7 @@ class Abn_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 	 * returns the name of the bank
 	 * @return string
 	 */
-	function _parseStatementBank() {
+	protected function _parseStatementBank() {
 		return 'ABN';
 	}
 
@@ -21,7 +20,7 @@ class Abn_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 	 * @return string
 	 * @see Engine_mt940_banking_parser::_sanitizeAccount
 	 */
-	function _parseTransactionAccount() {
+	protected function _parseTransactionAccount() {
 		$results = parent::_parseTransactionAccount();
 		if (empty($results)) {
 			$giroMatch = $ibanMatch = array();
@@ -41,7 +40,7 @@ class Abn_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 	 * @return string
 	 * @see Engine_mt940_banking_parser::_sanitizeAccountName
 	 */
-	function _parseTransactionAccountName() {
+	protected function _parseTransactionAccountName() {
 		$results = parent::_parseTransactionAccountName();
 		if ($results !== '') {
 			return $results;
@@ -65,7 +64,7 @@ class Abn_engine_mt940_banking_parser extends Engine_mt940_banking_parser {
 	 *
 	 * @return int
 	 */
-	function _parseTransactionEntryTimestamp() {
+	protected function _parseTransactionEntryTimestamp() {
 		$results = array();
 		if (preg_match('/^:61:\d{6}(\d{4})[C|D]/', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
 			return $this->_sanitizeTimestamp($results[1], 'md');

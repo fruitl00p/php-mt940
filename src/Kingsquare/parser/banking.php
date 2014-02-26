@@ -1,8 +1,7 @@
 <?php
 
 /**
- *
- * @package Kmt\Parser
+ * @package Kingsquare\Parser
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */

@@ -3,14 +3,6 @@
  *
  */
 class DebitCreditTest_engine_mt940_banking_parser extends PHPUnit_Framework_TestCase {
-	/**
-	 * @var Engine_mt940_banking_parser
-	 */
-	private $engine = null;
-
-	protected function setUp() {
-		$this->engine = new Unknown_engine_mt940_banking_parser();
-	}
 
 	/**
 	 * @dataProvider statementProvider
@@ -18,8 +10,15 @@ class DebitCreditTest_engine_mt940_banking_parser extends PHPUnit_Framework_Test
 	 * @param string $statement
 	 */
 	public function testDebitCredit($dOrC, $statement) {
-		$this->engine->_currentTransactionData = $statement;
-		$this->assertEquals($dOrC, $this->engine->_parseTransactionDebitCredit());
+		$engine = new Unknown_engine_mt940_banking_parser();
+		$property = new ReflectionProperty($engine, '_currentTransactionData');
+		$property->setAccessible(true);
+
+		$method = new ReflectionMethod($engine, '_parseTransactionDebitCredit');
+		$method->setAccessible(true);
+
+		$property->setValue($engine, $statement);
+		$this->assertEquals($dOrC, $method->invoke($engine));
 	}
 
 	/**

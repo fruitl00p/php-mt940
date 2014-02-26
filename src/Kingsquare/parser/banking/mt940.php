@@ -1,8 +1,7 @@
 <?php
 
 /**
- *
- * @package Kmt\Parser\Banking
+ * @package Kingsquare\Parser\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */

@@ -3,7 +3,7 @@
 /**
  * @property string rawData A container after parsing a statement containing 'rawdata' if debug was true on the engine
  *
- * @package Kmt\Banking
+ * @package Kingsquare\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */

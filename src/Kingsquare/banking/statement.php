@@ -2,7 +2,8 @@
 
 /**
  * @property array rawData used for debugging purposes
- * @package Kmt\Banking
+ *
+ * @package Kingsquare\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
