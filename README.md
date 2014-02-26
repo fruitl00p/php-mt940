@@ -1,5 +1,7 @@
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/fruitl00p/php-mt940/badges/quality-score.png?s=1f4b01cd64b366d6fdfe942e042739902cd4e7cd)](https://scrutinizer-ci.com/g/fruitl00p/php-mt940/)
 [![Build Status](https://travis-ci.org/fruitl00p/php-mt940.png?branch=master)](https://travis-ci.org/fruitl00p/php-mt940)
+[![Latest Stable Version](https://poser.pugx.org/kingsquare/php-mt940/v/stable.png)](https://packagist.org/packages/kingsquare/php-mt940)
+[![License](https://poser.pugx.org/kingsquare/php-mt940/license.png)](https://packagist.org/packages/kingsquare/php-mt940)
 
 README
 ======
