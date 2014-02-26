@@ -47,6 +47,7 @@ class Abn extends Engine {
 			return $results;
 		}
 
+		$results = array();
 		if (preg_match('/:86:(GIRO|BGC\.)\s+[\d]+ (.+)/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[2])) {
 			return $this->_sanitizeAccountName($results[2]);
