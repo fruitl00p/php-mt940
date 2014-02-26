@@ -20,8 +20,7 @@ class Abn extends Engine {
 	/**
 	 * Overloaded: ABN Amro shows the GIRO
 	 * includes fix for 'for GIRO 1234567 TEST 201009063689 CLIEOP 21-9' and translates that into 1234567
-	 * @return string
-	 * @see Engine_mt940_banking_parser::_sanitizeAccount
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionAccount() {
 		$results = parent::_parseTransactionAccount();
@@ -40,8 +39,7 @@ class Abn extends Engine {
 
 	/**
 	 * Overloaded: ABN Amro shows the GIRO and fixes newlines etc
-	 * @return string
-	 * @see Engine_mt940_banking_parser::_sanitizeAccountName
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionAccountName() {
 		$results = parent::_parseTransactionAccountName();

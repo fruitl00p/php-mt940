@@ -9,7 +9,7 @@ namespace Kingsquare\Parser;
 class Banking {
 
 	/**
-	 * Parse the given string into an array of statement_banking objects
+	 * Parse the given string into an array of \Banking\Statement objects
 	 *
 	 * @param string $string
 	 * @return array

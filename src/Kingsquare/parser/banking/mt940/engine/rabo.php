@@ -18,8 +18,7 @@ class Rabo extends Engine {
 
 	/**
 	 * Overloaded: Rabo has different way of storing account info
-	 * @return string
-	 * @see Engine_mt940_banking_parser::_sanitizeAccount
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionAccount() {
 		$results = array();
@@ -36,8 +35,7 @@ class Rabo extends Engine {
 
 	/**
 	 * Overloaded: Rabo has different way of storing account name
-	 * @return string
-	 * @see Rabo_engine_mt940_banking_parser::_parseTransactionAccount
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionAccountName() {
 		$results = array();
