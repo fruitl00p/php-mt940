@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/fruitl00p/php-mt940.png?branch=master)](https://travis-ci.org/fruitl00p/php-mt940)
 [![Latest Stable Version](https://poser.pugx.org/kingsquare/php-mt940/v/stable.png)](https://packagist.org/packages/kingsquare/php-mt940)
 [![License](https://poser.pugx.org/kingsquare/php-mt940/license.png)](https://packagist.org/packages/kingsquare/php-mt940)
+[![wercker status](https://app.wercker.com/status/1b20215cc9fee0e4effbe7ad81da1328/s/ "wercker status")](https://app.wercker.com/project/bykey/1b20215cc9fee0e4effbe7ad81da1328)
 
 README
 ======
