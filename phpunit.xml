@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./src/Kingsquare/autoload.php">
-<testsuites>
-    <testsuite name="Simple unit tests">
-      <directory>test</directory>
-    </testsuite>
-  </testsuites>
+	<testsuites>
+		<testsuite>
+			<directory>test</directory>
+		</testsuite>
+	</testsuites>
 </phpunit>

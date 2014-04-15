@@ -348,7 +348,7 @@ abstract class Engine {
 	 * @return string
 	 */
 	protected function _sanitizeAccountName($string) {
-		return preg_replace('/[\s]+/', PHP_EOL, trim($string));
+		return preg_replace('/[\r\n]+/', '', trim($string));
 	}
 
 	/**
@@ -370,7 +370,7 @@ abstract class Engine {
 	 * @return string
 	 */
 	protected function _sanitizeDescription($string) {
-		return preg_replace('/[\r\n]+/', PHP_EOL, trim($string));
+		return preg_replace('/[\r\n]+/', '', trim($string));
 	}
 
 	/**

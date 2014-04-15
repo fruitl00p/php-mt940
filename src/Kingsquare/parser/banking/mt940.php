@@ -14,7 +14,7 @@ class Mt940 extends Banking {
 	/**
 	 * Parse the given string into an array of Banking\Statement objects
 	 * @param string $string
-	 * @return array
+	 * @return \Kingsquare\Banking\Statement[]
 	 */
 	function parse($string) {
 		if (!empty($string)) {

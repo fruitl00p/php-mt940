@@ -27,7 +27,7 @@ class Rabo extends Engine {
 		}
 
 		// SEPA MT940 Structured
-		if (preg_match('/^:61:.*\n(.*)/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
+		if (preg_match('/^:61:.*\n(.*?)(\n|\:8)/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
 			return $this->_sanitizeAccount($results[1]);
 		}
 		return '';
@@ -40,12 +40,18 @@ class Rabo extends Engine {
 	protected function _parseTransactionAccountName() {
 		$results = array();
 		if (preg_match('/^:61:.*? (.*)/m', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
-			return $this->_sanitizeAccountName($results[1]);
+			$accountName = trim($results[1]);
+			if (!empty($accountName)) {
+				return $this->_sanitizeAccountName($accountName);
+			}
 		}
 
 		// SEPA MT940 Structured
-		if (preg_match('#^:86:.*/NAME/(.*?)/#m', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
-			return $this->_sanitizeAccountName($results[1]);
+		if (preg_match('#/NAME/(.*?)/(REMI|ADDR)/#ms', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
+			$accountName = trim($results[1]);
+			if (!empty($accountName)) {
+				return $this->_sanitizeAccountName($accountName);
+			}
 		}
 		return '';
 	}
@@ -96,7 +102,11 @@ class Rabo extends Engine {
 		$description = parent::_sanitizeDescription($string);
 		if (strpos($description, '/REMI/') !== false
 				&& preg_match('#/REMI/(.*?)/(ISDT|CSID|RTRN)/#s', $description, $results) && !empty($results[1])) {
-			$description = $results[1];
+			return $results[1];
+		}
+		if (strpos($description, '/EREF/') !== false
+				&& preg_match('#/EREF/(.*?)/(ORDP)/#s', $description, $results) && !empty($results[1])) {
+			return $results[1];
 		}
 		return $description;
 	}
