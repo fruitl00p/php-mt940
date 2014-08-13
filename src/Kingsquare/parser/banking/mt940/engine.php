@@ -89,7 +89,7 @@ abstract class Engine {
 	 * split the rawdata up into statementdata chunks
 	 * @return array
 	 */
-	function _parseStatementData() {
+	protected function _parseStatementData() {
 		$results = preg_split('/(^:20:|^-X{,3}$|\Z)/sm',
 				$this->getRawData(),
 				-1,
@@ -102,7 +102,7 @@ abstract class Engine {
 	 * split the statement up into transaction chunks
 	 * @return array
 	 */
-	function _parseTransactionData() {
+	protected function _parseTransactionData() {
 		$results = array();
 		preg_match_all('/^:61:(.*?)(?=^:61:|^-X{,3}$|\Z)/sm', $this->getCurrentStatementData(), $results);
 		return ((!empty($results[0]))? $results[0] : array());
