@@ -17,7 +17,8 @@ class Ing extends Engine {
 	}
 
 	/**
-	 * @return string accountnumber
+	 * Overloaded: Added simple IBAN transaction handling
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionAccount() {
 		$account = parent::_parseTransactionAccount();
@@ -28,6 +29,12 @@ class Ing extends Engine {
 		// IBAN
 		$transactionData = str_replace('Europese Incasso, doorlopend ', '', $this->getCurrentTransactionData());
 		$transactionData = preg_replace('![\r\n]+!', '', $transactionData);
+		if (preg_match('#/CNTP/(.*?)/#', $transactionData, $results)) {
+			$account = trim($results[1]);
+			if (!empty($account)) {
+				return $this->_sanitizeAccount($account);
+			}
+		}
 		if (preg_match('#:86:([A-Z]{2}[0-9]{2}[A-Z]{4}[\d]+?) [A-Z]{6}[A-Z0-9]{0,4} #', $transactionData, $results)) {
 			$account = trim($results[1]);
 			if (!empty($account)) {
@@ -38,7 +45,8 @@ class Ing extends Engine {
 	}
 
 	/**
-	 * @return string accountnumber
+	 * Overloaded: Added simple IBAN transaction handling
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionAccountName() {
 		$name = parent::_parseTransactionAccountName();
@@ -49,6 +57,12 @@ class Ing extends Engine {
 		// IBAN
 		$transactionData = str_replace('Europese Incasso, doorlopend ', '', $this->getCurrentTransactionData());
 		$transactionData = preg_replace('![\r\n]+!', '', $transactionData);
+		if (preg_match('#/CNTP/[^/]*/[^/]*/(.*?)/#', $transactionData, $results)) {
+			$name = trim($results[1]);
+			if (!empty($name)) {
+				return $this->_sanitizeAccountName($name);
+			}
+		}
 		if (preg_match('#:86:.*? [^ ]+ (.*)#', $transactionData, $results) !== 1) {
 			return '';
 		}
@@ -67,6 +81,23 @@ class Ing extends Engine {
 			}
 		}
 		return '';
+	}
+
+	/**
+	 * Overloaded: ING encapsulates the description with /REMI/ for SEPA
+	 * @inheritdoc
+	 */
+	function _sanitizeDescription($string) {
+		$description = parent::_sanitizeDescription($string);
+		if (strpos($description, '/REMI/USTD//') !== false
+				&& preg_match('#/REMI/USTD//(.*?)/#s', $description, $results) && !empty($results[1])) {
+			return $results[1];
+		}
+		if (strpos($description, '/REMI/STRD/CUR/') !== false
+				&& preg_match('#/REMI/STRD/CUR/(.*?)/#s', $description, $results) && !empty($results[1])) {
+			return $results[1];
+		}
+		return $description;
 	}
 
 }

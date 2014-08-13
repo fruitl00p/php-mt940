@@ -58,7 +58,7 @@ class Rabo extends Engine {
 
 	/**
 	 * Overloaded: Rabo has different way of storing transaction value timestamps (ymd)
-	 * @return int
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionEntryTimestamp() {
 		$results = array();
@@ -70,7 +70,7 @@ class Rabo extends Engine {
 
 	/**
 	 * Overloaded: Rabo has different way of storing transaction value timestamps (ymd)
-	 * @return int
+	 * @inheritdoc
 	 */
 	protected function _parseTransactionValueTimestamp() {
 		$results = array();
@@ -82,8 +82,7 @@ class Rabo extends Engine {
 
 	/**
 	 * Overloaded: Rabo uses longer strings for accountnumbers
-	 * @param string $string
-	 * @return string
+	 * @inheritdoc
 	 */
 	protected function _sanitizeAccount($string) {
 		$account = parent::_sanitizeAccount($string);
@@ -95,8 +94,7 @@ class Rabo extends Engine {
 
 	/**
 	 * Overloaded: Rabo encapsulates the description with /REMI/ for SEPA
-	 * @param string $string
-	 * @return string
+	 * @inheritdoc
 	 */
 	protected function _sanitizeDescription($string) {
 		$description = parent::_sanitizeDescription($string);
