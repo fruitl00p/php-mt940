@@ -12,7 +12,7 @@ class Ing extends Engine {
 	 * returns the name of the bank
 	 * @return string
 	 */
-	protected function _parseStatementBank() {
+	protected function parseStatementBank() {
 		return 'ING';
 	}
 
@@ -20,8 +20,8 @@ class Ing extends Engine {
 	 * Overloaded: Added simple IBAN transaction handling
 	 * @inheritdoc
 	 */
-	protected function _parseTransactionAccount() {
-		$account = parent::_parseTransactionAccount();
+	protected function parseTransactionAccount() {
+		$account = parent::parseTransactionAccount();
 		if ($account !== '') {
 			return $account;
 		}
@@ -32,13 +32,13 @@ class Ing extends Engine {
 		if (preg_match('#/CNTP/(.*?)/#', $transactionData, $results)) {
 			$account = trim($results[1]);
 			if (!empty($account)) {
-				return $this->_sanitizeAccount($account);
+				return $this->sanitizeAccount($account);
 			}
 		}
 		if (preg_match('#:86:([A-Z]{2}[0-9]{2}[A-Z]{4}[\d]+?) [A-Z]{6}[A-Z0-9]{0,4} #', $transactionData, $results)) {
 			$account = trim($results[1]);
 			if (!empty($account)) {
-				return $this->_sanitizeAccount($account);
+				return $this->sanitizeAccount($account);
 			}
 		}
 		return '';
@@ -48,8 +48,8 @@ class Ing extends Engine {
 	 * Overloaded: Added simple IBAN transaction handling
 	 * @inheritdoc
 	 */
-	protected function _parseTransactionAccountName() {
-		$name = parent::_parseTransactionAccountName();
+	protected function parseTransactionAccountName() {
+		$name = parent::parseTransactionAccountName();
 		if ($name !== '') {
 			return $name;
 		}
@@ -60,7 +60,7 @@ class Ing extends Engine {
 		if (preg_match('#/CNTP/[^/]*/[^/]*/(.*?)/#', $transactionData, $results)) {
 			$name = trim($results[1]);
 			if (!empty($name)) {
-				return $this->_sanitizeAccountName($name);
+				return $this->sanitizeAccountName($name);
 			}
 		}
 		if (preg_match('#:86:.*? [^ ]+ (.*)#', $transactionData, $results) !== 1) {
@@ -70,14 +70,14 @@ class Ing extends Engine {
 		if (preg_match('#(.*) (Not-Provided|NOTPROVIDED)#', $transactionData, $results) === 1) {
 			$name = trim($results[1]);
 			if (!empty($name)) {
-				return $this->_sanitizeAccountName($name);
+				return $this->sanitizeAccountName($name);
 			}
 		}
 
 		if (preg_match('#\D+#', $transactionData, $results)) {
 			$name = trim($results[0]);
 			if (!empty($name)) {
-				return $this->_sanitizeAccountName($name);
+				return $this->sanitizeAccountName($name);
 			}
 		}
 		return '';
@@ -87,8 +87,8 @@ class Ing extends Engine {
 	 * Overloaded: ING encapsulates the description with /REMI/ for SEPA
 	 * @inheritdoc
 	 */
-	function _sanitizeDescription($string) {
-		$description = parent::_sanitizeDescription($string);
+	protected function sanitizeDescription($string) {
+		$description = parent::sanitizeDescription($string);
 		if (strpos($description, '/REMI/USTD//') !== false
 				&& preg_match('#/REMI/USTD//(.*?)/#s', $description, $results) && !empty($results[1])) {
 			return $results[1];

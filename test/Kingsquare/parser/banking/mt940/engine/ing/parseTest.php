@@ -18,7 +18,7 @@ class ParseTest_ing_mt940_banking_parser extends PHPUnit_Framework_TestCase {
 	 *
 	 */
 	public function testParseStatementBank() {
-		$method = new ReflectionMethod($this->engine, '_parseStatementBank');
+		$method = new ReflectionMethod($this->engine, 'parseStatementBank');
 		$method->setAccessible(true);
 		$this->assertEquals('ING', $method->invoke($this->engine));
 	}

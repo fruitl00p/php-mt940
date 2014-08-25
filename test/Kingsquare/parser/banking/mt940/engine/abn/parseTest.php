@@ -20,7 +20,7 @@ class ParseTest_abn_mt940_banking_parser extends PHPUnit_Framework_TestCase {
 	 *
 	 */
 	public function testParseStatementBank() {
-		$method = new ReflectionMethod($this->engine, '_parseStatementBank');
+		$method = new ReflectionMethod($this->engine, 'parseStatementBank');
 		$method->setAccessible(true);
 		$this->assertEquals('ABN', $method->invoke($this->engine));
 	}

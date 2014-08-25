@@ -13,7 +13,7 @@ class Abn extends Engine {
 	 * returns the name of the bank
 	 * @return string
 	 */
-	protected function _parseStatementBank() {
+	protected function parseStatementBank() {
 		return 'ABN';
 	}
 
@@ -22,8 +22,8 @@ class Abn extends Engine {
 	 * includes fix for 'for GIRO 1234567 TEST 201009063689 CLIEOP 21-9' and translates that into 1234567
 	 * @inheritdoc
 	 */
-	protected function _parseTransactionAccount() {
-		$results = parent::_parseTransactionAccount();
+	protected function parseTransactionAccount() {
+		$results = parent::parseTransactionAccount();
 		if (empty($results)) {
 			$giroMatch = $ibanMatch = array();
 			if (preg_match('/^:86:GIRO(.{9})/im', $this->getCurrentTransactionData(), $giroMatch) && !empty($giroMatch[1])) {
@@ -34,15 +34,15 @@ class Abn extends Engine {
 				$results = $ibanMatch[1];
 			}
 		}
-		return $this->_sanitizeAccount($results);
+		return $this->sanitizeAccount($results);
 	}
 
 	/**
 	 * Overloaded: ABN Amro shows the GIRO and fixes newlines etc
 	 * @inheritdoc
 	 */
-	protected function _parseTransactionAccountName() {
-		$results = parent::_parseTransactionAccountName();
+	protected function parseTransactionAccountName() {
+		$results = parent::parseTransactionAccountName();
 		if ($results !== '') {
 			return $results;
 		}
@@ -50,12 +50,12 @@ class Abn extends Engine {
 		$results = array();
 		if (preg_match('/:86:(GIRO|BGC\.)\s+[\d]+ (.+)/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[2])) {
-			return $this->_sanitizeAccountName($results[2]);
+			return $this->sanitizeAccountName($results[2]);
 		}
 
 		if (preg_match('/:86:.+\n(.*)\n/', $this->getCurrentTransactionData(), $results)
 				&& !empty($results[1])) {
-			return $this->_sanitizeAccountName($results[1]);
+			return $this->sanitizeAccountName($results[1]);
 		}
 		return '';
 	}
@@ -66,10 +66,10 @@ class Abn extends Engine {
 	 *
 	 * @return int
 	 */
-	protected function _parseTransactionEntryTimestamp() {
+	protected function parseTransactionEntryTimestamp() {
 		$results = array();
 		if (preg_match('/^:61:\d{6}(\d{4})[C|D]/', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
-			return $this->_sanitizeTimestamp($results[1], 'md');
+			return $this->sanitizeTimestamp($results[1], 'md');
 		}
 		return 0;
 	}

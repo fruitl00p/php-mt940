@@ -9,92 +9,92 @@ namespace Kingsquare\Banking;
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Statement {
-	private $_bank = '';
-	private $_account = '';
-	private $_transactions = array();
-	private $_startPrice = 0;
-	private $_endPrice = 0;
-	private $_timestamp = 0;
-	private $_number = '';
+	private $bank = '';
+	private $account = '';
+	private $transactions = array();
+	private $startPrice = 0;
+	private $endPrice = 0;
+	private $timestamp = 0;
+	private $number = '';
 
 	/**
 	 * @param string $var
 	 */
-	public function setBank($var) { $this->_bank = (string) $var; }
+	public function setBank($var) { $this->bank = (string) $var; }
 
 	/**
 	 * @param string $var
 	 */
-	public function setAccount($var) { $this->_account = (string) $var; }
+	public function setAccount($var) { $this->account = (string) $var; }
 
 	/**
 	 * @param Transaction[] $transactions
 	 */
-	public function setTransactions($transactions) { $this->_transactions = (array) $transactions; }
+	public function setTransactions($transactions) { $this->transactions = (array) $transactions; }
+
+	/**
+	 * @param float $var
+	 */
+	public function setStartPrice($var) { $this->startPrice = (float) $var; }
+
+	/**
+	 * @param float $var
+	 */
+	public function setEndPrice($var) { $this->endPrice = (float) $var; }
 
 	/**
 	 * @param int $var
 	 */
-	public function setStartPrice($var) { $this->_startPrice = (int) $var; }
-
-	/**
-	 * @param int $var
-	 */
-	public function setEndPrice($var) { $this->_endPrice = (int) $var; }
-
-	/**
-	 * @param int $var
-	 */
-	public function setTimestamp($var) { $this->_timestamp = (int) $var; }
+	public function setTimestamp($var) { $this->timestamp = (int) $var; }
 
 	/**
 	 * @param string $var
 	 */
-	public function setNumber($var) { $this->_number = (string) $var; }
+	public function setNumber($var) { $this->number = (string) $var; }
 
 	/**
 	 * @return string
 	 */
-	public function getBank() { return $this->_bank; }
+	public function getBank() { return $this->bank; }
 
 	/**
 	 * @return string
 	 */
-	public function getAccount() { return $this->_account; }
+	public function getAccount() { return $this->account; }
 
 	/**
 	 * @return Transaction[]
 	 */
-	public function getTransactions() { return $this->_transactions; }
+	public function getTransactions() { return $this->transactions; }
 
 	/**
-	 * @return int
+	 * @return float
 	 */
-	public function getStartPrice() { return $this->_startPrice; }
+	public function getStartPrice() { return $this->startPrice; }
 
 	/**
-	 * @return int
+	 * @return float
 	 */
-	public function getEndPrice() { return $this->_endPrice; }
+	public function getEndPrice() { return $this->endPrice; }
 
 	/**
 	 * @param string $format
 	 * @return string
 	 */
-	public function getTimestamp($format = 'U') { return date($format, $this->_timestamp); }
+	public function getTimestamp($format = 'U') { return date($format, $this->timestamp); }
 
 	/**
 	 * @return string
 	 */
-	public function getNumber() { return $this->_number; }
+	public function getNumber() { return $this->number; }
 
 	/**
 	 * @param Transaction $transaction
 	 */
-	public function addTransaction(Transaction $transaction) { $this->_transactions[] = $transaction; }
+	public function addTransaction(Transaction $transaction) { $this->transactions[] = $transaction; }
 
 	/**
-	 * @return int
+	 * @return float
 	 */
 	public function getDeltaPrice() { return ($this->getStartPrice() - $this->getEndPrice()); }
 }

@@ -14,7 +14,7 @@ class DebitCreditTest_engine_mt940_banking_parser extends PHPUnit_Framework_Test
 		$property = new ReflectionProperty($engine, '_currentTransactionData');
 		$property->setAccessible(true);
 
-		$method = new ReflectionMethod($engine, '_parseTransactionDebitCredit');
+		$method = new ReflectionMethod($engine, 'parseTransactionDebitCredit');
 		$method->setAccessible(true);
 
 		$property->setValue($engine, $statement);

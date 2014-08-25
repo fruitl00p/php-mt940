@@ -14,7 +14,7 @@ class Transaction {
 
 	private $account = '';
 	private $accountName = '';
-	private $price = '0';
+	private $price = 0;
 	private $debitcredit = '';
 	private $description = '';
 	private $valueTimestamp = 0;
@@ -32,9 +32,9 @@ class Transaction {
 	public function setAccountName($var) { $this->accountName = (string) $var; }
 
 	/**
-	 * @param string $var
+	 * @param float $var
 	 */
-	public function setPrice($var) { $this->price = (string) $var; }
+	public function setPrice($var) { $this->price = (float) $var; }
 
 	/**
 	 * @param string $var
@@ -73,7 +73,7 @@ class Transaction {
 	public function getAccountName() { return $this->accountName; }
 
 	/**
-	 * @return int
+	 * @return float
 	 */
 	public function getPrice() { return $this->price; }
 
