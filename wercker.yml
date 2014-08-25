@@ -1,0 +1,15 @@
+box: wercker/php
+build:
+  steps:
+    - script:
+        name: install dependencies
+        code: |-
+            composer install --no-interaction
+
+    - script:
+        name: Add project-config.ini
+        code: phpenv config-add test/phpconfig.ini
+
+    - script:
+        name: PHPUnit integration tests
+        code: phpunit --configuration phpunit.xml
