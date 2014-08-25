@@ -12,8 +12,8 @@ class Statement {
 	private $bank = '';
 	private $account = '';
 	private $transactions = array();
-	private $startPrice = 0;
-	private $endPrice = 0;
+	private $startPrice = 0.0;
+	private $endPrice = 0.0;
 	private $timestamp = 0;
 	private $number = '';
 
