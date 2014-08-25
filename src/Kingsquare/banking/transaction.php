@@ -14,7 +14,7 @@ class Transaction {
 
 	private $account = '';
 	private $accountName = '';
-	private $price = 0;
+	private $price = '0';
 	private $debitcredit = '';
 	private $description = '';
 	private $valueTimestamp = 0;
