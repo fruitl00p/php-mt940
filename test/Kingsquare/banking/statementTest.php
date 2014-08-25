@@ -24,10 +24,10 @@ class StatementTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testTransactionsAssesor() {
-		$expected = [
+		$expected = array(
 			new Transaction(),
 			new Transaction(),
-		];
+		);
 		$statement = new Statement();
 		$statement->setTransactions($expected);
 
@@ -84,10 +84,10 @@ class StatementTest extends PHPUnit_Framework_TestCase {
     */
 	public function testAddTransaction() {
 		$statement = new Statement();
-		$statement->setTransactions([
+		$statement->setTransactions(array(
 			new Transaction(),
 			new Transaction(),
-		]);
+		));
 		$statement->addTransaction(new Transaction());
 
 		$this->assertCount(3, $statement->getTransactions());
