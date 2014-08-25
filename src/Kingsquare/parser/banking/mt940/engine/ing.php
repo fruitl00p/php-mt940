@@ -66,7 +66,16 @@ class Ing extends Engine {
 		if (preg_match('#:86:.*? [^ ]+ (.*)#', $transactionData, $results) !== 1) {
 			return '';
 		}
-		$transactionData = $results[1];
+
+		return $this->parseNameFromTransactionData($results[1]);
+	}
+
+	/**
+	 * @param $transactionData
+	 *
+	 * @return string
+	 */
+	private function parseNameFromTransactionData($transactionData) {
 		if (preg_match('#(.*) (Not-Provided|NOTPROVIDED)#', $transactionData, $results) === 1) {
 			$name = trim($results[1]);
 			if (!empty($name)) {
