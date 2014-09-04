@@ -10,9 +10,9 @@ use Kingsquare\Banking\Transaction as Transaction;
  * @license http://opensource.org/licenses/MIT MIT
  */
 abstract class Engine {
-	private $_rawData = '';
-	protected $_currentStatementData = '';
-	protected $_currentTransactionData = '';
+	private $rawData = '';
+	protected $currentStatementData = '';
+	protected $currentTransactionData = '';
 
 	var $debug = false;
 
@@ -44,7 +44,7 @@ abstract class Engine {
 	 * @return void
 	 */
 	function loadString($string) {
-		$this->_rawData = trim($string);
+		$this->rawData = trim($string);
 	}
 
 	/**
@@ -53,10 +53,10 @@ abstract class Engine {
 	 */
 	function parse() {
 		$results = array();
-		foreach ($this->parseStatementData() as $this->_currentStatementData) {
+		foreach ($this->parseStatementData() as $this->currentStatementData) {
 			$statement = new Statement();
 			if ($this->debug) {
-				$statement->rawData = $this->_currentStatementData;
+				$statement->rawData = $this->currentStatementData;
 			}
 			$statement->setBank($this->parseStatementBank());
 			$statement->setAccount($this->parseStatementAccount());
@@ -65,10 +65,10 @@ abstract class Engine {
 			$statement->setTimestamp($this->parseStatementTimestamp());
 			$statement->setNumber($this->parseStatementNumber());
 
-			foreach ($this->parseTransactionData() as $this->_currentTransactionData) {
+			foreach ($this->parseTransactionData() as $this->currentTransactionData) {
 				$transaction = new Transaction();
 				if ($this->debug) {
-					$transaction->rawData = $this->_currentTransactionData;
+					$transaction->rawData = $this->currentTransactionData;
 				}
 				$transaction->setAccount($this->parseTransactionAccount());
 				$transaction->setAccountName($this->parseTransactionAccountName());
@@ -113,23 +113,23 @@ abstract class Engine {
 	 * @return string _rawData
 	 */
 	function getRawData() {
-		return $this->_rawData;
+		return $this->rawData;
 	}
 
 	/**
 	 * return the actual raw data string
-	 * @return string _currentStatementData
+	 * @return string currentStatementData
 	 */
 	function getCurrentStatementData() {
-		return $this->_currentStatementData;
+		return $this->currentStatementData;
 	}
 
 	/**
 	 * return the actual raw data string
-	 * @return string _currentTransactionData
+	 * @return string currentTransactionData
 	 */
 	function getCurrentTransactionData() {
-		return $this->_currentTransactionData;
+		return $this->currentTransactionData;
 	}
 
 	// statement parsers, these work with currentStatementData
