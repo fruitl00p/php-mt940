@@ -22,12 +22,12 @@ class Rabo extends Engine {
 	 */
 	protected function parseTransactionAccount() {
 		$results = array();
-		if (preg_match('/^:61:.{26}(.{16})/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
+		// SEPA MT940 Structured
+		if (preg_match('/^:61:.*\n(.*?)(\n|\:8)/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
 			return $this->sanitizeAccount($results[1]);
 		}
 
-		// SEPA MT940 Structured
-		if (preg_match('/^:61:.*\n(.*?)(\n|\:8)/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
+		if (preg_match('/^:61:.{26}(.{16})/im', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
 			return $this->sanitizeAccount($results[1]);
 		}
 		return '';
