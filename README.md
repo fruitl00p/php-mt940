@@ -17,28 +17,47 @@ straight forward.
 Requirements
 ------------
 
-* Atleast php5 :) (possibly even PHP5.3+ I haven't tested it below 5.3)
+* Atleast the latest supported PHP5. This should read 5.4+, but probably 5.3 would work (and you should upgrade)
+
+Installation
+------------
+
+If composer is not yet on your system, follow the instructions on [getcomposer.org](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) to do so.
+
+To add this dependency to your project, simply run the following command from the root of your project:
+
+``` composer require kingsquare/php-mt940 ```
+
+This ensures that you install the latest stable release.
 
 How to use the parsers?
 -------------------
 
 I've attached a simple script in the examples directory to explain it a bit more in detail, but after loading the
 required classes, the usage should be pretty simple:
-		<?php
-		// ... load everything ... //
 
-		// instantiate the actual parser
-        // and parse them from a given file, this could be any file or a posted string
-        $parser = new \Kingsquare\Parser\Banking\Mt940();
-        $tmpFile = __DIR__.'/test.mta';
-        $parsedStatements = $parser->parse(file_get_contents($tmpFile));
+```php
+<?php
+// ... load everything ... //
 
-        ?>
+// instantiate the actual parser
+// and parse them from a given file, this could be any file or a posted string
+$parser = new \Kingsquare\Parser\Banking\Mt940();
+$tmpFile = __DIR__.'/test.mta';
+$parsedStatements = $parser->parse(file_get_contents($tmpFile));
+
+?>
+```
 
 Known issues
 ------------
 
-1. I've provided a phpunit test for some engines, but am missing some test-data...
+I've provided a phpunit test for some engines, but am missing some test-data...
+
+Future plans
+------------
+
+I do intend to add new engines or keep everything running smoothly, but since i don't have access to any more test files, it's hard to add new engines ;) The `unknown` engine should work or atleast give some idea as to where different banks diverge from the standard. If you do have any ideas, examples or new banks that you'd like to see incorporated, please don't hesitate and send me an issue / pullrequest!
 
 Contact
 -------
