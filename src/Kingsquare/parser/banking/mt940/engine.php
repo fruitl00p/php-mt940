@@ -152,7 +152,7 @@ abstract class Engine {
 		}
 
 		// SEPA / IBAN
-		if (preg_match('/:25:[A-Z0-9]{8}([\d\.]+)*/', $this->getCurrentStatementData(), $results)
+		if (preg_match('/:25:([A-Z0-9]{8}[\d\.]+)*/', $this->getCurrentStatementData(), $results)
 				&& !empty($results[1])) {
 			return $this->sanitizeAccount($results[1]);
 		}
@@ -326,10 +326,13 @@ abstract class Engine {
 			' ' => '',
 			'GIRO' => 'P',
 		);
-		// crude IBAN to 'old' converter
-		if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $string, $results) && !empty($results[1])) {
-			$string = $results[1];
-		}
+        
+        if(\Kingsquare\Parser\Banking\Mt940::$removeIBAN) {
+            // crude IBAN to 'old' converter
+            if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $string, $results) && !empty($results[1])) {
+                $string = $results[1];
+            }
+        }
 
 		$account = ltrim(
 				str_replace(

@@ -8,8 +8,11 @@ use Kingsquare\Parser\Banking;
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Mt940 extends Banking {
-	/* @var Banking\Mt940\Engine engine */
+	/** @var Banking\Mt940\Engine */
 	protected $engine;
+
+    /** @var bool */
+    public static $removeIBAN = true; // defaults to true for BC
 
 	/**
 	 * Parse the given string into an array of Banking\Statement objects
