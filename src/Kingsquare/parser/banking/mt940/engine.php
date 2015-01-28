@@ -3,6 +3,7 @@
 namespace Kingsquare\Parser\Banking\Mt940;
 use Kingsquare\Banking\Statement as Statement;
 use Kingsquare\Banking\Transaction as Transaction;
+use Kingsquare\Parser\Banking\Mt940;
 
 /**
  * @package Kingsquare\Parser\Banking\Mt940
@@ -327,11 +328,11 @@ abstract class Engine {
 			'GIRO' => 'P',
 		);
         
-        if(\Kingsquare\Parser\Banking\Mt940::$removeIBAN) {
-            // crude IBAN to 'old' converter
-            if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $string, $results) && !empty($results[1])) {
-                $string = $results[1];
-            }
+		// crude IBAN to 'old' converter
+        if (Mt940::$removeIBAN
+				&& preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $string, $results)
+				&& !empty($results[1])) {
+			$string = $results[1];
         }
 
 		$account = ltrim(
