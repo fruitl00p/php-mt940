@@ -87,7 +87,7 @@ abstract class Engine {
 
 	/**
 	 * uses the 20 field to return the statement reference number (id)
-	 * @return float price
+	 * @return string
 	 */
 	protected function parseStatementReferenceNumber() {
 		$results = array();
