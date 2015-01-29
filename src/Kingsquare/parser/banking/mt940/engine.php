@@ -14,6 +14,7 @@ abstract class Engine {
 	protected $currentStatementData = '';
 	protected $currentTransactionData = '';
 
+	var $debug = true;
 
 	/**
 	 * reads the firstline of the string to guess which engine to use for parsing
