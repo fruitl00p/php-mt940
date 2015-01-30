@@ -28,7 +28,6 @@ class Spk extends Engine {
 				$this->getRawData(),
 				-1,
 				PREG_SPLIT_NO_EMPTY);
-		//array_shift($results); // remove the header
 		return $results;
 	}
 }
