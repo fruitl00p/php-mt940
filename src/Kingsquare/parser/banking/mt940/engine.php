@@ -30,6 +30,8 @@ abstract class Engine {
 			$engine = new Engine\Ing;
 		} else if (strpos($firstline, ':940:') !== false) {
 			$engine = new Engine\Rabo;
+		} else if (strpos($firstline, ':20:STARTUMS') !== false) {
+			$engine = new Engine\Spk;
 		} else {
 			$engine = new Engine\Unknown;
 			trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
