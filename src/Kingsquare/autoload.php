@@ -15,6 +15,7 @@ spl_autoload_register(
 			  'Kingsquare\\Parser\\Banking\\Mt940\\Engine\\Abn' => '/parser/banking/mt940/engine/abn.php',
 			  'Kingsquare\\Parser\\Banking\\Mt940\\Engine\\Ing' => '/parser/banking/mt940/engine/ing.php',
 			  'Kingsquare\\Parser\\Banking\\Mt940\\Engine\\Rabo' => '/parser/banking/mt940/engine/rabo.php',
+			  'Kingsquare\\Parser\\Banking\\Mt940\\Engine\\Spk' => '/parser/banking/mt940/engine/spk.php',
 			  'Kingsquare\\Parser\\Banking\\Mt940\\Engine\\Unknown' => '/parser/banking/mt940/engine/unknown.php',
           );
           $path = dirname(__FILE__);
