@@ -1,19 +1,22 @@
 {
-    "name": "kingsquare/php-mt940",
-    "description": "Simple MT940 parser in PHP",
-    "keywords": ["mt940", "parsing"],
-    "homepage": "https://github.com/fruitl00p/php-mt940",
-    "type": "library",
-	"license": "MIT",
-    "authors": [
-		{ "name": "Robin Speekenbrink", "email": "robin@kingsquare.nl" }
-    ],
-	"require": {
-		"php": ">=5.3.0"
-	},
-	"autoload": {
-		"psr-0":{
-			"Kingsquare": ["src/", "test/"]
-		}
+  "name": "kingsquare/php-mt940",
+  "description": "Simple MT940 parser in PHP",
+  "keywords": ["mt940", "parsing"],
+  "homepage": "https://github.com/fruitl00p/php-mt940",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+	{ "name": "Robin Speekenbrink", "email": "robin@kingsquare.nl" }
+  ],
+  "require": {
+	"php": ">=5.3.0"
+  },
+  "require-dev": {
+	"phpunit/phpunit": "4.4.*"
+  },
+  "autoload": {
+	"psr-0":{
+	  "Kingsquare": ["src/", "test/"]
 	}
+  }
 }
