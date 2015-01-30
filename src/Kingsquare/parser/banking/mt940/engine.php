@@ -61,6 +61,7 @@ abstract class Engine {
 			if ($this->debug) {
 				$statement->rawData = $this->currentStatementData;
 			}
+			$statement->setId($this->parseStatementReferenceNumber());
 			$statement->setBank($this->parseStatementBank());
 			$statement->setAccount($this->parseStatementAccount());
 			$statement->setStartPrice($this->parseStatementStartPrice());
@@ -86,6 +87,19 @@ abstract class Engine {
 			$results[] = $statement;
 		}
 		return $results;
+	}
+
+	/**
+	 * uses the 20 field to return the statement reference number (id)
+	 * @return string
+	 */
+	protected function parseStatementReferenceNumber() {
+		$results = array();
+		if (preg_match('/^([^\r\n]+)/', $this->getCurrentStatementData(), $results)
+				&& !empty($results[1])) {
+			return trim($results[1]); // sanitized by above regex already
+		}
+		return '';
 	}
 
 	/**

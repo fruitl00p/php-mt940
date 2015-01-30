@@ -9,6 +9,7 @@ namespace Kingsquare\Banking;
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Statement {
+    private $id = '';
 	private $bank = '';
 	private $account = '';
 	private $transactions = array();
@@ -16,6 +17,12 @@ class Statement {
 	private $endPrice = 0.0;
 	private $timestamp = 0;
 	private $number = '';
+
+	/**
+     * Set the the "identifying" reference number of the statement
+	 * @param string $var
+	 */
+	public function setId($var) { $this->id = (string) $var; }
 
 	/**
 	 * @param string $var
@@ -51,6 +58,12 @@ class Statement {
 	 * @param string $var
 	 */
 	public function setNumber($var) { $this->number = (string) $var; }
+
+	/**
+     * Get the "identifying" reference number of the statement
+	 * @return string
+	 */
+	public function getId() { return $this->id; }
 
 	/**
 	 * @return string
