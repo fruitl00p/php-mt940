@@ -1,13 +1,7 @@
 box: wercker/php
 build:
   steps:
-    - script:
-        name: install dependencies
-        code: |
-          export COMPOSER_CACHE_DIR="${WERCKER_CACHE_DIR}/wercker/composer"
-          mkdir -p $COMPOSER_CACHE_DIR
-          composer install --no-interaction --no-dev
-
+    - leipert/composer-install@0.0.1
     - script:
         name: Add project-config.ini
         code: phpenv config-add test/phpconfig.ini
