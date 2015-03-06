@@ -16,6 +16,6 @@ matrix:
 before_script: 
   - mkdir -p /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d
   - phpenv config-add test/phpconfig.ini
-  - composer install -n --dev --prefer-source
+  - composer install -n --prefer-source
 
 script: vendor/bin/phpunit --coverage-clover coverage.clover
