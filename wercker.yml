@@ -3,8 +3,10 @@ build:
   steps:
     - script:
         name: install dependencies
-        code: |-
-            composer install --no-interaction
+        code: |
+          export COMPOSER_CACHE_DIR="${WERCKER_CACHE_DIR}/wercker/composer"
+          mkdir -p $COMPOSER_CACHE_DIR
+          composer install --no-interaction --no-dev
 
     - script:
         name: Add project-config.ini
