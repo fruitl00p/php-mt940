@@ -8,4 +8,4 @@ build:
 
     - script:
         name: PHPUnit integration tests
-        code: phpunit --configuration phpunit.xml
+        code: phpunit
