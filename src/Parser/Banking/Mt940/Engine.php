@@ -34,7 +34,7 @@ abstract class Engine
     }
 
     /**
-     * @param $string
+     * @param string $string
      *
      * @return Engine\Abn
      */
