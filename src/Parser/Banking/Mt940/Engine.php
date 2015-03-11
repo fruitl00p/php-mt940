@@ -28,7 +28,7 @@ abstract class Engine
      */
     public static function __getInstance($string)
     {
-        $engine = static::detectBank($string);
+        $engine = self::detectBank($string);
         $engine->loadString($string);
         return $engine;
     }
@@ -36,7 +36,7 @@ abstract class Engine
     /**
      * @param string $string
      *
-     * @return Engine\Abn
+     * @return Engine
      */
     private static function detectBank($string) {
         $firstline = strtok($string, "\r\n\t");
