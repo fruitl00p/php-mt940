@@ -28,28 +28,37 @@ abstract class Engine
      */
     public static function __getInstance($string)
     {
-        $firstline = strtok($string, "\r\n\t");
-        if (strpos($firstline, 'ABNA') !== false) {
-            $engine = new Engine\Abn;
-        } else {
-            if (strpos($firstline, 'INGB') !== false) {
-                $engine = new Engine\Ing;
-            } else {
-                if (strpos($firstline, ':940:') !== false) {
-                    $engine = new Engine\Rabo;
-                } else {
-                    if (strpos($firstline, ':20:STARTUMS') !== false) {
-                        $engine = new Engine\Spk;
-                    } else {
-                        $engine = new Engine\Unknown;
-                        trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
-                    }
-                }
-            }
-        }
+        $engine = static::detectBank($string);
         $engine->loadString($string);
-
         return $engine;
+    }
+
+    /**
+     * @param $string
+     *
+     * @return Engine\Abn
+     */
+    private static function detectBank($string) {
+        $firstline = strtok($string, "\r\n\t");
+
+        if (strpos($firstline, 'ABNA') !== false) {
+            return new Engine\Abn;
+        }
+
+        if (strpos($firstline, 'INGB') !== false) {
+            return new Engine\Ing;
+        }
+
+        if (strpos($firstline, ':940:') !== false) {
+            return new Engine\Rabo;
+        }
+
+        if (strpos($firstline, ':20:STARTUMS') !== false) {
+            return new Engine\Spk;
+        }
+
+        trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
+        return new Engine\Unknown;
     }
 
     /**
