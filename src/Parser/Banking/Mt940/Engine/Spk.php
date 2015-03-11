@@ -22,6 +22,55 @@ class Spk extends Engine
         return 'Spk';
     }
 
+
+    /**
+     * Overloaded: Sparkasse uses 60M and 60F
+     * @inheritdoc
+     */
+    protected function parseStatementStartPrice()
+    {
+        $results = array();
+        if (preg_match('/:60[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizePrice($results[1]);
+        }
+
+        return '';
+    }
+
+    /**
+     * Overloaded: Sparkasse uses 60M and 60F
+     * @inheritdoc
+     */
+    protected function parseStatementTimestamp()
+    {
+        $results = array();
+        if (preg_match('/:60[FM]:[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizeTimestamp($results[1], 'ymd');
+        }
+
+        return 0;
+    }
+
+    /**
+     * Overloaded: Sparkasse uses 62M and 62F
+     * @inheritdoc
+     */
+    protected function parseStatementEndPrice()
+    {
+        $results = array();
+        if (preg_match('/:62[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizePrice($results[1]);
+        }
+
+        return '';
+    }
+
     /**
      * Overloaded: Sparkasse does not have a header line
      * @inheritdoc
