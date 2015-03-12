@@ -53,7 +53,8 @@ abstract class Engine
             return new Engine\Rabo;
         }
 
-        if (strpos($firstline, ':20:STARTUMS') !== false) {
+        if (strpos($firstline, ':20:STARTUMS') !== false 
+			|| $firstline === "-" && strtok("\r\n\t") === ':20:STARTUMS') {
             return new Engine\Spk;
         }
 
