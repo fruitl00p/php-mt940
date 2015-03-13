@@ -8,8 +8,17 @@ namespace Kingsquare\Banking;
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Transaction
+class Transaction implements \JsonSerializable
 {
+
+    public function jsonSerialize() {
+        $objectArray = array();
+        foreach ($this as $key => $value) {
+            $objectArray[$key] = $value;
+        }
+        return $objectArray;
+    }
+
     const DEBIT = 'D';
     const CREDIT = 'C';
 

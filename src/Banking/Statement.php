@@ -8,7 +8,7 @@ namespace Kingsquare\Banking;
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Statement
+class Statement implements \JsonSerializable
 {
     private $bank = '';
     private $account = '';
@@ -17,6 +17,14 @@ class Statement
     private $endPrice = 0.0;
     private $timestamp = 0;
     private $number = '';
+
+    public function jsonSerialize() {
+        $objectArray = array();
+        foreach ($this as $key => $value) {
+            $objectArray[$key] = $value;
+        }
+        return $objectArray;
+    }
 
     /**
      * @param string $var
