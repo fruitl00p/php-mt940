@@ -11,6 +11,9 @@ namespace Kingsquare\Banking;
 class Transaction implements \JsonSerializable
 {
 
+    /**
+     * @return array
+     */
     public function jsonSerialize() {
         $objectArray = array();
         foreach ($this as $key => $value) {

@@ -18,6 +18,9 @@ class Statement implements \JsonSerializable
     private $timestamp = 0;
     private $number = '';
 
+    /**
+     * @return array
+     */
     public function jsonSerialize() {
         $objectArray = array();
         foreach ($this as $key => $value) {
