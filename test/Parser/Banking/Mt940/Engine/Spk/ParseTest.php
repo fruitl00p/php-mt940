@@ -29,4 +29,18 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $this->assertEquals('Spk', $method->invoke($this->engine));
     }
+
+    /**
+     *
+     */
+    public function testHasTheRightAmountOfTransactions()
+    {
+        $statements = $this->engine->parse();
+        $this->assertSame(4, count($statements));
+        $tranactions = array();
+        foreach ($statements as $statement) {
+            $tranactions = array_merge($tranactions, $statement->getTransactions());
+        }
+        $this->assertSame(10, count($tranactions));
+    }
 }
