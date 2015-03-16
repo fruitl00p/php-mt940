@@ -29,8 +29,8 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     public function testTransactionsAssesor()
     {
         $expected = array(
-                new Transaction(),
-                new Transaction(),
+            new Transaction(),
+            new Transaction(),
         );
         $statement = new Statement();
         $statement->setTransactions($expected);
@@ -95,8 +95,8 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     {
         $statement = new Statement();
         $statement->setTransactions(array(
-                new Transaction(),
-                new Transaction(),
+            new Transaction(),
+            new Transaction(),
         ));
         $statement->addTransaction(new Transaction());
 
@@ -113,5 +113,72 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $statement->setTimestamp(strtotime($expected));
 
         $this->assertEquals($expected, $statement->getTimestamp('Y-m-d H:i'));
+    }
+
+    public function testJsonSerialization()
+    {
+        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[],"startPrice":16250,"endPrice":6250,' .
+            '"timestamp":123,"number":"2665487AAF"}';
+        $params = array(
+            'bank' => 'ABN',
+            'account' => '62.90.64.393',
+            'transactions' => array(),
+            'startPrice' => 16250,
+            'endPrice' => 6250,
+            'timestamp' => 123,
+            'number' => '2665487AAF',
+        );
+        $statement = new Statement();
+        foreach ($params as $key => $value) {
+            $statement->{'set' . $key}($value);
+        }
+        $this->assertSame($expected, json_encode($statement));
+    }
+
+    /**
+     * @depends testJsonSerialization
+     */
+    public function testJsonSerializationWithTransactions()
+    {
+        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[{"account":"123123","accountName":' .
+            '"Kingsquare BV","price":110,"debitcredit":"D","description":"test","valueTimestamp":1231,"entryTimestamp"' .
+            ':1234,"transactionCode":"13G"},{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit"' .
+            ':"D","description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}],' .
+            '"startPrice":16250,"endPrice":6250,"timestamp":123,"number":"2665487AAF"}';
+        $params = array(
+            'bank' => 'ABN',
+            'account' => '62.90.64.393',
+            'transactions' => array(
+                array(
+                    'account' => '123123',
+                    'accountName' => 'Kingsquare BV',
+                    'price' => 110.0,
+                    'debitcredit' => Transaction::DEBIT,
+                    'description' => 'test',
+                    'valueTimestamp' => 1231,
+                    'entryTimestamp' => 1234,
+                    'transactionCode' => '13G',
+                ),
+                array(
+                    'account' => '123123',
+                    'accountName' => 'Kingsquare BV',
+                    'price' => 110.0,
+                    'debitcredit' => Transaction::DEBIT,
+                    'description' => 'test',
+                    'valueTimestamp' => 1231,
+                    'entryTimestamp' => 1234,
+                    'transactionCode' => '13G',
+                ),
+            ),
+            'startPrice' => 16250,
+            'endPrice' => 6250,
+            'timestamp' => 123,
+            'number' => '2665487AAF',
+        );
+        $statement = new Statement();
+        foreach ($params as $key => $value) {
+            $statement->{'set' . $key}($value);
+        }
+        $this->assertSame($expected, json_encode($statement));
     }
 }

@@ -10,18 +10,6 @@ namespace Kingsquare\Banking;
  */
 class Transaction implements \JsonSerializable
 {
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize() {
-        $objectArray = array();
-        foreach ($this as $key => $value) {
-            $objectArray[$key] = $value;
-        }
-        return $objectArray;
-    }
-
     const DEBIT = 'D';
     const CREDIT = 'C';
 
@@ -33,6 +21,14 @@ class Transaction implements \JsonSerializable
     private $valueTimestamp = 0;
     private $entryTimestamp = 0;
     private $transactionCode = '';
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 
     /**
      * @param string $var

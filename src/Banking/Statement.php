@@ -21,12 +21,9 @@ class Statement implements \JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize() {
-        $objectArray = array();
-        foreach ($this as $key => $value) {
-            $objectArray[$key] = $value;
-        }
-        return $objectArray;
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 
     /**

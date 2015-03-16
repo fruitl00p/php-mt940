@@ -130,4 +130,26 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($transaction->isCredit());
     }
+
+    public function testJsonSerialization()
+    {
+        $expected = '{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit":"D",' .
+            '"description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}';
+
+        $params = array(
+            'account' => '123123',
+            'accountName' => 'Kingsquare BV',
+            'price' => 110.0,
+            'debitcredit' => Transaction::DEBIT,
+            'description' => 'test',
+            'valueTimestamp' => 1231,
+            'entryTimestamp' => 1234,
+            'transactionCode' => '13G',
+        );
+        $statement = new Transaction();
+        foreach ($params as $key => $value) {
+            $statement->{'set' . $key}($value);
+        }
+        $this->assertSame($expected, json_encode($statement));
+    }
 }
