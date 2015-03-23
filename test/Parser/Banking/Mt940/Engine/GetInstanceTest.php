@@ -45,6 +45,7 @@ class GetInstanceTest extends \PHPUnit_Framework_TestCase
                 array('Ing', file_get_contents(__DIR__ . '/Ing/sample')),
                 array('Rabo', file_get_contents(__DIR__ . '/Rabo/sample')),
                 array('Spk', file_get_contents(__DIR__ . '/Spk/sample')),
+                array('Triodos', file_get_contents(__DIR__ . '/Triodos/sample')),
                 array('Unknown', 'this is an unknown format :)'),
         );
     }
