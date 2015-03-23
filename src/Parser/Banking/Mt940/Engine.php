@@ -30,6 +30,7 @@ abstract class Engine
     {
         $engine = self::detectBank($string);
         $engine->loadString($string);
+
         return $engine;
     }
 
@@ -38,8 +39,10 @@ abstract class Engine
      *
      * @return Engine
      */
-    private static function detectBank($string) {
+    private static function detectBank($string)
+    {
         $firstline = strtok($string, "\r\n\t");
+        $secondline = strtok("\r\n\t");
 
         if (strpos($firstline, 'ABNA') !== false) {
             return new Engine\Abn;
@@ -53,12 +56,17 @@ abstract class Engine
             return new Engine\Rabo;
         }
 
-        if (strpos($firstline, ':20:STARTUMS') !== false 
-			|| $firstline === "-" && strtok("\r\n\t") === ':20:STARTUMS') {
+        if (strpos($firstline, ':20:STARTUMS') !== false
+            || $firstline === "-" && $secondline === ':20:STARTUMS') {
             return new Engine\Spk;
         }
 
+        if (strpos($secondline, ':25:TRIODOSBANK') !== false) {
+            return new Engine\Triodos;
+        }
+
         trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
+
         return new Engine\Unknown;
     }
 
