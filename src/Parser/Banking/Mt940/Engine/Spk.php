@@ -31,7 +31,7 @@ class Spk extends Engine
     {
         $results = array();
         if (preg_match('/:60[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-            && !empty($results[1])
+                && !empty($results[1])
         ) {
             return $this->sanitizePrice($results[1]);
         }
@@ -47,7 +47,7 @@ class Spk extends Engine
     {
         $results = array();
         if (preg_match('/:60[FM]:[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
-            && !empty($results[1])
+                && !empty($results[1])
         ) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
         }
@@ -63,7 +63,7 @@ class Spk extends Engine
     {
         $results = array();
         if (preg_match('/:62[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-            && !empty($results[1])
+                && !empty($results[1])
         ) {
             return $this->sanitizePrice($results[1]);
         }
@@ -78,10 +78,10 @@ class Spk extends Engine
     protected function parseStatementData()
     {
         return preg_split(
-            '/(^:20:|^-X{,3}$|\Z)/sm',
-            $this->getRawData(),
-            -1,
-            PREG_SPLIT_NO_EMPTY
+                '/(^:20:|^-X{,3}$|\Z)/sm',
+                $this->getRawData(),
+                -1,
+                PREG_SPLIT_NO_EMPTY
         );
     }
 }
