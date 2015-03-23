@@ -12,6 +12,7 @@ class Triodos extends Engine
 {
     /**
      * returns the name of the bank
+     *
      * @return string
      */
     protected function parseStatementBank()
@@ -21,6 +22,7 @@ class Triodos extends Engine
 
     /**
      * Overloaded: the bankaccount is always prefixed
+     *
      * @inheritdoc
      */
     protected function parseStatementAccount()
@@ -36,6 +38,7 @@ class Triodos extends Engine
 
     /**
      * Overloaded: According to spec, field :28: is always 1
+     *
      * @inheritdoc
      */
     protected function parseStatementNumber()
@@ -45,6 +48,7 @@ class Triodos extends Engine
 
     /**
      * Overloaded: According to spec, field :28: is always 000
+     *
      * @inheritdoc
      */
     protected function parseTransactionCode()
@@ -52,13 +56,14 @@ class Triodos extends Engine
         return '000';
     }
 
-
+    /**
+     * Overloaded: It might be IBAN or not and depending on that return a different part of the description
+     *
+     * @inheritdoc
+     */
     protected function parseTransactionAccount()
     {
-
-        $description = parent::parseTransactionDescription();
-        $parts = explode('>', $description);
-        array_shift($parts); // remove 000 prefix
+        $parts = $this->getDescriptionParts();
         $account = $parts[0];
         if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[2], $results)) {
             $account = $parts[2];
@@ -69,11 +74,14 @@ class Triodos extends Engine
         return $this->sanitizeAccount($account);
     }
 
+    /**
+     * Overloaded: It might be IBAN or not and depending on that return a different part of the description
+     *
+     * @inheritdoc
+     */
     protected function parseTransactionAccountName()
     {
-        $description = parent::parseTransactionDescription();
-        $parts = explode('>', $description);
-        array_shift($parts); // remove 000 prefix
+        $parts = $this->getDescriptionParts();
         array_shift($parts); // remove BBAN / BIC code
         if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
             array_shift($parts); // remove IBAN too
@@ -85,13 +93,12 @@ class Triodos extends Engine
 
     /**
      * Crude parsing of the combined iban / non iban description field
+     *
      * @inheritdoc
      */
     protected function parseTransactionDescription()
     {
-        $description = parent::parseTransactionDescription();
-        $parts = explode('>', $description);
-        array_shift($parts); // remove 000 prefix
+        $parts = $this->getDescriptionParts();
         array_shift($parts); // remove BBAN / BIC code
         if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
             array_shift($parts); // remove IBAN too
@@ -107,12 +114,31 @@ class Triodos extends Engine
     }
 
     /**
+     * In Triodos everything is put into :86: field with '>\d{2}' seperators
+     * This method parses that out and returns the array
+     *
+     * @return array
+     */
+    private function getDescriptionParts() {
+        $description = parent::parseTransactionDescription();
+        $parts = explode('>', $description);
+        array_shift($parts); // remove 000 prefix
+        return $parts;
+    }
+
+    /**
      * Overloaded: Do not skip a header
+     *
      * @inheritdoc
      */
     protected function parseStatementData()
     {
-        return preg_split('/(^:20:|^-X{,3}$|\Z)/sm', $this->getRawData(), -1, PREG_SPLIT_NO_EMPTY);
+        return preg_split(
+                '/(^:20:|^-X{,3}$|\Z)/sm',
+                $this->getRawData(),
+                -1,
+                PREG_SPLIT_NO_EMPTY
+        );
     }
 
 }
