@@ -72,6 +72,38 @@ class Spk extends Engine
     }
 
     /**
+     * Overloaded: Sparkasse can have the 3rd character of the currencyname after the C/D
+     * @inheritdoc
+     */
+    protected function parseTransactionPrice()
+    {
+        $results = array();
+        if (preg_match('/^:61:.*[CD].?([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizePrice($results[1]);
+        }
+
+        return 0;
+    }
+
+    /**
+     * Overloaded: Sparkasse can have the 3rd character of the currencyname after the C/D and an "R" for cancellation befor the C/D
+     * @inheritdoc
+     */
+    protected function parseTransactionDebitCredit()
+    {
+        $results = array();
+        if (preg_match('/^:61:\d+R?([CD]).?\d+/', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizeDebitCredit($results[1]);
+        }
+
+        return '';
+    }
+
+    /**
      * Overloaded: Sparkasse does not have a header line
      * @inheritdoc
      */
