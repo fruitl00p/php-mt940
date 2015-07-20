@@ -43,6 +43,7 @@ abstract class Engine
     {
         $firstline = strtok($string, "\r\n\t");
         $secondline = strtok("\r\n\t");
+        $thirdline = strtok("\r\n\t");
 
         if (strpos($firstline, 'ABNA') !== false) {
             return new Engine\Abn;
@@ -57,7 +58,9 @@ abstract class Engine
         }
 
         if (strpos($firstline, ':20:STARTUMS') !== false
-            || $firstline === "-" && $secondline === ':20:STARTUMS') {
+            || $firstline === "-" && $secondline === ':20:STARTUMS'
+            || preg_match('/:25:([1-8][0-9]{2}[0-9]{5})\/\d*/i', $secondline)
+            || $firstline === "-" &&  preg_match('/:25:([1-8][0-9]{2}[0-9]{5})\/\d*/i', $thirdline)) {
             return new Engine\Spk;
         }
 
