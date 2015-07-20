@@ -2,7 +2,6 @@
 
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Triodos;
 
-use Kingsquare\Banking\Statement;
 use Kingsquare\Banking\Transaction;
 use Kingsquare\Parser\Banking\Mt940\Engine\Triodos;
 
@@ -14,7 +13,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Transaction[]
      */
-    private $transactions = array();
+    private $transactions = [];
 
     protected function setUp()
     {
@@ -33,7 +32,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     public function testAccount()
     {
         /* @var Transaction $transaction */
-        $known = array(
+        $known = [
                 '555555555',
                 '555555555',
                 '555555555',
@@ -42,7 +41,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
                 '888888888',
                 '888888888',
                 '888888888',
-        );
+        ];
         foreach ($this->transactions as $i => $transaction) {
             $this->assertSame($known[$i], $transaction->getAccount());
         }
@@ -59,7 +58,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     public function testPrice()
     {
         /* @var Transaction $transaction */
-        $known = array(
+        $known = [
                 10.0,
                 250.0,
                 150.0,
@@ -68,7 +67,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
                 25.25,
                 150.0,
                 56.78,
-        );
+        ];
         foreach ($this->transactions as $i => $transaction) {
             $this->assertSame($known[$i], $transaction->getPrice());
         }
@@ -77,7 +76,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     public function testDebitCredit()
     {
         /* @var Transaction $transaction */
-        $known = array(
+        $known = [
                 Transaction::DEBIT,
                 Transaction::DEBIT,
                 Transaction::CREDIT,
@@ -86,7 +85,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
                 Transaction::DEBIT,
                 Transaction::CREDIT,
                 Transaction::DEBIT,
-        );
+        ];
         foreach ($this->transactions as $i => $transaction) {
             $this->assertSame($known[$i], $transaction->getDebitCredit());
         }
@@ -95,7 +94,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     public function testDescription()
     {
         /* @var Transaction $transaction */
-        $known = array(
+        $known = [
                 'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
                 'TENAAMSTELLING TEGENREKENING 1111222233334444',
                 'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
@@ -104,7 +103,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
                 'TENAAMSTELLING TEGENREKENING 1111222233334444',
                 'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
                 'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE 1111222233334444',
-        );
+        ];
         foreach ($this->transactions as $i => $transaction) {
             $this->assertSame($known[$i], $transaction->getDescription());
         }

@@ -12,7 +12,7 @@ class Statement implements \JsonSerializable
 {
     private $bank = '';
     private $account = '';
-    private $transactions = array();
+    private $transactions = [];
     private $startPrice = 0.0;
     private $endPrice = 0.0;
     private $timestamp = 0;

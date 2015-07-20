@@ -89,7 +89,7 @@ abstract class Engine
      */
     public function parse()
     {
-        $results = array();
+        $results = [];
         foreach ($this->parseStatementData() as $this->currentStatementData) {
             $statement = new Statement();
             if ($this->debug) {
@@ -145,10 +145,10 @@ abstract class Engine
      */
     protected function parseTransactionData()
     {
-        $results = array();
+        $results = [];
         preg_match_all('/^:61:(.*?)(?=^:61:|^-X{,3}$|\Z)/sm', $this->getCurrentStatementData(), $results);
 
-        return ((!empty($results[0])) ? $results[0] : array());
+        return ((!empty($results[0])) ? $results[0] : []);
     }
 
     /**
@@ -195,7 +195,7 @@ abstract class Engine
      */
     protected function parseStatementAccount()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:25:([\d\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -218,7 +218,7 @@ abstract class Engine
      */
     protected function parseStatementStartPrice()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:60F:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -234,7 +234,7 @@ abstract class Engine
      */
     protected function parseStatementEndPrice()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:62F:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -250,7 +250,7 @@ abstract class Engine
      */
     protected function parseStatementTimestamp()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:60F:[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -266,7 +266,7 @@ abstract class Engine
      */
     protected function parseStatementNumber()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:28C?:(.*)/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -283,7 +283,7 @@ abstract class Engine
      */
     protected function parseTransactionAccount()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:86: ?([\d\.]+)\s/im', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -299,7 +299,7 @@ abstract class Engine
      */
     protected function parseTransactionAccountName()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:86: ?[\d\.]+ (.+)/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -315,7 +315,7 @@ abstract class Engine
      */
     protected function parseTransactionPrice()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:.*[CD]([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -331,7 +331,7 @@ abstract class Engine
      */
     protected function parseTransactionDebitCredit()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:\d+([CD])\d+/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -347,7 +347,7 @@ abstract class Engine
      */
     protected function parseTransactionDescription()
     {
-        $results = array();
+        $results = [];
         if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -363,7 +363,7 @@ abstract class Engine
      */
     protected function parseTransactionEntryTimestamp()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -379,7 +379,7 @@ abstract class Engine
      */
     protected function parseTransactionValueTimestamp()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -395,7 +395,7 @@ abstract class Engine
      */
     protected function parseTransactionCode()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:.*?N(.{3}).*/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -412,11 +412,11 @@ abstract class Engine
      */
     protected function sanitizeAccount($string)
     {
-        static $crudeReplacements = array(
+        static $crudeReplacements = [
                 '.' => '',
                 ' ' => '',
                 'GIRO' => 'P',
-        );
+        ];
 
         // crude IBAN to 'old' converter
         if (Mt940::$removeIBAN

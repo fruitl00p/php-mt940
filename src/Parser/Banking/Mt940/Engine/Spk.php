@@ -29,7 +29,7 @@ class Spk extends Engine
      */
     protected function parseStatementStartPrice()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:60[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -45,7 +45,7 @@ class Spk extends Engine
      */
     protected function parseStatementTimestamp()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:60[FM]:[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -61,7 +61,7 @@ class Spk extends Engine
      */
     protected function parseStatementEndPrice()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/:62[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
@@ -77,7 +77,7 @@ class Spk extends Engine
      */
     protected function parseTransactionPrice()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:.*[CD].?([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
@@ -93,7 +93,7 @@ class Spk extends Engine
      */
     protected function parseTransactionDebitCredit()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:\d+R?([CD]).?\d+/', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {

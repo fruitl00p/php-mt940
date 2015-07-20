@@ -36,6 +36,6 @@ class Mt940 extends Banking
             }
         }
 
-        return array();
+        return [];
     }
 }

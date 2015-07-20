@@ -27,7 +27,7 @@ class Triodos extends Engine
      */
     protected function parseStatementAccount()
     {
-        $results = array();
+        $results = [];
         if (preg_match('#:25:TRIODOSBANK/([\d\.]+)#', $this->getCurrentStatementData(), $results) && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);

@@ -28,6 +28,8 @@ class GetInstanceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider enginesProvider
+     * @param string $engineString
+     * @param string $source
      */
     public function testEngine($engineString, $source)
     {
@@ -40,13 +42,13 @@ class GetInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function enginesProvider()
     {
-        return array(
-                array('Abn', file_get_contents(__DIR__ . '/Abn/sample')),
-                array('Ing', file_get_contents(__DIR__ . '/Ing/sample')),
-                array('Rabo', file_get_contents(__DIR__ . '/Rabo/sample')),
-                array('Spk', file_get_contents(__DIR__ . '/Spk/sample')),
-                array('Triodos', file_get_contents(__DIR__ . '/Triodos/sample')),
-                array('Unknown', 'this is an unknown format :)'),
-        );
+        return [
+                ['Abn', file_get_contents(__DIR__ . '/Abn/sample')],
+                ['Ing', file_get_contents(__DIR__ . '/Ing/sample')],
+                ['Rabo', file_get_contents(__DIR__ . '/Rabo/sample')],
+                ['Spk', file_get_contents(__DIR__ . '/Spk/sample')],
+                ['Triodos', file_get_contents(__DIR__ . '/Triodos/sample')],
+                ['Unknown', 'this is an unknown format :)'],
+        ];
     }
 }
