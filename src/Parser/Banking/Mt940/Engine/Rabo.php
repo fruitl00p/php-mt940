@@ -25,7 +25,7 @@ class Rabo extends Engine
      */
     protected function parseTransactionAccount()
     {
-        $results = array();
+        $results = [];
         // SEPA MT940 Structured
         if (preg_match('/^:61:.*\n(.*?)(\n|\:8)/im', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
@@ -47,7 +47,7 @@ class Rabo extends Engine
      */
     protected function parseTransactionAccountName()
     {
-        $results = array();
+        $results = [];
         // SEPA MT940 Structured
         if (preg_match('#/NAME/(.*?)/(REMI|ADDR)/#ms', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
@@ -74,7 +74,7 @@ class Rabo extends Engine
      */
     protected function parseTransactionEntryTimestamp()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:60F:[C|D]([\d]{6})/m', $this->getCurrentStatementData(), $results) && !empty($results[1])) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
         }
@@ -88,7 +88,7 @@ class Rabo extends Engine
      */
     protected function parseTransactionValueTimestamp()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:([\d]{6})[C|D]/', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
         }

@@ -136,7 +136,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $expected = '{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit":"D",' .
             '"description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}';
 
-        $params = array(
+        $params = [
             'account' => '123123',
             'accountName' => 'Kingsquare BV',
             'price' => 110.0,
@@ -145,7 +145,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             'valueTimestamp' => 1231,
             'entryTimestamp' => 1234,
             'transactionCode' => '13G',
-        );
+        ];
         $statement = new Transaction();
         foreach ($params as $key => $value) {
             $statement->{'set' . $key}($value);

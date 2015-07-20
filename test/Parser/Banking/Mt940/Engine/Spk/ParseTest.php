@@ -37,7 +37,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         $statements = $this->engine->parse();
         $this->assertSame(4, count($statements));
-        $tranactions = array();
+        $tranactions = [];
         foreach ($statements as $statement) {
             $tranactions = array_merge($tranactions, $statement->getTransactions());
         }

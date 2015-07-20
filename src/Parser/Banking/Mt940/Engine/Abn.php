@@ -30,7 +30,7 @@ class Abn extends Engine
         $results = parent::parseTransactionAccount();
 
         if (empty($results)) {
-            $giroMatch = $ibanMatch = array();
+            $giroMatch = $ibanMatch = [];
             if (preg_match('/^:86:GIRO(.{9})/im', $this->getCurrentTransactionData(), $giroMatch)
                     && !empty($giroMatch[1])
             ) {
@@ -58,7 +58,7 @@ class Abn extends Engine
             return $results;
         }
 
-        $results = array();
+        $results = [];
         if (preg_match('/:86:(GIRO|BGC\.)\s+[\d]+ (.+)/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[2])
         ) {
@@ -82,7 +82,7 @@ class Abn extends Engine
      */
     protected function parseTransactionEntryTimestamp()
     {
-        $results = array();
+        $results = [];
         if (preg_match('/^:61:\d{6}(\d{4})[C|D]/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {

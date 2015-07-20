@@ -28,10 +28,10 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testTransactionsAssesor()
     {
-        $expected = array(
+        $expected = [
             new Transaction(),
             new Transaction(),
-        );
+        ];
         $statement = new Statement();
         $statement->setTransactions($expected);
 
@@ -94,10 +94,10 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     public function testAddTransaction()
     {
         $statement = new Statement();
-        $statement->setTransactions(array(
+        $statement->setTransactions([
             new Transaction(),
             new Transaction(),
-        ));
+        ]);
         $statement->addTransaction(new Transaction());
 
         $this->assertCount(3, $statement->getTransactions());
@@ -119,15 +119,15 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     {
         $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[],"startPrice":16250,"endPrice":6250,' .
             '"timestamp":123,"number":"2665487AAF"}';
-        $params = array(
+        $params = [
             'bank' => 'ABN',
             'account' => '62.90.64.393',
-            'transactions' => array(),
+            'transactions' => [],
             'startPrice' => 16250,
             'endPrice' => 6250,
             'timestamp' => 123,
             'number' => '2665487AAF',
-        );
+        ];
         $statement = new Statement();
         foreach ($params as $key => $value) {
             $statement->{'set' . $key}($value);
@@ -145,11 +145,11 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ':1234,"transactionCode":"13G"},{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit"' .
             ':"D","description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}],' .
             '"startPrice":16250,"endPrice":6250,"timestamp":123,"number":"2665487AAF"}';
-        $params = array(
+        $params = [
             'bank' => 'ABN',
             'account' => '62.90.64.393',
-            'transactions' => array(
-                array(
+            'transactions' => [
+                [
                     'account' => '123123',
                     'accountName' => 'Kingsquare BV',
                     'price' => 110.0,
@@ -158,8 +158,8 @@ class StatementTest extends \PHPUnit_Framework_TestCase
                     'valueTimestamp' => 1231,
                     'entryTimestamp' => 1234,
                     'transactionCode' => '13G',
-                ),
-                array(
+                ],
+                [
                     'account' => '123123',
                     'accountName' => 'Kingsquare BV',
                     'price' => 110.0,
@@ -168,13 +168,13 @@ class StatementTest extends \PHPUnit_Framework_TestCase
                     'valueTimestamp' => 1231,
                     'entryTimestamp' => 1234,
                     'transactionCode' => '13G',
-                ),
-            ),
+                ],
+            ],
             'startPrice' => 16250,
             'endPrice' => 6250,
             'timestamp' => 123,
             'number' => '2665487AAF',
-        );
+        ];
         $statement = new Statement();
         foreach ($params as $key => $value) {
             $statement->{'set' . $key}($value);

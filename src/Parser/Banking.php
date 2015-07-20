@@ -18,6 +18,6 @@ class Banking
      */
     public function parse($string)
     {
-        return array();
+        return [];
     }
 }
