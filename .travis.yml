@@ -1,5 +1,11 @@
 language: php
 
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 php:
   - 5.4
   - 5.5
@@ -12,20 +18,9 @@ matrix:
     - php: 7
   fast_finish: true
 
-cache:
-  directories:
-    - vendor
-    - $HOME/.composer/cache
-
 install:
   - mkdir -p /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d
   - phpenv config-add test/phpconfig.ini
-  - travis_retry composer self-update && composer --version
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - travis_retry composer install --prefer-dist --no-interaction
+  - composer install
 
-script: vendor/bin/phpunit --coverage-clover coverage.clover
-
-after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+script: vendor/bin/phpunit
