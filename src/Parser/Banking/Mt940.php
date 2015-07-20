@@ -28,10 +28,15 @@ class Mt940 extends Banking
     {
         if (!empty($string)) {
             // load engine
-            $this->engine = $engine || Banking\Mt940\Engine::__getInstance($string);
+            if ($engine === null) {
+                $engine = Banking\Mt940\Engine::__getInstance($string);
+            }
+
+            $this->engine = $engine;
+
             if ($this->engine instanceof Banking\Mt940\Engine) {
                 // parse using the engine
-                $engine->loadString($string);
+                $this->engine->loadString($string);
                 return $this->engine->parse();
             }
         }
