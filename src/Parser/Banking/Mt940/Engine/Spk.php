@@ -73,12 +73,13 @@ class Spk extends Engine
 
     /**
      * Overloaded: Sparkasse can have the 3rd character of the currencyname after the C/D
+     * currency codes last letter is always a letter http://www.xe.com/iso4217.php
      * @inheritdoc
      */
     protected function parseTransactionPrice()
     {
         $results = [];
-        if (preg_match('/^:61:.*[CD].?([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
+        if (preg_match('/^:61:.*[CD][a-zA-Z]?([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
             return $this->sanitizePrice($results[1]);
