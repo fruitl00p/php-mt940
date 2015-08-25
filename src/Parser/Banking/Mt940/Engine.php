@@ -219,10 +219,13 @@ abstract class Engine
     protected function parseStatementStartPrice()
     {
         $results = [];
-        if (preg_match('/:60F:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
+        if (preg_match('/:60F:([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
+                && !empty($results[2])
         ) {
-            return $this->sanitizePrice($results[1]);
+            if (!empty($results[1])) {
+                $results[2] = ($results[1] === 'D' ? -$results[2] : $results[2]);
+            }
+            return $this->sanitizePrice($results[2]);
         }
 
         return '';
@@ -235,10 +238,13 @@ abstract class Engine
     protected function parseStatementEndPrice()
     {
         $results = [];
-        if (preg_match('/:62F:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
+        if (preg_match('/:62F:([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
+                && !empty($results[2])
         ) {
-            return $this->sanitizePrice($results[1]);
+            if (!empty($results[1])) {
+                $results[2] = ($results[1] === 'D' ? -$results[2] : $results[2]);
+            }
+            return $this->sanitizePrice($results[2]);
         }
 
         return '';
