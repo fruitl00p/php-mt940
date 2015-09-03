@@ -28,8 +28,9 @@ class Triodos extends Engine
     protected function parseStatementAccount()
     {
         $results = [];
-        if (preg_match('#:25:TRIODOSBANK/([\d\.]+)#', $this->getCurrentStatementData(), $results) && !empty($results[1])
-        ) {
+        if (preg_match('#:25:TRIODOSBANK/([\d\.]+)#', $this->getCurrentStatementData(), $results)
+            && !empty($results[1])) {
+
             return $this->sanitizeAccount($results[1]);
         }
 
@@ -102,7 +103,7 @@ class Triodos extends Engine
         array_shift($parts); // remove BBAN / BIC code
         if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
             array_shift($parts); // remove IBAN too
-            array_shift($parts); // remove IBAN too
+            array_shift($parts); // remove IBAN some more
         }
 
         array_pop($parts);// remove own account / BBAN
@@ -119,9 +120,9 @@ class Triodos extends Engine
      *
      * @return array
      */
-    private function getDescriptionParts() {
-        $description = parent::parseTransactionDescription();
-        $parts = explode('>', $description);
+    private function getDescriptionParts()
+    {
+        $parts = explode('>', parent::parseTransactionDescription());
         array_shift($parts); // remove 000 prefix
         return $parts;
     }
