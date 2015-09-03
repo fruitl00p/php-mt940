@@ -29,4 +29,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $this->assertEquals('Rabo', $method->invoke($this->engine));
     }
+
+    public function testInitialNegativeStatementBalance() {
+        $this->engine->loadString(file_get_contents(__DIR__ . '/sample2'));
+        $statements = $this->engine->parse();
+        $this->assertEquals(-1000, $statements[0]->getStartPrice());
+    }
 }
