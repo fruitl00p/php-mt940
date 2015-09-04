@@ -222,10 +222,11 @@ abstract class Engine
         if (preg_match('/:60F:([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[2])
         ) {
+            $fltSanitizedPrice = $this->sanitizePrice($results[2]);
             if (!empty($results[1])) {
-                $results[2] = ($results[1] === 'D' ? -$results[2] : $results[2]);
+                $fltSanitizedPrice = ($results[1] === 'D' ? -$fltSanitizedPrice : $fltSanitizedPrice);
             }
-            return $this->sanitizePrice($results[2]);
+            return $fltSanitizedPrice;
         }
 
         return '';
@@ -241,10 +242,11 @@ abstract class Engine
         if (preg_match('/:62F:([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[2])
         ) {
+            $fltSanitizedPrice = $this->sanitizePrice($results[2]);
             if (!empty($results[1])) {
-                $results[2] = ($results[1] === 'D' ? -$results[2] : $results[2]);
+                $fltSanitizedPrice = ($results[1] === 'D' ? -$fltSanitizedPrice : $fltSanitizedPrice);
             }
-            return $this->sanitizePrice($results[2]);
+            return $fltSanitizedPrice;
         }
 
         return '';
