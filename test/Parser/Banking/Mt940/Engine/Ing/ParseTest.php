@@ -29,4 +29,17 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $this->assertEquals('ING', $method->invoke($this->engine));
     }
+
+    public function testParsesAllFoundStatements()
+    {
+        $statements = $this->engine->parse();
+
+        $this->assertEquals(1, count($statements));
+        $first = $statements[0];
+
+        $this->assertEquals('22-07-2010', $first->getStartTimestamp('d-m-Y'));
+        $this->assertEquals('23-07-2010', $first->getEndTimestamp('d-m-Y'));
+        $this->assertEquals('-3.47', $first->getDeltaPrice());
+    }
+
 }

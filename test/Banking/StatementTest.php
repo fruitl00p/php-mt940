@@ -29,8 +29,8 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     public function testTransactionsAssesor()
     {
         $expected = [
-            new Transaction(),
-            new Transaction(),
+                new Transaction(),
+                new Transaction(),
         ];
         $statement = new Statement();
         $statement->setTransactions($expected);
@@ -56,13 +56,30 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $statement->getEndPrice());
     }
 
-    public function testTimestampAssesor()
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @expectedExceptionMessage Deprecated in favor of splitting the start and end timestamps for a statement. Please use setStartTimestamp($format) or setEndTimestamp($format) instead. setTimestamp is now setStartTimestamp
+     */
+    public function testDeprecatedTimestampAssesor()
     {
         $expected = time();
         $statement = new Statement();
         $statement->setTimestamp($expected);
 
         $this->assertEquals($expected, $statement->getTimestamp());
+    }
+
+    public function testTimestampAssesor()
+    {
+        $time = time();
+        $expectedStart = $time - 1440;
+        $expectedEnd = $time;
+        $statement = new Statement();
+        $statement->setStartTimestamp($expectedStart);
+        $statement->setEndTimestamp($expectedEnd);
+
+        $this->assertEquals($expectedStart, $statement->getStartTimestamp());
+        $this->assertEquals($expectedEnd, $statement->getEndTimestamp());
     }
 
     public function testNumberAssesor()
@@ -95,8 +112,8 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     {
         $statement = new Statement();
         $statement->setTransactions([
-            new Transaction(),
-            new Transaction(),
+                new Transaction(),
+                new Transaction(),
         ]);
         $statement->addTransaction(new Transaction());
 
@@ -105,6 +122,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testTimestampAssesor
+     * @expectedException PHPUnit_Framework_Error_Deprecated
      */
     public function testGetTimestampWithFormat()
     {
@@ -117,16 +135,16 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonSerialization()
     {
-        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[],"startPrice":16250,"endPrice":6250,' .
-            '"timestamp":123,"number":"2665487AAF"}';
+        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[],' .
+                '"startPrice":16250,"endPrice":6250,"timestamp":0,"startTimestamp":123,"endTimestamp":0,"number":"2665487AAF"}';
         $params = [
-            'bank' => 'ABN',
-            'account' => '62.90.64.393',
-            'transactions' => [],
-            'startPrice' => 16250,
-            'endPrice' => 6250,
-            'timestamp' => 123,
-            'number' => '2665487AAF',
+                'bank' => 'ABN',
+                'account' => '62.90.64.393',
+                'transactions' => [],
+                'startPrice' => 16250,
+                'endPrice' => 6250,
+                'startTimestamp' => 123,
+                'number' => '2665487AAF',
         ];
         $statement = new Statement();
         foreach ($params as $key => $value) {
@@ -137,43 +155,44 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testJsonSerialization
+     * @expectedException PHPUnit_Framework_Error_Deprecated
      */
     public function testJsonSerializationWithTransactions()
     {
         $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[{"account":"123123","accountName":' .
-            '"Kingsquare BV","price":110,"debitcredit":"D","description":"test","valueTimestamp":1231,"entryTimestamp"' .
-            ':1234,"transactionCode":"13G"},{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit"' .
-            ':"D","description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}],' .
-            '"startPrice":16250,"endPrice":6250,"timestamp":123,"number":"2665487AAF"}';
+                '"Kingsquare BV","price":110,"debitcredit":"D","description":"test","valueTimestamp":1231,"entryTimestamp"' .
+                ':1234,"transactionCode":"13G"},{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit"' .
+                ':"D","description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}],' .
+                '"startPrice":16250,"endPrice":6250,"timestamp":123,"number":"2665487AAF"}';
         $params = [
-            'bank' => 'ABN',
-            'account' => '62.90.64.393',
-            'transactions' => [
-                [
-                    'account' => '123123',
-                    'accountName' => 'Kingsquare BV',
-                    'price' => 110.0,
-                    'debitcredit' => Transaction::DEBIT,
-                    'description' => 'test',
-                    'valueTimestamp' => 1231,
-                    'entryTimestamp' => 1234,
-                    'transactionCode' => '13G',
+                'bank' => 'ABN',
+                'account' => '62.90.64.393',
+                'transactions' => [
+                        [
+                                'account' => '123123',
+                                'accountName' => 'Kingsquare BV',
+                                'price' => 110.0,
+                                'debitcredit' => Transaction::DEBIT,
+                                'description' => 'test',
+                                'valueTimestamp' => 1231,
+                                'entryTimestamp' => 1234,
+                                'transactionCode' => '13G',
+                        ],
+                        [
+                                'account' => '123123',
+                                'accountName' => 'Kingsquare BV',
+                                'price' => 110.0,
+                                'debitcredit' => Transaction::DEBIT,
+                                'description' => 'test',
+                                'valueTimestamp' => 1231,
+                                'entryTimestamp' => 1234,
+                                'transactionCode' => '13G',
+                        ],
                 ],
-                [
-                    'account' => '123123',
-                    'accountName' => 'Kingsquare BV',
-                    'price' => 110.0,
-                    'debitcredit' => Transaction::DEBIT,
-                    'description' => 'test',
-                    'valueTimestamp' => 1231,
-                    'entryTimestamp' => 1234,
-                    'transactionCode' => '13G',
-                ],
-            ],
-            'startPrice' => 16250,
-            'endPrice' => 6250,
-            'timestamp' => 123,
-            'number' => '2665487AAF',
+                'startPrice' => 16250,
+                'endPrice' => 6250,
+                'timestamp' => 123,
+                'number' => '2665487AAF',
         ];
         $statement = new Statement();
         foreach ($params as $key => $value) {
