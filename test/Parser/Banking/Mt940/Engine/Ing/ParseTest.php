@@ -39,7 +39,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('22-07-2010', $first->getStartTimestamp('d-m-Y'));
         $this->assertEquals('23-07-2010', $first->getEndTimestamp('d-m-Y'));
-        $this->assertEquals('-3.47', $first->getDeltaPrice(), '', 0.5);
+        $this->assertEquals('-3.47', $first->getDeltaPrice());
     }
 
 }

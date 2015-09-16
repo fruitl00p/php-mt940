@@ -397,14 +397,7 @@ abstract class Engine
      */
     protected function parseTransactionEntryTimestamp()
     {
-        $results = [];
-        if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
-        ) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
-        }
-
-        return 0;
+        return $this->parseTransactionTimestamp('61');
     }
 
     /**
@@ -413,8 +406,12 @@ abstract class Engine
      */
     protected function parseTransactionValueTimestamp()
     {
+        return $this->parseTransactionTimestamp('61');
+    }
+
+    protected function parseTransactionTimestamp($key) {
         $results = [];
-        if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
+        if (preg_match('/^:'.$key.':(\d{6})/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
