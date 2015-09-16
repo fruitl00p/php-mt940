@@ -33,6 +33,6 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function testInitialNegativeStatementBalance() {
         $this->engine->loadString(file_get_contents(__DIR__ . '/sample2'));
         $statements = $this->engine->parse();
-        $this->assertEquals(-1000, $statements[0]->getStartPrice());
+        $this->assertEquals(-1000.12, $statements[0]->getStartPrice());
     }
 }
