@@ -197,9 +197,6 @@ class Statement implements \JsonSerializable
      */
     public function getDeltaPrice()
     {
-        if (function_exists('bcmul')) {
-            return bcsub($this->getStartPrice(), $this->getEndPrice());
-        }
         return ($this->getStartPrice() - $this->getEndPrice());
     }
 }
