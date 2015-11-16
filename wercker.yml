@@ -3,7 +3,9 @@ build:
   steps:
     - script:
         name: download the depencies
-        code: composer install
+        code: |
+          composer config --global cache-dir $WERCKER_CACHE_DIR/composer
+          composer install
 
     - script:
         name: PHPUnit integration tests
