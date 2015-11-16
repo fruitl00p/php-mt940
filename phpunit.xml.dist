@@ -21,5 +21,6 @@
     </filter>
     <php>
         <ini name="error_reporting" value="32767"/>
+        <ini name="date.timezone" value="Europe/Amsterdam"/>
     </php>
 </phpunit>
