@@ -1,10 +1,9 @@
-box: wercker/php
+box: gekkie/wercker-docker-php:5.6
 build:
   steps:
-    - leipert/composer-install@0.0.1
     - script:
-        name: Add project-config.ini
-        code: phpenv config-add test/phpconfig.ini
+        name: download the depencies
+        code: composer install
 
     - script:
         name: PHPUnit integration tests
