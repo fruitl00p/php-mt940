@@ -38,6 +38,18 @@ class GetInstanceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider enginesProvider
+     * @param string $engineString
+     * @param string $source
+     */
+    public function testSingleEngine($engineString, $source)
+    {
+        Engine::resetEngines();
+        $engine = @Engine::__getInstance($source);
+        $this->assertInstanceOf('\\Kingsquare\\Parser\\Banking\\Mt940\\Engine\\Unknown', $engine);
+    }
+
+    /**
      * @return array
      */
     public function enginesProvider()

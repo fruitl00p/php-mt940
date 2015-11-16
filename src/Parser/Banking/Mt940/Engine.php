@@ -18,6 +18,14 @@ abstract class Engine
     protected $currentTransactionData = '';
 
     public $debug = false;
+    
+    protected static $registeredEngines = [
+        100 => Engine\Abn::class,
+        200 => Engine\Ing::class,
+        300 => Engine\Rabo::class,
+        400 => Engine\Spk::class,
+        500 => Engine\Triodos::class,
+    ];
 
     /**
      * reads the firstline of the string to guess which engine to use for parsing
@@ -33,7 +41,47 @@ abstract class Engine
 
         return $engine;
     }
+    
+    /**
+     * Register a new Engine
+     * @param string $engineClass Class name of Engine to be registered
+     * @param int $priority
+     */
+    public static function registerEngine($engineClass, $priority)
+    {
+        if (!is_int($priority)) {
+            trigger_error('Priority must be integer', E_USER_WARNING);
+            return;
+        }
+        if (array_key_exists($priority, self::$registeredEngines)) {
+            trigger_error('Priority already taken', E_USER_WARNING);
+            return;
+        }
+        if (!class_exists($engineClass)) {
+            trigger_error('Engine does not exist', E_USER_WARNING);
+            return;
+        }
+        self::$registeredEngines[$priority] = $engineClass;
+    }
+    
+    /**
+     * Unregisters all Engines
+     */
+    public static function resetEngines()
+    {
+        self::$registeredEngines = [];
+    }
 
+    /**
+     * Checks whether the Engine is applicable for the given string
+     * @param string $string
+     * @return bool
+     */
+    public static function isApplicable($string)
+    {
+        return true;
+    }
+    
     /**
      * @param string $string
      *
@@ -41,28 +89,10 @@ abstract class Engine
      */
     private static function detectBank($string)
     {
-        $firstline = strtok($string, "\r\n\t");
-        $secondline = strtok("\r\n\t");
-
-        if (strpos($firstline, 'ABNA') !== false) {
-            return new Engine\Abn;
-        }
-
-        if (strpos($firstline, 'INGB') !== false) {
-            return new Engine\Ing;
-        }
-
-        if (strpos($firstline, ':940:') !== false) {
-            return new Engine\Rabo;
-        }
-
-        if (strpos($firstline, ':20:STARTUMS') !== false
-            || $firstline === "-" && $secondline === ':20:STARTUMS') {
-            return new Engine\Spk;
-        }
-
-        if (strpos($secondline, ':25:TRIODOSBANK') !== false) {
-            return new Engine\Triodos;
+        foreach (self::$registeredEngines as $engineClass) {
+            if ($engineClass::isApplicable($string)) {
+                return new $engineClass;
+            }
         }
 
         trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);

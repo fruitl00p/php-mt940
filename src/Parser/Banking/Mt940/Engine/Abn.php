@@ -91,4 +91,14 @@ class Abn extends Engine
 
         return 0;
     }
+
+    /**
+     * Overloaded: Is applicable if first line has ABNA
+     * @inheritdoc
+     */
+    public static function isApplicable($string)
+    {
+        $firstline = strtok($string, "\r\n\t");
+        return strpos($firstline, 'ABNA') !== false;
+    }
 }

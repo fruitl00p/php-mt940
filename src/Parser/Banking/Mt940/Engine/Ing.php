@@ -120,4 +120,14 @@ class Ing extends Engine
 
         return $description;
     }
+    
+    /**
+     * Overloaded: Is applicable if first line has INGB
+     * @inheritdoc
+     */
+    public static function isApplicable($string)
+    {
+        $firstline = strtok($string, "\r\n\t");
+        return strpos($firstline, 'INGB') !== false;
+    }
 }

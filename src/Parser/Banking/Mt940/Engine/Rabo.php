@@ -130,4 +130,14 @@ class Rabo extends Engine
 
         return $description;
     }
+        
+    /**
+     * Overloaded: Is applicable if first line has :940:
+     * @inheritdoc
+     */
+    public static function isApplicable($string)
+    {
+        $firstline = strtok($string, "\r\n\t");
+        return strpos($firstline, ':940:') !== false;
+    }
 }
