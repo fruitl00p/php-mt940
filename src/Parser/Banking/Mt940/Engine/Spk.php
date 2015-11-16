@@ -117,4 +117,15 @@ class Spk extends Engine
                 PREG_SPLIT_NO_EMPTY
         );
     }
+    
+    /**
+     * Overloaded: Is applicable if first or second line has :20:STARTUMS or first line has -
+     * @inheritdoc
+     */
+    public static function isApplicable($string)
+    {
+        $firstline = strtok($string, "\r\n\t");
+        $secondline = strtok("\r\n\t");
+        return (strpos($firstline, ':20:STARTUMS') !== false || $firstline === "-" && $secondline === ':20:STARTUMS');
+    }
 }

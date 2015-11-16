@@ -142,4 +142,14 @@ class Triodos extends Engine
         );
     }
 
+    /**
+     * Overloaded: Is applicable if second line has :25:TRIODOSBANK
+     * @inheritdoc
+     */
+    public static function isApplicable($string)
+    {
+        strtok($string, "\r\n\t");
+        $secondline = strtok("\r\n\t");
+        return (strpos($secondline, ':25:TRIODOSBANK') !== false);
+    }
 }
