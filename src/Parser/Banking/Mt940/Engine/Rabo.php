@@ -34,7 +34,8 @@ class Rabo extends Engine
         }
 
         if (preg_match('/^:61:.{26}(.{16})/im', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])) {
+                && !empty($results[1])
+        ) {
             return $this->sanitizeAccount($results[1]);
         }
 

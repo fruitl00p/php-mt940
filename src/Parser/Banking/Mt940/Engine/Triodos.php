@@ -29,7 +29,8 @@ class Triodos extends Engine
     {
         $results = [];
         if (preg_match('#:25:TRIODOSBANK/([\d\.]+)#', $this->getCurrentStatementData(), $results)
-            && !empty($results[1])) {
+                && !empty($results[1])
+        ) {
 
             return $this->sanitizeAccount($results[1]);
         }
@@ -82,23 +83,11 @@ class Triodos extends Engine
      */
     protected function parseTransactionAccountName()
     {
-        $parts = $this->getDescriptionParts();
-        array_shift($parts); // remove BBAN / BIC code
-        if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
-            array_shift($parts); // remove IBAN too
-            array_shift($parts); // remove IBAN too
-        }
-        array_pop($parts);// remove own account / BBAN
+        $parts = $this->getTransactionAccountParts();
         return $this->sanitizeAccountName(substr(array_shift($parts), 2));
     }
 
-    /**
-     * Crude parsing of the combined iban / non iban description field
-     *
-     * @inheritdoc
-     */
-    protected function parseTransactionDescription()
-    {
+    private function getTransactionAccountParts() {
         $parts = $this->getDescriptionParts();
         array_shift($parts); // remove BBAN / BIC code
         if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
@@ -107,6 +96,18 @@ class Triodos extends Engine
         }
 
         array_pop($parts);// remove own account / BBAN
+        return $parts;
+    }
+
+
+    /**
+     * Crude parsing of the combined iban / non iban description field
+     *
+     * @inheritdoc
+     */
+    protected function parseTransactionDescription()
+    {
+        $parts = $this->getTransactionAccountParts();
         foreach ($parts as &$part) {
             $part = substr($part, 2);
         }

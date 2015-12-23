@@ -18,7 +18,7 @@ abstract class Engine
     protected $currentTransactionData = '';
 
     public $debug = false;
-    
+
     protected static $registeredEngines = [
         100 => Engine\Abn::class,
         200 => Engine\Ing::class,
@@ -41,7 +41,7 @@ abstract class Engine
 
         return $engine;
     }
-    
+
     /**
      * Register a new Engine
      * @param string $engineClass Class name of Engine to be registered
@@ -63,7 +63,7 @@ abstract class Engine
         }
         self::$registeredEngines[$priority] = $engineClass;
     }
-    
+
     /**
      * Unregisters all Engines
      */
@@ -81,7 +81,7 @@ abstract class Engine
     {
         return true;
     }
-    
+
     /**
      * @param string $string
      *
@@ -129,7 +129,8 @@ abstract class Engine
             $statement->setAccount($this->parseStatementAccount());
             $statement->setStartPrice($this->parseStatementStartPrice());
             $statement->setEndPrice($this->parseStatementEndPrice());
-            $statement->setTimestamp($this->parseStatementTimestamp());
+            $statement->setStartTimestamp($this->parseStatementStartTimestamp());
+            $statement->setEndTimestamp($this->parseStatementEndTimestamp());
             $statement->setNumber($this->parseStatementNumber());
 
             foreach ($this->parseTransactionData() as $this->currentTransactionData) {
@@ -160,10 +161,10 @@ abstract class Engine
     protected function parseStatementData()
     {
         $results = preg_split(
-            '/(^:20:|^-X{,3}$|\Z)/sm',
-            $this->getRawData(),
-            -1,
-            PREG_SPLIT_NO_EMPTY
+                '/(^:20:|^-X{,3}$|\Z)/sm',
+                $this->getRawData(),
+                -1,
+                PREG_SPLIT_NO_EMPTY
         );
         array_shift($results); // remove the header
         return $results;
@@ -248,18 +249,7 @@ abstract class Engine
      */
     protected function parseStatementStartPrice()
     {
-        $results = [];
-        if (preg_match('/:60F:([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[2])
-        ) {
-            $fltSanitizedPrice = $this->sanitizePrice($results[2]);
-            if (!empty($results[1])) {
-                $fltSanitizedPrice = ($results[1] === 'D' ? -$fltSanitizedPrice : $fltSanitizedPrice);
-            }
-            return $fltSanitizedPrice;
-        }
-
-        return '';
+        return $this->parseStatementPrice('60F');
     }
 
     /**
@@ -268,15 +258,23 @@ abstract class Engine
      */
     protected function parseStatementEndPrice()
     {
+        return $this->parseStatementPrice('62F');
+    }
+
+    /**
+     * The actual pricing parser for statements
+     *
+     * @param $key
+     * @return float|string
+     */
+    protected function parseStatementPrice($key)
+    {
         $results = [];
-        if (preg_match('/:62F:([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
+        if (preg_match('/:' . $key . ':([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[2])
         ) {
-            $fltSanitizedPrice = $this->sanitizePrice($results[2]);
-            if (!empty($results[1])) {
-                $fltSanitizedPrice = ($results[1] === 'D' ? -$fltSanitizedPrice : $fltSanitizedPrice);
-            }
-            return $fltSanitizedPrice;
+            $sanitizedPrice = $this->sanitizePrice($results[2]);
+            return (!empty($results[1]) && $results[1] === 'D') ? -$sanitizedPrice : $sanitizedPrice;
         }
 
         return '';
@@ -284,12 +282,39 @@ abstract class Engine
 
     /**
      * uses the 60F field to determine the date of the statement
+     * @deprecated will be removed in the next major release and replaced by startTimestamp / endTimestamps
      * @return int timestamp
      */
     protected function parseStatementTimestamp()
     {
+        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. ' .
+                'Please use parseStatementStartTimestamp($format) or parseStatementEndTimestamp($format) instead. ' .
+                'setTimestamp is now parseStatementStartTimestamp', E_USER_DEPRECATED);
+        return $this->parseStatementStartTimestamp();
+    }
+
+    /**
+     * uses the 60F field to determine the date of the statement
+     * @return int timestamp
+     */
+    protected function parseStatementStartTimestamp()
+    {
+        return $this->parseTimestampFromStatement('60F');
+    }
+
+    /**
+     * uses the 62F field to determine the date of the statement
+     * @return int timestamp
+     */
+    protected function parseStatementEndTimestamp()
+    {
+        return $this->parseTimestampFromStatement('62F');
+    }
+
+    protected function parseTimestampFromStatement($key)
+    {
         $results = [];
-        if (preg_match('/:60F:[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
+        if (preg_match('/:' . $key . ':[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
@@ -401,14 +426,7 @@ abstract class Engine
      */
     protected function parseTransactionEntryTimestamp()
     {
-        $results = [];
-        if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
-        ) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
-        }
-
-        return 0;
+        return $this->parseTransactionTimestamp('61');
     }
 
     /**
@@ -417,8 +435,12 @@ abstract class Engine
      */
     protected function parseTransactionValueTimestamp()
     {
+        return $this->parseTransactionTimestamp('61');
+    }
+
+    protected function parseTransactionTimestamp($key) {
         $results = [];
-        if (preg_match('/^:61:(\d{6})/', $this->getCurrentTransactionData(), $results)
+        if (preg_match('/^:'.$key.':(\d{6})/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
@@ -465,12 +487,12 @@ abstract class Engine
         }
 
         $account = ltrim(
-            str_replace(
-                array_keys($crudeReplacements),
-                array_values($crudeReplacements),
-                strip_tags(trim($string))
-            ),
-            '0'
+                str_replace(
+                        array_keys($crudeReplacements),
+                        array_values($crudeReplacements),
+                        strip_tags(trim($string))
+                ),
+                '0'
         );
         if ($account != '' && strlen($account) < 9 && strpos($account, 'P') === false) {
             $account = 'P' . $account;
@@ -500,7 +522,7 @@ abstract class Engine
         $date = \DateTime::createFromFormat($inFormat, $string);
         $date->setTime(0, 0, 0);
         if ($date !== false) {
-            return (int) $date->format('U');
+            return (int)$date->format('U');
         }
 
         return 0;
@@ -523,7 +545,7 @@ abstract class Engine
      */
     protected function sanitizeDebitCredit($string)
     {
-        $debitOrCredit = strtoupper(substr((string) $string, 0, 1));
+        $debitOrCredit = strtoupper(substr((string)$string, 0, 1));
         if ($debitOrCredit != Transaction::DEBIT && $debitOrCredit != Transaction::CREDIT) {
             trigger_error('wrong value for debit/credit (' . $string . ')', E_USER_ERROR);
             $debitOrCredit = '';
@@ -541,6 +563,6 @@ abstract class Engine
     {
         $floatPrice = ltrim(str_replace(',', '.', strip_tags(trim($string))), '0');
 
-        return (float) $floatPrice;
+        return (float)$floatPrice;
     }
 }

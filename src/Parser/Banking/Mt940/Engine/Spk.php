@@ -29,30 +29,25 @@ class Spk extends Engine
      */
     protected function parseStatementStartPrice()
     {
-        $results = [];
-        if (preg_match('/:60[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
-        ) {
-            return $this->sanitizePrice($results[1]);
-        }
-
-        return '';
+        return parent::parseStatementPrice('60[FM]');
     }
 
     /**
      * Overloaded: Sparkasse uses 60M and 60F
      * @inheritdoc
      */
-    protected function parseStatementTimestamp()
+    protected function parseStatementStartTimestamp()
     {
-        $results = [];
-        if (preg_match('/:60[FM]:[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
-        ) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
-        }
+        return parent::parseTimestampFromStatement('60[FM]');
+    }
 
-        return 0;
+    /**
+     * Overloaded: Sparkasse uses 60M and 60F
+     * @inheritdoc
+     */
+    protected function parseStatementEndTimestamp()
+    {
+        return parent::parseTimestampFromStatement('60[FM]');
     }
 
     /**
@@ -61,14 +56,7 @@ class Spk extends Engine
      */
     protected function parseStatementEndPrice()
     {
-        $results = [];
-        if (preg_match('/:62[FM]:.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
-        ) {
-            return $this->sanitizePrice($results[1]);
-        }
-
-        return '';
+        return parent::parseStatementPrice('62[FM]');
     }
 
     /**
@@ -80,7 +68,7 @@ class Spk extends Engine
     {
         $results = [];
         if (preg_match('/^:61:.*[CD][a-zA-Z]?([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
-            && !empty($results[1])
+                && !empty($results[1])
         ) {
             return $this->sanitizePrice($results[1]);
         }
@@ -96,7 +84,7 @@ class Spk extends Engine
     {
         $results = [];
         if (preg_match('/^:61:\d+R?([CD]).?\d+/', $this->getCurrentTransactionData(), $results)
-            && !empty($results[1])
+                && !empty($results[1])
         ) {
             return $this->sanitizeDebitCredit($results[1]);
         }

@@ -35,7 +35,7 @@ class Transaction implements \JsonSerializable
      */
     public function setAccount($var)
     {
-        $this->account = (string) $var;
+        $this->account = (string)$var;
     }
 
     /**
@@ -43,7 +43,7 @@ class Transaction implements \JsonSerializable
      */
     public function setAccountName($var)
     {
-        $this->accountName = (string) $var;
+        $this->accountName = (string)$var;
     }
 
     /**
@@ -51,7 +51,7 @@ class Transaction implements \JsonSerializable
      */
     public function setPrice($var)
     {
-        $this->price = (float) $var;
+        $this->price = (float)$var;
     }
 
     /**
@@ -59,7 +59,7 @@ class Transaction implements \JsonSerializable
      */
     public function setDebitCredit($var)
     {
-        $this->debitcredit = (string) $var;
+        $this->debitcredit = (string)$var;
     }
 
     /**
@@ -67,7 +67,7 @@ class Transaction implements \JsonSerializable
      */
     public function setDescription($var)
     {
-        $this->description = (string) $var;
+        $this->description = (string)$var;
     }
 
     /**
@@ -75,7 +75,7 @@ class Transaction implements \JsonSerializable
      */
     public function setValueTimestamp($var)
     {
-        $this->valueTimestamp = (int) $var;
+        $this->valueTimestamp = (int)$var;
     }
 
     /**
@@ -83,7 +83,7 @@ class Transaction implements \JsonSerializable
      */
     public function setEntryTimestamp($var)
     {
-        $this->entryTimestamp = (int) $var;
+        $this->entryTimestamp = (int)$var;
     }
 
     /**
@@ -91,7 +91,7 @@ class Transaction implements \JsonSerializable
      */
     public function setTransactionCode($var)
     {
-        $this->transactionCode = (string) $var;
+        $this->transactionCode = (string)$var;
     }
 
     // getters
