@@ -16,8 +16,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->engine = new Ing;
-        $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));
+        $this->engine = new Ing();
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample'));
     }
 
     /**
@@ -41,5 +41,4 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('23-07-2010', $first->getEndTimestamp('d-m-Y'));
         $this->assertEquals(-3.47, $first->getDeltaPrice());
     }
-
 }

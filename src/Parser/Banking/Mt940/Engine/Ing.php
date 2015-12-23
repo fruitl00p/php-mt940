@@ -1,17 +1,18 @@
 <?php
+
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 /**
- * @package Kingsquare\Parser\Banking\Mt940\Engine
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Ing extends Engine
 {
     /**
-     * returns the name of the bank
+     * returns the name of the bank.
+     *
      * @return string
      */
     protected function parseStatementBank()
@@ -20,8 +21,9 @@ class Ing extends Engine
     }
 
     /**
-     * Overloaded: Added simple IBAN transaction handling
-     * @inheritdoc
+     * Overloaded: Added simple IBAN transaction handling.
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionAccount()
     {
@@ -50,8 +52,9 @@ class Ing extends Engine
     }
 
     /**
-     * Overloaded: Added simple IBAN transaction handling
-     * @inheritdoc
+     * Overloaded: Added simple IBAN transaction handling.
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionAccountName()
     {
@@ -101,8 +104,9 @@ class Ing extends Engine
     }
 
     /**
-     * Overloaded: ING encapsulates the description with /REMI/ for SEPA
-     * @inheritdoc
+     * Overloaded: ING encapsulates the description with /REMI/ for SEPA.
+     *
+     * {@inheritdoc}
      */
     protected function sanitizeDescription($string)
     {
@@ -120,14 +124,16 @@ class Ing extends Engine
 
         return $description;
     }
-    
+
     /**
-     * Overloaded: Is applicable if first line has INGB
-     * @inheritdoc
+     * Overloaded: Is applicable if first line has INGB.
+     *
+     * {@inheritdoc}
      */
     public static function isApplicable($string)
     {
         $firstline = strtok($string, "\r\n\t");
+
         return strpos($firstline, 'INGB') !== false;
     }
 }

@@ -7,11 +7,10 @@ namespace Kingsquare\Parser\Banking\Mt940\Engine;
  */
 class DebitCreditTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @dataProvider statementProvider
      *
-     * @param string $dOrC D|C
+     * @param string $dOrC      D|C
      * @param string $statement
      */
     public function testDebitCredit($dOrC, $statement)

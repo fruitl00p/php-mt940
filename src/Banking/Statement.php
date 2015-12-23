@@ -1,10 +1,10 @@
 <?php
+
 namespace Kingsquare\Banking;
 
 /**
  * @property array rawData used for debugging purposes
  *
- * @package Kingsquare\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -33,7 +33,7 @@ class Statement implements \JsonSerializable
      */
     public function setBank($var)
     {
-        $this->bank = (string)$var;
+        $this->bank = (string) $var;
     }
 
     /**
@@ -41,7 +41,7 @@ class Statement implements \JsonSerializable
      */
     public function setAccount($var)
     {
-        $this->account = (string)$var;
+        $this->account = (string) $var;
     }
 
     /**
@@ -49,7 +49,7 @@ class Statement implements \JsonSerializable
      */
     public function setTransactions($transactions)
     {
-        $this->transactions = (array)$transactions;
+        $this->transactions = (array) $transactions;
     }
 
     /**
@@ -57,7 +57,7 @@ class Statement implements \JsonSerializable
      */
     public function setStartPrice($var)
     {
-        $this->startPrice = (float)$var;
+        $this->startPrice = (float) $var;
     }
 
     /**
@@ -65,28 +65,28 @@ class Statement implements \JsonSerializable
      */
     public function setEndPrice($var)
     {
-        $this->endPrice = (float)$var;
+        $this->endPrice = (float) $var;
     }
 
     /**
      * @deprecated
+     *
      * @param int $var
      */
     public function setTimestamp($var)
     {
-        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. ' .
-                'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. ' .
+        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
+                'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. '.
                 'setTimestamp is now setStartTimestamp', E_USER_DEPRECATED);
-        $this->timestamp = (int)$var;
+        $this->timestamp = (int) $var;
     }
-
 
     /**
      * @param $var
      */
     public function setStartTimestamp($var)
     {
-        $this->startTimestamp = (int)$var;
+        $this->startTimestamp = (int) $var;
     }
 
     /**
@@ -94,7 +94,7 @@ class Statement implements \JsonSerializable
      */
     public function setEndTimestamp($var)
     {
-        $this->endTimestamp = (int)$var;
+        $this->endTimestamp = (int) $var;
     }
 
     /**
@@ -102,7 +102,7 @@ class Statement implements \JsonSerializable
      */
     public function setNumber($var)
     {
-        $this->number = (string)$var;
+        $this->number = (string) $var;
     }
 
     /**
@@ -147,19 +147,23 @@ class Statement implements \JsonSerializable
 
     /**
      * @param string $format
+     *
      * @deprecated This method will be removed in favor of getStartTimestamp / getEndTimestamp this is slated for removal in next major
+     *
      * @return string
      */
     public function getTimestamp($format = 'U')
     {
-        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. ' .
-                'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. ' .
+        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
+                'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. '.
                 'getTimestamp is now getStartTimestamp', E_USER_DEPRECATED);
+
         return $this->getStartTimestamp($format);
     }
 
     /**
      * @param string $format
+     *
      * @return bool|string
      */
     public function getStartTimestamp($format = 'U')
@@ -169,6 +173,7 @@ class Statement implements \JsonSerializable
 
     /**
      * @param string $format
+     *
      * @return bool|string
      */
     public function getEndTimestamp($format = 'U')
@@ -197,6 +202,6 @@ class Statement implements \JsonSerializable
      */
     public function getDeltaPrice()
     {
-        return ($this->getStartPrice() - $this->getEndPrice());
+        return $this->getStartPrice() - $this->getEndPrice();
     }
 }

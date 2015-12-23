@@ -17,8 +17,8 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $engine = new Triodos;
-        $engine->loadString(file_get_contents(__DIR__ . '/sample'));
+        $engine = new Triodos();
+        $engine->loadString(file_get_contents(__DIR__.'/sample'));
         foreach ($engine->parse() as $statement) {
             $this->transactions = array_merge($this->transactions, $statement->getTransactions());
         }

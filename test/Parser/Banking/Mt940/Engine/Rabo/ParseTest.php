@@ -16,8 +16,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->engine = new Rabo;
-        $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));
+        $this->engine = new Rabo();
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample'));
     }
 
     public function testParseStatementBank()
@@ -42,14 +42,14 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialNegativeStatementBalance()
     {
-        $this->engine->loadString(file_get_contents(__DIR__ . '/sample2'));
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample2'));
         $statements = $this->engine->parse();
         $this->assertEquals(-1000.12, $statements[0]->getStartPrice());
     }
 
     public function testCorrectHandlingOfVariousStatementPricing()
     {
-        $this->engine->loadString(file_get_contents(__DIR__ . '/sample2'));
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample2'));
         $statements = $this->engine->parse();
         $this->assertEquals(-1000.12, $statements[0]->getStartPrice());
         $this->assertEquals(2145.23, $statements[0]->getEndPrice());

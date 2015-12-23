@@ -5,14 +5,14 @@ namespace Kingsquare\Parser\Banking\Mt940\Engine;
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 /**
- * @package Kingsquare\Parser\Banking\Mt940\Engine
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Abn extends Engine
 {
     /**
-     * returns the name of the bank
+     * returns the name of the bank.
+     *
      * @return string
      */
     protected function parseStatementBank()
@@ -22,8 +22,9 @@ class Abn extends Engine
 
     /**
      * Overloaded: ABN Amro shows the GIRO
-     * includes fix for 'for GIRO 1234567 TEST 201009063689 CLIEOP 21-9' and translates that into 1234567
-     * @inheritdoc
+     * includes fix for 'for GIRO 1234567 TEST 201009063689 CLIEOP 21-9' and translates that into 1234567.
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionAccount()
     {
@@ -48,8 +49,9 @@ class Abn extends Engine
     }
 
     /**
-     * Overloaded: ABN Amro shows the GIRO and fixes newlines etc
-     * @inheritdoc
+     * Overloaded: ABN Amro shows the GIRO and fixes newlines etc.
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionAccountName()
     {
@@ -76,7 +78,7 @@ class Abn extends Engine
 
     /**
      * Overloaded: ABNAMRO uses the :61: date-part of the field for two values:
-     * Valuetimestamp (YYMMDD) and Entry date (book date) (MMDD)
+     * Valuetimestamp (YYMMDD) and Entry date (book date) (MMDD).
      *
      * @return int
      */
@@ -93,12 +95,14 @@ class Abn extends Engine
     }
 
     /**
-     * Overloaded: Is applicable if first line has ABNA
-     * @inheritdoc
+     * Overloaded: Is applicable if first line has ABNA.
+     *
+     * {@inheritdoc}
      */
     public static function isApplicable($string)
     {
         $firstline = strtok($string, "\r\n\t");
+
         return strpos($firstline, 'ABNA') !== false;
     }
 }

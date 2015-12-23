@@ -1,17 +1,17 @@
 <?php
+
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 /**
- * @package Kingsquare\Parser\Banking\Mt940\Engine
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Triodos extends Engine
 {
     /**
-     * returns the name of the bank
+     * returns the name of the bank.
      *
      * @return string
      */
@@ -21,9 +21,9 @@ class Triodos extends Engine
     }
 
     /**
-     * Overloaded: the bankaccount is always prefixed
+     * Overloaded: the bankaccount is always prefixed.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function parseStatementAccount()
     {
@@ -31,7 +31,6 @@ class Triodos extends Engine
         if (preg_match('#:25:TRIODOSBANK/([\d\.]+)#', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
-
             return $this->sanitizeAccount($results[1]);
         }
 
@@ -39,9 +38,9 @@ class Triodos extends Engine
     }
 
     /**
-     * Overloaded: According to spec, field :28: is always 1
+     * Overloaded: According to spec, field :28: is always 1.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function parseStatementNumber()
     {
@@ -49,9 +48,9 @@ class Triodos extends Engine
     }
 
     /**
-     * Overloaded: According to spec, field :28: is always 000
+     * Overloaded: According to spec, field :28: is always 000.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function parseTransactionCode()
     {
@@ -59,9 +58,9 @@ class Triodos extends Engine
     }
 
     /**
-     * Overloaded: It might be IBAN or not and depending on that return a different part of the description
+     * Overloaded: It might be IBAN or not and depending on that return a different part of the description.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function parseTransactionAccount()
     {
@@ -77,17 +76,19 @@ class Triodos extends Engine
     }
 
     /**
-     * Overloaded: It might be IBAN or not and depending on that return a different part of the description
+     * Overloaded: It might be IBAN or not and depending on that return a different part of the description.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function parseTransactionAccountName()
     {
         $parts = $this->getTransactionAccountParts();
+
         return $this->sanitizeAccountName(substr(array_shift($parts), 2));
     }
 
-    private function getTransactionAccountParts() {
+    private function getTransactionAccountParts()
+    {
         $parts = $this->getDescriptionParts();
         array_shift($parts); // remove BBAN / BIC code
         if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
@@ -99,11 +100,10 @@ class Triodos extends Engine
         return $parts;
     }
 
-
     /**
-     * Crude parsing of the combined iban / non iban description field
+     * Crude parsing of the combined iban / non iban description field.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function parseTransactionDescription()
     {
@@ -117,7 +117,7 @@ class Triodos extends Engine
 
     /**
      * In Triodos everything is put into :86: field with '>\d{2}' seperators
-     * This method parses that out and returns the array
+     * This method parses that out and returns the array.
      *
      * @return array
      */
@@ -129,9 +129,9 @@ class Triodos extends Engine
     }
 
     /**
-     * Overloaded: Do not skip a header
+     * Overloaded: Do not skip a header.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function parseStatementData()
     {
@@ -144,13 +144,15 @@ class Triodos extends Engine
     }
 
     /**
-     * Overloaded: Is applicable if second line has :25:TRIODOSBANK
-     * @inheritdoc
+     * Overloaded: Is applicable if second line has :25:TRIODOSBANK.
+     *
+     * {@inheritdoc}
      */
     public static function isApplicable($string)
     {
         strtok($string, "\r\n\t");
         $secondline = strtok("\r\n\t");
-        return (strpos($secondline, ':25:TRIODOSBANK') !== false);
+
+        return strpos($secondline, ':25:TRIODOSBANK') !== false;
     }
 }

@@ -7,7 +7,6 @@ namespace Kingsquare\Banking;
  */
 class StatementTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testBankAssesor()
     {
         $expected = 'ABN';
@@ -135,7 +134,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonSerialization()
     {
-        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[],' .
+        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[],'.
                 '"startPrice":16250,"endPrice":6250,"timestamp":0,"startTimestamp":123,"endTimestamp":0,"number":"2665487AAF"}';
         $params = [
                 'bank' => 'ABN',
@@ -148,7 +147,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         ];
         $statement = new Statement();
         foreach ($params as $key => $value) {
-            $statement->{'set' . $key}($value);
+            $statement->{'set'.$key}($value);
         }
         $this->assertSame($expected, json_encode($statement));
     }
@@ -159,10 +158,10 @@ class StatementTest extends \PHPUnit_Framework_TestCase
      */
     public function testJsonSerializationWithTransactions()
     {
-        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[{"account":"123123","accountName":' .
-                '"Kingsquare BV","price":110,"debitcredit":"D","description":"test","valueTimestamp":1231,"entryTimestamp"' .
-                ':1234,"transactionCode":"13G"},{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit"' .
-                ':"D","description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}],' .
+        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[{"account":"123123","accountName":'.
+                '"Kingsquare BV","price":110,"debitcredit":"D","description":"test","valueTimestamp":1231,"entryTimestamp"'.
+                ':1234,"transactionCode":"13G"},{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit"'.
+                ':"D","description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}],'.
                 '"startPrice":16250,"endPrice":6250,"timestamp":123,"number":"2665487AAF"}';
         $params = [
                 'bank' => 'ABN',
@@ -196,7 +195,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         ];
         $statement = new Statement();
         foreach ($params as $key => $value) {
-            $statement->{'set' . $key}($value);
+            $statement->{'set'.$key}($value);
         }
         $this->assertSame($expected, json_encode($statement));
     }

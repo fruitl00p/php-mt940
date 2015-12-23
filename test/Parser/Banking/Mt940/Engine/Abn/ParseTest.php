@@ -16,8 +16,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->engine = new Abn;
-        $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));
+        $this->engine = new Abn();
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample'));
     }
 
     /**

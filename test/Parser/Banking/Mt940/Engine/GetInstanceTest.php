@@ -1,4 +1,5 @@
 <?php
+
 namespace Kingsquare\Parser\Banking\Mt940;
 
 /**
@@ -6,7 +7,6 @@ namespace Kingsquare\Parser\Banking\Mt940;
  */
 class GetInstanceTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      *
      */
@@ -28,17 +28,19 @@ class GetInstanceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider enginesProvider
+     *
      * @param string $engineString
      * @param string $source
      */
     public function testEngine($engineString, $source)
     {
         $engine = @Engine::__getInstance($source);
-        $this->assertInstanceOf('\\Kingsquare\\Parser\\Banking\\Mt940\\Engine\\' . $engineString, $engine);
+        $this->assertInstanceOf('\\Kingsquare\\Parser\\Banking\\Mt940\\Engine\\'.$engineString, $engine);
     }
 
     /**
      * @dataProvider enginesProvider
+     *
      * @param string $engineString
      * @param string $source
      */
@@ -55,11 +57,11 @@ class GetInstanceTest extends \PHPUnit_Framework_TestCase
     public function enginesProvider()
     {
         return [
-                ['Abn', file_get_contents(__DIR__ . '/Abn/sample')],
-                ['Ing', file_get_contents(__DIR__ . '/Ing/sample')],
-                ['Rabo', file_get_contents(__DIR__ . '/Rabo/sample')],
-                ['Spk', file_get_contents(__DIR__ . '/Spk/sample')],
-                ['Triodos', file_get_contents(__DIR__ . '/Triodos/sample')],
+                ['Abn', file_get_contents(__DIR__.'/Abn/sample')],
+                ['Ing', file_get_contents(__DIR__.'/Ing/sample')],
+                ['Rabo', file_get_contents(__DIR__.'/Rabo/sample')],
+                ['Spk', file_get_contents(__DIR__.'/Spk/sample')],
+                ['Triodos', file_get_contents(__DIR__.'/Triodos/sample')],
                 ['Unknown', 'this is an unknown format :)'],
         ];
     }

@@ -3,13 +3,11 @@
 namespace Kingsquare\Banking;
 
 /**
- * @package Kmt\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @copyright Copyright (c) Kingsquare BV (http://www.kingsquare.nl)
  */
 class TransactionTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testAccountAssesor()
     {
         $expected = '62.90.64.393';
@@ -133,7 +131,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonSerialization()
     {
-        $expected = '{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit":"D",' .
+        $expected = '{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit":"D",'.
                 '"description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}';
 
         $params = [
@@ -148,7 +146,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         ];
         $statement = new Transaction();
         foreach ($params as $key => $value) {
-            $statement->{'set' . $key}($value);
+            $statement->{'set'.$key}($value);
         }
         $this->assertSame($expected, json_encode($statement));
     }

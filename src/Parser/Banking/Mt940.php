@@ -1,10 +1,10 @@
 <?php
+
 namespace Kingsquare\Parser\Banking;
 
 use Kingsquare\Parser\Banking;
 
 /**
- * @package Kingsquare\Parser\Banking
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -17,9 +17,9 @@ class Mt940 extends Banking
     public static $removeIBAN = true; // defaults to true for BC
 
     /**
-     * Parse the given string into an array of Banking\Statement objects
+     * Parse the given string into an array of Banking\Statement objects.
      *
-     * @param string $string
+     * @param string               $string
      * @param Banking\Mt940\Engine $engine
      *
      * @return \Kingsquare\Banking\Statement[]
@@ -37,6 +37,7 @@ class Mt940 extends Banking
             if ($this->engine instanceof Banking\Mt940\Engine) {
                 // parse using the engine
                 $this->engine->loadString($string);
+
                 return $this->engine->parse();
             }
         }

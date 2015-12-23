@@ -17,8 +17,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $engine = new Triodos;
-        $engine->loadString(file_get_contents(__DIR__ . '/sample'));
+        $engine = new Triodos();
+        $engine->loadString(file_get_contents(__DIR__.'/sample'));
         $this->statements = $engine->parse();
     }
 
@@ -106,5 +106,4 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('23-11-2012', $last->getEndTimestamp('d-m-Y'));
         $this->assertEquals(-59.02, $last->getDeltaPrice());
     }
-
 }

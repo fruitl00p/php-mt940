@@ -7,7 +7,6 @@ namespace Kingsquare\Parser\Banking;
  */
 class ParseTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      *
      */

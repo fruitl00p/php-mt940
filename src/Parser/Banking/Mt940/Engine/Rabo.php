@@ -1,17 +1,18 @@
 <?php
+
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 /**
- * @package Kingsquare\Parser\Banking\Mt940\Engine
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
 class Rabo extends Engine
 {
     /**
-     * returns the name of the bank
+     * returns the name of the bank.
+     *
      * @return string
      */
     protected function parseStatementBank()
@@ -20,8 +21,9 @@ class Rabo extends Engine
     }
 
     /**
-     * Overloaded: Rabo has different way of storing account info
-     * @inheritdoc
+     * Overloaded: Rabo has different way of storing account info.
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionAccount()
     {
@@ -43,8 +45,9 @@ class Rabo extends Engine
     }
 
     /**
-     * Overloaded: Rabo has different way of storing account name
-     * @inheritdoc
+     * Overloaded: Rabo has different way of storing account name.
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionAccountName()
     {
@@ -70,8 +73,9 @@ class Rabo extends Engine
     }
 
     /**
-     * Overloaded: Rabo has different way of storing transaction value timestamps (ymd)
-     * @inheritdoc
+     * Overloaded: Rabo has different way of storing transaction value timestamps (ymd).
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionEntryTimestamp()
     {
@@ -84,8 +88,9 @@ class Rabo extends Engine
     }
 
     /**
-     * Overloaded: Rabo has different way of storing transaction value timestamps (ymd)
-     * @inheritdoc
+     * Overloaded: Rabo has different way of storing transaction value timestamps (ymd).
+     *
+     * {@inheritdoc}
      */
     protected function parseTransactionValueTimestamp()
     {
@@ -98,8 +103,9 @@ class Rabo extends Engine
     }
 
     /**
-     * Overloaded: Rabo uses longer strings for accountnumbers
-     * @inheritdoc
+     * Overloaded: Rabo uses longer strings for accountnumbers.
+     *
+     * {@inheritdoc}
      */
     protected function sanitizeAccount($string)
     {
@@ -112,8 +118,9 @@ class Rabo extends Engine
     }
 
     /**
-     * Overloaded: Rabo encapsulates the description with /REMI/ for SEPA
-     * @inheritdoc
+     * Overloaded: Rabo encapsulates the description with /REMI/ for SEPA.
+     *
+     * {@inheritdoc}
      */
     protected function sanitizeDescription($string)
     {
@@ -131,14 +138,16 @@ class Rabo extends Engine
 
         return $description;
     }
-        
+
     /**
-     * Overloaded: Is applicable if first line has :940:
-     * @inheritdoc
+     * Overloaded: Is applicable if first line has :940:.
+     *
+     * {@inheritdoc}
      */
     public static function isApplicable($string)
     {
         $firstline = strtok($string, "\r\n\t");
+
         return strpos($firstline, ':940:') !== false;
     }
 }

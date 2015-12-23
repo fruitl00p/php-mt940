@@ -7,7 +7,6 @@ namespace Kingsquare\Parser\Banking\Mt940\Engine;
  */
 class ParseTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      *
      */
