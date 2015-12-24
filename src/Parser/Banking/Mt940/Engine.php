@@ -4,6 +4,7 @@ namespace Kingsquare\Parser\Banking\Mt940;
 
 use Kingsquare\Banking\Statement as Statement;
 use Kingsquare\Banking\Transaction as Transaction;
+use Kingsquare\Contracts\StatementInterface;
 use Kingsquare\Parser\Banking\Mt940;
 
 /**
@@ -120,7 +121,7 @@ abstract class Engine
     /**
      * actual parsing of the data.
      *
-     * @return Statement[]
+     * @return StatementInterface[]
      */
     public function parse()
     {
