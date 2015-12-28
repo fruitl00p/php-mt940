@@ -2,8 +2,11 @@
 
 namespace Kingsquare\Parser\Banking\Mt940;
 
+use Kingsquare\Banking\Iban;
 use Kingsquare\Banking\Statement as Statement;
 use Kingsquare\Banking\Transaction as Transaction;
+use Kingsquare\Contracts\IbanInterface;
+use Kingsquare\Contracts\StatementInterface;
 use Kingsquare\Parser\Banking\Mt940;
 
 /**
@@ -120,7 +123,7 @@ abstract class Engine
     /**
      * actual parsing of the data.
      *
-     * @return Statement[]
+     * @return StatementInterface[]
      */
     public function parse()
     {
@@ -365,7 +368,7 @@ abstract class Engine
     /**
      * uses the 86 field to determine account number of the transaction.
      *
-     * @return string
+     * @return IbanInterface
      */
     protected function parseTransactionAccount()
     {
@@ -373,10 +376,10 @@ abstract class Engine
         if (preg_match('/^:86: ?([\d\.]+)\s/im', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
-            return $this->sanitizeAccount($results[1]);
+            $result = $this->sanitizeAccount($results[1]);
         }
 
-        return '';
+        return new Iban($result);
     }
 
     /**

@@ -2,18 +2,24 @@
 
 namespace Kingsquare\Banking;
 
+use Kingsquare\Contracts\IbanInterface;
+use Kingsquare\Contracts\TransactionInterface;
+
 /**
  * @property string rawData A container after parsing a statement containing 'rawdata' if debug was true on the engine
  *
  * @author Kingsquare (source@kingsquare.nl)
  * @license http://opensource.org/licenses/MIT MIT
  */
-class Transaction implements \JsonSerializable
+class Transaction implements \JsonSerializable, TransactionInterface
 {
     const DEBIT = 'D';
     const CREDIT = 'C';
 
-    private $account = '';
+    /**
+     * @var IbanInterface
+     */
+    private $account;
     private $accountName = '';
     private $price = 0.0;
     private $debitcredit = '';
@@ -31,11 +37,11 @@ class Transaction implements \JsonSerializable
     }
 
     /**
-     * @param string $var
+     * @param IbanInterface $var
      */
-    public function setAccount($var)
+    public function setAccount(IbanInterface $var)
     {
-        $this->account = (string) $var;
+        $this->account = $var;
     }
 
     /**
@@ -96,7 +102,7 @@ class Transaction implements \JsonSerializable
 
     // getters
     /**
-     * @return string
+     * @return IbanInterface
      */
     public function getAccount()
     {
