@@ -2,12 +2,14 @@
 
 namespace Kingsquare\Contracts;
 
+use Kingsquare\Banking\Iban;
+
 interface TransactionInterface
 {
 
 
     /**
-     * @return string
+     * @return IbanInterface
      */
     public function getAccount();
 

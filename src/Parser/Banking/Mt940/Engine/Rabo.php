@@ -2,6 +2,7 @@
 
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
+use Kingsquare\Banking\Iban;
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 /**
@@ -32,14 +33,14 @@ class Rabo extends Engine
         if (preg_match('/^:61:.*\n(.*?)(\n|\:8)/im', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
-            return $this->sanitizeAccount($results[1]);
-        }
-
-        if (preg_match('/^:61:.{26}(.{16})/im', $this->getCurrentTransactionData(), $results)
+            $result =  $this->sanitizeAccount($results[1]);
+        } elseif (preg_match('/^:61:.{26}(.{16})/im', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
-            return $this->sanitizeAccount($results[1]);
+            $result = $this->sanitizeAccount($results[1]);
         }
+
+        return new Iban($result);
 
         return '';
     }

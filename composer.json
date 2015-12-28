@@ -15,7 +15,8 @@
     }
   ],
   "require": {
-    "php": ">=5.5"
+    "php": ">=5.5",
+    "jschaedl/iban": "^1.1"
   },
   "require-dev": {
     "phpunit/phpunit": "4.4.*",

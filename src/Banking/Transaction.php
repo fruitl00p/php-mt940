@@ -2,6 +2,7 @@
 
 namespace Kingsquare\Banking;
 
+use Kingsquare\Contracts\IbanInterface;
 use Kingsquare\Contracts\TransactionInterface;
 
 /**
@@ -15,7 +16,10 @@ class Transaction implements \JsonSerializable, TransactionInterface
     const DEBIT = 'D';
     const CREDIT = 'C';
 
-    private $account = '';
+    /**
+     * @var IbanInterface
+     */
+    private $account;
     private $accountName = '';
     private $price = 0.0;
     private $debitcredit = '';
@@ -33,11 +37,11 @@ class Transaction implements \JsonSerializable, TransactionInterface
     }
 
     /**
-     * @param string $var
+     * @param IbanInterface $var
      */
-    public function setAccount($var)
+    public function setAccount(IbanInterface $var)
     {
-        $this->account = (string) $var;
+        $this->account = $var;
     }
 
     /**
@@ -98,7 +102,7 @@ class Transaction implements \JsonSerializable, TransactionInterface
 
     // getters
     /**
-     * @return string
+     * @return IbanInterface
      */
     public function getAccount()
     {
