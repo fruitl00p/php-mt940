@@ -14,7 +14,7 @@ class Mt940 extends Banking
     protected $engine;
 
     /** @var bool */
-    public static $removeIBAN = true; // defaults to true for BC
+    public static $removeIBAN = false; // defaults to true for BC
 
     /**
      * Parse the given string into an array of Banking\Statement objects.

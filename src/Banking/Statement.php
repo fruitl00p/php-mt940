@@ -2,6 +2,8 @@
 
 namespace Kingsquare\Banking;
 
+use Kingsquare\Contracts\IbanInterface;
+
 /**
  * @property array rawData used for debugging purposes
  *
@@ -37,11 +39,11 @@ class Statement implements \JsonSerializable
     }
 
     /**
-     * @param string $var
+     * @inheritdoc
      */
-    public function setAccount($var)
+    public function setAccount(IbanInterface $var)
     {
-        $this->account = (string) $var;
+        $this->account = $var;
     }
 
     /**
@@ -114,7 +116,7 @@ class Statement implements \JsonSerializable
     }
 
     /**
-     * @return string
+     * @return IbanInterface
      */
     public function getAccount()
     {

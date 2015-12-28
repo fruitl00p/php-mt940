@@ -9,7 +9,7 @@ interface TransactionInterface
 
 
     /**
-     * @return IbanInterface
+     * @return IbanInterface|null The IBAN for this transaction, or null if unknown.
      */
     public function getAccount();
 

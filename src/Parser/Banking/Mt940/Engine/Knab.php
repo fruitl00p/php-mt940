@@ -1,6 +1,8 @@
 <?php
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
+use IBAN\Generation\IBANGenerator;
+use Kingsquare\Banking\Iban;
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 /**
@@ -31,7 +33,17 @@ class Knab extends Engine
         if (preg_match($pattern, $this->getCurrentTransactionData(), $results)
             && !empty($results['account'])
         ) {
-            return $results['account'];
+//            if ($results['account'] == '90000014'){
+//                return null;
+//            }
+
+            try {
+                $result = new Iban($results['account']);
+            } catch (\InvalidArgumentException $e) {
+                $result = new Iban(IBANGenerator::NL('KNAB', $results['account']));
+            }
+            return $result;
+
         }
     }
 

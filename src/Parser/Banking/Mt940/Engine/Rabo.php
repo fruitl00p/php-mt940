@@ -40,9 +40,11 @@ class Rabo extends Engine
             $result = $this->sanitizeAccount($results[1]);
         }
 
-        return new Iban($result);
+        if ($result != 'NONREF') {
+            return new Iban($result);
+        }
+        return null;
 
-        return '';
     }
 
     /**
@@ -54,9 +56,11 @@ class Rabo extends Engine
     {
         $results = [];
         // SEPA MT940 Structured
-        if (preg_match('#/NAME/(.*?)/(REMI|ADDR)/#ms', $this->getCurrentTransactionData(), $results)
+        if (preg_match('#/NAME/(.*?)/(REMI|ADDR|CSID|ISDT)/#ms', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
+
+
             $accountName = trim($results[1]);
             if (!empty($accountName)) {
                 return $this->sanitizeAccountName($accountName);
@@ -69,6 +73,12 @@ class Rabo extends Engine
                 return $this->sanitizeAccountName($accountName);
             }
         }
+
+
+//            var_dump(preg_match('#/NAME/(.*?)/(REMI|ADDR|CSID|ISDT)/#ms', $this->getCurrentTransactionData(), $results));
+//
+//            die($this->getCurrentTransactionData());
+
 
         return '';
     }
@@ -104,21 +114,6 @@ class Rabo extends Engine
     }
 
     /**
-     * Overloaded: Rabo uses longer strings for accountnumbers.
-     *
-     * {@inheritdoc}
-     */
-    protected function sanitizeAccount($string)
-    {
-        $account = parent::sanitizeAccount($string);
-        if (strlen($account) > 20 && strpos($account, '80000') == 0) {
-            $account = substr($account, 5);
-        }
-
-        return $account;
-    }
-
-    /**
      * Overloaded: Rabo encapsulates the description with /REMI/ for SEPA.
      *
      * {@inheritdoc}
@@ -136,6 +131,12 @@ class Rabo extends Engine
         ) {
             return $results[1];
         }
+        return '';
+//        var_dump(preg_match('#/REMI|BENM/(.*?)/(ISDT|CSID|RTRN)/#s', $description, $results));
+//        var_dump($results);
+        var_dump($this->getCurrentTransactionData());
+        var_dump($string);
+        die($description);
 
         return $description;
     }

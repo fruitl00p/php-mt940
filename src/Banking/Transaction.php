@@ -39,7 +39,7 @@ class Transaction implements \JsonSerializable, TransactionInterface
     /**
      * @param IbanInterface $var
      */
-    public function setAccount(IbanInterface $var)
+    public function setAccount(IbanInterface $var = null)
     {
         $this->account = $var;
     }

@@ -2,6 +2,7 @@
 
 namespace Kingsquare\Parser\Banking\Mt940;
 
+use IBAN\Generation\IBANGenerator;
 use Kingsquare\Banking\Iban;
 use Kingsquare\Banking\Statement as Statement;
 use Kingsquare\Banking\Transaction as Transaction;
@@ -245,17 +246,22 @@ abstract class Engine
         if (preg_match('/:25:([\d\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
-            return $this->sanitizeAccount($results[1]);
+            $result = $this->sanitizeAccount($results[1]);
         }
 
         // SEPA / IBAN
         if (preg_match('/:25:([A-Z0-9]{8}[\d\.]+)*/', $this->getCurrentStatementData(), $results)
                 && !empty($results[1])
         ) {
-            return $this->sanitizeAccount($results[1]);
+            $result =  $this->sanitizeAccount($results[1]);
         }
 
-        return '';
+        try {
+            $iban = new Iban($result);
+        } catch (\InvalidArgumentException $e) {
+            $iban = new Iban(IBANGenerator::NL($this->parseStatementBank(), $result));
+        }
+        return $iban;
     }
 
     /**
@@ -515,7 +521,6 @@ abstract class Engine
         static $crudeReplacements = [
                 '.' => '',
                 ' ' => '',
-                'GIRO' => 'P',
         ];
 
         // crude IBAN to 'old' converter
@@ -534,9 +539,6 @@ abstract class Engine
                 ),
                 '0'
         );
-        if ($account != '' && strlen($account) < 9 && strpos($account, 'P') === false) {
-            $account = 'P'.$account;
-        }
 
         return $account;
     }
