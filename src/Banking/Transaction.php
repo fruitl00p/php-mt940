@@ -4,6 +4,7 @@ namespace Kingsquare\Banking;
 
 use Kingsquare\Contracts\IbanInterface;
 use Kingsquare\Contracts\TransactionInterface;
+use Kingsquare\Objects\TransactionType;
 
 /**
  * @property string rawData A container after parsing a statement containing 'rawdata' if debug was true on the engine
@@ -27,6 +28,8 @@ class Transaction implements \JsonSerializable, TransactionInterface
     private $valueTimestamp = 0;
     private $entryTimestamp = 0;
     private $transactionCode = '';
+
+    private $type;
 
     /**
      * @return array
@@ -184,4 +187,18 @@ class Transaction implements \JsonSerializable, TransactionInterface
     {
         return $this->getDebitCredit() == self::CREDIT;
     }
+
+    /**
+     * @return TransactionType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType(TransactionType $type)
+    {
+        $this->type = $type;
+    }
+
 }

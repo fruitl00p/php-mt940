@@ -8,6 +8,7 @@ use Kingsquare\Banking\Statement as Statement;
 use Kingsquare\Banking\Transaction as Transaction;
 use Kingsquare\Contracts\IbanInterface;
 use Kingsquare\Contracts\StatementInterface;
+use Kingsquare\Objects\TransactionType;
 use Kingsquare\Parser\Banking\Mt940;
 
 /**
@@ -155,6 +156,7 @@ abstract class Engine
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
                 $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
                 $transaction->setTransactionCode($this->parseTransactionCode());
+                $transaction->setType($this->parseTransactionType());
                 $statement->addTransaction($transaction);
             }
             $results[] = $statement;
@@ -501,14 +503,24 @@ abstract class Engine
      */
     protected function parseTransactionCode()
     {
+        $result = null;
         $results = [];
+
         if (preg_match('/^:61:.*?N(.{3}).*/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
-            return trim($results[1]);
+            $result = trim($results[1]);
         }
 
-        return '';
+        return $result;
+    }
+
+    /**
+     * Uses the transaction code to get a generic transaction type.
+     */
+    protected function parseTransactionType()
+    {
+        return TransactionType::get(TransactionType::UNKNOWN);
     }
 
     /**

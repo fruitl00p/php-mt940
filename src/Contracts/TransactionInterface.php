@@ -3,6 +3,7 @@
 namespace Kingsquare\Contracts;
 
 use Kingsquare\Banking\Iban;
+use Kingsquare\Objects\TransactionType;
 
 interface TransactionInterface
 {
@@ -59,4 +60,9 @@ interface TransactionInterface
      * @return bool
      */
     public function isCredit();
+
+    /**
+     * @return TransactionType
+     */
+    public function getType();
 }
