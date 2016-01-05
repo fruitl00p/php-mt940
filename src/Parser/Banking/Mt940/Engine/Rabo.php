@@ -146,8 +146,61 @@ class Rabo extends Engine
      */
     public static function isApplicable($string)
     {
-        $firstline = strtok($string, "\r\n\t");
-
-        return strpos($firstline, ':940:') !== false;
+        return strpos(strtok($string, "\r\n\t"), ':940:') !== false;
     }
+
+    protected function parseTransactionType()
+    {
+        $code = $this->parseTransactionCode();
+        switch ($code) {
+            case 541:
+            case 544:
+            case 102: // "Betaalopdracht IDEAL"
+            case 547:
+                $result = TransactionType::get(TransactionType::SEPA_TRANSFER);
+                break;
+
+            case 504:
+            case 691:
+                $result = TransactionType::get(TransactionType::SAVINGS_TRANSFER);
+                break;
+            case 64:
+                $result = TransactionType::get(TransactionType::SEPA_DIRECTDEBIT);
+                break;
+            case 93:
+                $result = TransactionType::get(TransactionType::BANK_COSTS);
+                break;
+            case 13:
+            case 12:
+            case 30:
+                $result = TransactionType::get(TransactionType::PAYMENT_TERMINAL);
+                break;
+            case 29:
+            case 31:
+                $result = TransactionType::get(TransactionType::ATM_WITHDRAWAL);
+                break;
+            case "MSC":
+                $result = TransactionType::get(TransactionType::BANK_INTEREST);
+                break;
+            case 404: // "Buitenland transactie credit"
+                if (stripos($this->getCurrentTransactionData(), 'eurobetaling') !== false) {
+                    $result = TransactionType::get(TransactionType::SEPA_TRANSFER);
+                } else {
+                    $result = TransactionType::get(TransactionType::TRANSFER);
+                }
+
+                break;
+            case 79: // "Acceptgiro Mobiel Bankieren"
+                $result = TransactionType::get(TransactionType::UNKNOWN);
+                break;
+
+            default:
+                var_dump($code);
+                var_dump($this->getCurrentTransactionData()); die();
+                throw new \RuntimeException("Don't know code $code for RABOBANK");
+        }
+
+        return $result;
+    }
+
 }

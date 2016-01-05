@@ -2,6 +2,7 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
+use Kingsquare\Objects\TransactionType;
 
 /**
  * Knab parser for Kingsquare mt940 package.
@@ -109,6 +110,40 @@ class Knab extends Engine
     {
         $firstline = strtok($string, "\r\n\t");
         return strpos($firstline, 'F01KNABNL2HAXXX0000000000') !== false;
+    }
+
+    protected function parseTransactionType()
+    {
+        $code = $this->parseTransactionCode();
+        switch ($code) {
+            case 541:
+            case 544:
+            case 547:
+                $result = TransactionType::get(TransactionType::SEPA_TRANSFER);
+                break;
+            case 64:
+                $result = TransactionType::get(TransactionType::SEPA_DIRECTDEBIT);
+                break;
+            case 93:
+                $result = TransactionType::get(TransactionType::BANK_COSTS);
+                break;
+            case 13:
+            case 30:
+                $result = TransactionType::get(TransactionType::PAYMENT_TERMINAL);
+                break;
+            case "MSC":
+                $result = TransactionType::get(TransactionType::BANK_INTEREST);
+                break;
+            case "TRF":
+                $result = TransactionType::get(TransactionType::UNKNOWN);
+                break;
+            default:
+                var_dump($code);
+                var_dump($this->getCurrentTransactionData()); die();
+                throw new \RuntimeException("Don't know code $code for RABOBANK");
+        }
+
+        return $result;
     }
 
 }
