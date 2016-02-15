@@ -15,7 +15,6 @@ class Statement implements \JsonSerializable
     private $transactions = [];
     private $startPrice = 0.0;
     private $endPrice = 0.0;
-    private $timestamp = 0;
     private $startTimestamp = 0;
     private $endTimestamp = 0;
     private $number = '';
@@ -78,7 +77,7 @@ class Statement implements \JsonSerializable
         trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
                 'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. '.
                 'setTimestamp is now setStartTimestamp', E_USER_DEPRECATED);
-        $this->timestamp = (int) $var;
+        return $this->setStartTimestamp($var);
     }
 
     /**
