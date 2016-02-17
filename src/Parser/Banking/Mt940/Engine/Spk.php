@@ -98,6 +98,22 @@ class Spk extends Engine
     }
 
     /**
+     * Overloaded: Sparkasse use the Field 61 for cancellations
+     *
+     * {@inheritdoc}
+     */
+    protected function parseTransactionCancellation()
+    {
+        $results = [];
+        if (preg_match('/^:61:\d+(R)?[CD].?\d+/', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Overloaded: Sparkasse does not have a header line.
      *
      * {@inheritdoc}
