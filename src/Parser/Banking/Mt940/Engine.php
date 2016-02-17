@@ -147,6 +147,7 @@ abstract class Engine
                 $transaction->setAccountName($this->parseTransactionAccountName());
                 $transaction->setPrice($this->parseTransactionPrice());
                 $transaction->setDebitCredit($this->parseTransactionDebitCredit());
+                $transaction->setCancellation($this->parseTransactionCancellation());
                 $transaction->setDescription($this->parseTransactionDescription());
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
                 $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
@@ -428,6 +429,15 @@ abstract class Engine
         }
 
         return '';
+    }
+
+    /**
+     * Parses the Cancellation flag of a Transaction
+     *
+     * @return boolean
+     */
+    protected function parseTransactionCancellation () {
+        return false;
     }
 
     /**
