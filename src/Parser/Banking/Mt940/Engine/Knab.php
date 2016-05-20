@@ -14,49 +14,101 @@ use Kingsquare\Parser\Banking\Mt940\Engine;
 class Knab extends Engine
 {
     const IBAN = '[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}(?:[a-zA-Z0-9]?){0,16}';
+
     /**
-     * returns the name of the bank
-     * @return string
+     * @inheritdoc
      */
     protected function parseStatementBank()
     {
         return 'KNAB';
     }
 
+    /**
+     * @inheritdoc
+     */
+    protected function parseStatementStartPrice()
+    {
+        return $this->parseStatementPrice('60M');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parseStatementEndPrice()
+    {
+        return $this->parseStatementPrice('62M');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parseStatementStartTimestamp()
+    {
+        return $this->parseTimestampFromStatement('60M');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parseStatementEndTimestamp()
+    {
+        return $this->parseTimestampFromStatement('62M');
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function parseTransactionAccount()
     {
         $results = [];
 
         $pattern = '/^:86:.*?REK:\s*(?<account>' . self::IBAN . '|\d+)/ims';
         if (preg_match($pattern, $this->getCurrentTransactionData(), $results)
-            && !empty($results['account'])
+                && !empty($results['account'])
         ) {
             return $results['account'];
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function parseTransactionAccountName()
     {
         $results = [];
-        if (preg_match('/^:86:.*?\/NAAM: (.*?)\s*:\d{2}.?:/ims', $this->getCurrentTransactionData(), $results)
-            && !empty($results[1])
+        if (preg_match('/NAAM: (.+)/', $this->getCurrentTransactionData(), $results)
+                && !empty($results[1])
         ) {
-            return $results[1];
+            return trim($results[1]);
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function parseTransactionDescription()
     {
-        if (preg_match('/^:86:(.*?)REK:/ims', $this->getCurrentTransactionData(), $results)) {
-            return $results[1];
+        $description = parent::parseTransactionDescription();
+        $accountIsInDescription = strpos($description, 'REK:');
+        if ($accountIsInDescription !== false) {
+            return trim(substr($description, 0, $accountIsInDescription));
         }
+
+        $name = $this->parseTransactionAccountName();
+        $accountNameIsInDescription = strpos($description, $name);
+        if ($accountNameIsInDescription !== false) {
+            return trim(substr($description, 0, $accountNameIsInDescription-6));
+        }
+        return $description;
     }
 
+    /**
+     * @inheritdoc
+     */
     public static function isApplicable($string)
     {
         $firstline = strtok($string, "\r\n\t");
         return strpos($firstline, 'F01KNABNL2HAXXX0000000000') !== false;
     }
-
 
 }
