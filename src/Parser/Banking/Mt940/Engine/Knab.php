@@ -62,6 +62,14 @@ class Knab extends Engine
     {
         $results = [];
 
+        // SEPA MT940 Structured
+        if (preg_match('/^:86:.*?\/IBAN\/(' . self::IBAN . ')/ims', $this->getCurrentTransactionData(), $results)
+                && !empty($results[1])
+        ) {
+            return $this->sanitizeAccount($results[1]);
+        }
+
+
         $pattern = '/^:86:.*?REK:\s*(?<account>' . self::IBAN . '|\d+)/ims';
         if (preg_match($pattern, $this->getCurrentTransactionData(), $results)
                 && !empty($results['account'])
@@ -76,6 +84,17 @@ class Knab extends Engine
     protected function parseTransactionAccountName()
     {
         $results = [];
+
+        // SEPA MT940 Structured
+        if (preg_match('#/NAME/(.*?)/(EREF|REMI|ADDR)/#ms', $this->getCurrentTransactionData(), $results)
+                && !empty($results[1])
+        ) {
+            $accountName = trim($results[1]);
+            if (!empty($accountName)) {
+                return $this->sanitizeAccountName($accountName);
+            }
+        }
+
         if (preg_match('/NAAM: (.+)/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
@@ -89,6 +108,14 @@ class Knab extends Engine
     protected function parseTransactionDescription()
     {
         $description = parent::parseTransactionDescription();
+
+        // SEPA MT940 Structured
+        if (strpos($description, '/REMI/') !== false
+                && preg_match('#/REMI/(.*)[/:]?#', $description, $results) && !empty($results[1])
+        ) {
+            return $results[1];
+        }
+
         $accountIsInDescription = strpos($description, 'REK:');
         if ($accountIsInDescription !== false) {
             return trim(substr($description, 0, $accountIsInDescription));
