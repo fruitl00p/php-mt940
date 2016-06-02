@@ -1,0 +1,1 @@
+Sample 3 was copied from https://github.com/dovadi/mt940/blob/master/test/fixtures/rabobank_sepa.txt
