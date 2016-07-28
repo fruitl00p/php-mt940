@@ -80,6 +80,10 @@ class Knab extends Engine
                 && !empty($results[1])
         ) {
             return trim($results[1]);
+        } elseif (preg_match('#/NAME/(.*?)\n?/(REMI|CSID)/#ms', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return trim($results[1]);
         }
     }
 
