@@ -154,7 +154,7 @@ class Statement implements \JsonSerializable
     public function getTimestamp($format = 'U')
     {
         trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
-                'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. '.
+                'Please use getStartTimestamp($format) or getEndTimestamp($format) instead. '.
                 'getTimestamp is now getStartTimestamp', E_USER_DEPRECATED);
 
         return $this->getStartTimestamp($format);
