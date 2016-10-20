@@ -21,7 +21,7 @@ To add this dependency to your project, simply run the following command from th
 
 This ensures that you install the latest stable release.
 
-## How to use the parsers?
+## How to use the parser?
 I've attached a simple script in the examples directory to explain it a bit more in detail, but after loading the
 required classes, the usage should be pretty simple:
 
@@ -36,9 +36,19 @@ $tmpFile = __DIR__.'/test.mta';
 $parsedStatements = $parser->parse(file_get_contents($tmpFile));
 ?>
 ```
+### Included engines
+Currently the following engines are included:
 
-### Custom parsers
-To override parsers or just try a one-off parser on a file, you can pass an engine into the `parse`-method:
+- ABNAMRO ([here](./src/Parser/Mt940/Engine/Abn.php))
+- ING ([here](./src/Parser/Mt940/Engine/Ing.php))
+- KNAB ([here](./src/Parser/Mt940/Engine/Knab.php))
+- RABOBANK ([here](./src/Parser/Mt940/Engine/Rabo.php))
+- SPARKASSE ([here](./src/Parser/Mt940/Engine/Spk.php))
+- TRIODOS ([here](./src/Parser/Mt940/Engine/Triodos.php))
+- a default `UNKNOWN`-engine ([here](./src/Parser/Mt940/Engine/Unknown.php))
+
+### Custom engines
+To override engines or just try a one-off engine on a file, you can pass an engine into the `parse`-method:
 
 ```php
 <?php
