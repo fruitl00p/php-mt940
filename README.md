@@ -39,13 +39,13 @@ $parsedStatements = $parser->parse(file_get_contents($tmpFile));
 ### Included engines
 Currently the following engines are included:
 
-- ABNAMRO ([here](./src/Parser/Mt940/Engine/Abn.php))
-- ING ([here](./src/Parser/Mt940/Engine/Ing.php))
-- KNAB ([here](./src/Parser/Mt940/Engine/Knab.php))
-- RABOBANK ([here](./src/Parser/Mt940/Engine/Rabo.php))
-- SPARKASSE ([here](./src/Parser/Mt940/Engine/Spk.php))
-- TRIODOS ([here](./src/Parser/Mt940/Engine/Triodos.php))
-- a default `UNKNOWN`-engine ([here](./src/Parser/Mt940/Engine/Unknown.php))
+- ABNAMRO ([here](./src/Parser/Banking/Mt940/Engine/Abn.php))
+- ING ([here](./src/Parser/Banking/Mt940/Engine/Ing.php))
+- KNAB ([here](./src/Parser/Banking/Mt940/Engine/Knab.php))
+- RABOBANK ([here](./src/Parser/Banking/Mt940/Engine/Rabo.php))
+- SPARKASSE ([here](./src/Parser/Banking/Mt940/Engine/Spk.php))
+- TRIODOS ([here](./src/Parser/Banking/Mt940/Engine/Triodos.php))
+- a default `UNKNOWN`-engine ([here](./src/Parser/Banking/Mt940/Engine/Unknown.php))
 
 ### Custom engines
 To override engines or just try a one-off engine on a file, you can pass an engine into the `parse`-method:
