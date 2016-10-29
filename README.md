@@ -68,7 +68,7 @@ $parsedStatements = $parser->parse(file_get_contents($tmpFile), $engine);
 ```
 
 ## Known issues
-I've provided a phpunit test for some engines, but am missing some test-data...
+I've provided unittests but please take a look at the github issue tracker for the latest ideas's, issues or other stuff..
 
 ## Future plans
 I do intend to add new engines or keep everything running smoothly, but since i don't have access to any more test files, it's hard to add new engines ;) The `unknown` engine should work or atleast give some idea as to where different banks diverge from the standard. If you do have any ideas, examples or new banks that you'd like to see incorporated, please don't hesitate and send me an issue / pullrequest!
