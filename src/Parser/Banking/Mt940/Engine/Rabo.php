@@ -53,22 +53,26 @@ class Rabo extends Engine
     {
         $results = [];
         // SEPA MT940 Structured
-        if (preg_match('#/NAME/(.*?)/(REMI|ADDR)/#ms', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
-        ) {
+        if (preg_match('#/NAME/(.+?)\n?/(REMI|ADDR|ISDT|CSID)/#ms', $this->getCurrentTransactionData(), $results)) {
             $accountName = trim($results[1]);
             if (!empty($accountName)) {
                 return $this->sanitizeAccountName($accountName);
             }
         }
 
-        if (preg_match('/^:61:.*? (.*)/m', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
+        if (preg_match('/^:61:.*? (.+)/m', $this->getCurrentTransactionData(), $results)) {
             $accountName = trim($results[1]);
             if (!empty($accountName)) {
                 return $this->sanitizeAccountName($accountName);
             }
         }
 
+        if (preg_match('/(.*) Betaalautomaat/', $this->parseTransactionDescription(), $results)) {
+            $accountName = trim($results[1]);
+            if (!empty($accountName)) {
+                return $this->sanitizeAccountName($accountName);
+            }
+        }
         return '';
     }
 
