@@ -95,6 +95,8 @@ abstract class Engine
      */
     private static function detectBank($string)
     {
+        ksort(self::$registeredEngines, SORT_NUMERIC);
+        
         foreach (self::$registeredEngines as $engineClass) {
             if ($engineClass::isApplicable($string)) {
                 return new $engineClass();
