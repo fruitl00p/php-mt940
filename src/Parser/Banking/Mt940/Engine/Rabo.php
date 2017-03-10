@@ -35,7 +35,7 @@ class Rabo extends Engine
             return $this->sanitizeAccount($results[1]);
         }
 
-        if (preg_match('/^:61:.{26}(.{16})/im', $this->getCurrentTransactionData(), $results)
+        if (preg_match('/^:61:.{26}(.{16})/m', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
@@ -114,7 +114,7 @@ class Rabo extends Engine
     protected function sanitizeAccount($string)
     {
         $account = parent::sanitizeAccount($string);
-        if (strlen($account) > 20 && strpos($account, '80000') == 0) {
+        if (strlen($account) > 20 && strpos($account, '80000') === 0) {
             $account = substr($account, 5);
         }
 

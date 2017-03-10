@@ -24,7 +24,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     public function testmultipleStatementsInASingleFile()
     {
-        $this->assertEquals(2, count($this->statements));
+        $this->assertCount(2, $this->statements);
     }
 
     public function testBankFromStatement()
@@ -93,10 +93,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     public function testParsesAllFoundStatements()
     {
-        $statements = $this->statements;
-
-        $first = $statements[0];
-        $last = $statements[1];
+        list($first, $last) = $this->statements;
 
         $this->assertEquals('23-11-2012', $first->getStartTimestamp('d-m-Y'));
         $this->assertEquals('23-11-2012', $first->getEndTimestamp('d-m-Y'));

@@ -12,7 +12,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Ing
      */
-    private $engine = null;
+    private $engine;
 
     protected function setUp()
     {
@@ -20,9 +20,6 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $this->engine->loadString(file_get_contents(__DIR__.'/sample'));
     }
 
-    /**
-     *
-     */
     public function testParseStatementBank()
     {
         $method = new \ReflectionMethod($this->engine, 'parseStatementBank');
@@ -34,7 +31,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         $statements = $this->engine->parse();
 
-        $this->assertEquals(1, count($statements));
+        $this->assertCount(1, $statements);
         $first = $statements[0];
 
         $this->assertEquals('22-07-2010', $first->getStartTimestamp('d-m-Y'));

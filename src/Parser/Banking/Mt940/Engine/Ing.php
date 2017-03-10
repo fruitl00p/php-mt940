@@ -41,7 +41,7 @@ class Ing extends Engine
                 return $this->sanitizeAccount($account);
             }
         }
-        if (preg_match('#:86:([A-Z]{2}[0-9]{2}[A-Z]{4}[\d]+?) [A-Z]{6}[A-Z0-9]{0,4} #', $transactionData, $results)) {
+        if (preg_match('#:86:([A-Z]{2}[\d]{2}[A-Z]{4}[\d]+?) [A-Z]{6}[A-Z0-9]{0,4} #', $transactionData, $results)) {
             $account = trim($results[1]);
             if (!empty($account)) {
                 return $this->sanitizeAccount($account);

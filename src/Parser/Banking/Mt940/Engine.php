@@ -170,7 +170,7 @@ abstract class Engine
     protected function parseStatementData()
     {
         $results = preg_split(
-                '/(^:20:|^-X{,3}$|\Z)/sm',
+                '/(^:20:|^-X{,3}$|\Z)/m',
                 $this->getRawData(),
                 -1,
                 PREG_SPLIT_NO_EMPTY
@@ -310,7 +310,7 @@ abstract class Engine
     {
         trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
                 'Please use parseStatementStartTimestamp($format) or parseStatementEndTimestamp($format) instead. '.
-                'setTimestamp is now parseStatementStartTimestamp', E_USER_DEPRECATED);
+                'parseStatementTimestamp is now parseStatementStartTimestamp', E_USER_DEPRECATED);
 
         return $this->parseStatementStartTimestamp();
     }
@@ -529,7 +529,7 @@ abstract class Engine
 
         // crude IBAN to 'old' converter
         if (Mt940::$removeIBAN
-                && preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $string, $results)
+                && preg_match('#[A-Z]{2}[\d]{2}[A-Z]{4}(.*)#', $string, $results)
                 && !empty($results[1])
         ) {
             $string = $results[1];
@@ -543,7 +543,7 @@ abstract class Engine
                 ),
                 '0'
         );
-        if ($account != '' && strlen($account) < 9 && strpos($account, 'P') === false) {
+        if ($account !== '' && strlen($account) < 9 && strpos($account, 'P') === false) {
             $account = 'P'.$account;
         }
 
@@ -595,7 +595,7 @@ abstract class Engine
     protected function sanitizeDebitCredit($string)
     {
         $debitOrCredit = strtoupper(substr((string) $string, 0, 1));
-        if ($debitOrCredit != Transaction::DEBIT && $debitOrCredit != Transaction::CREDIT) {
+        if ($debitOrCredit !== Transaction::DEBIT && $debitOrCredit !== Transaction::CREDIT) {
             trigger_error('wrong value for debit/credit ('.$string.')', E_USER_ERROR);
             $debitOrCredit = '';
         }

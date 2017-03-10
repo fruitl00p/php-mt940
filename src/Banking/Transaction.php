@@ -177,7 +177,7 @@ class Transaction implements \JsonSerializable
      */
     public function isDebit()
     {
-        return $this->getDebitCredit() == self::DEBIT;
+        return $this->getDebitCredit() === self::DEBIT;
     }
 
     /**
@@ -185,7 +185,7 @@ class Transaction implements \JsonSerializable
      */
     public function isCredit()
     {
-        return $this->getDebitCredit() == self::CREDIT;
+        return $this->getDebitCredit() === self::CREDIT;
     }
 
     /**

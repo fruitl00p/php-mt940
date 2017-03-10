@@ -76,6 +76,8 @@ class Knab extends Engine
         ) {
             return $results['account'];
         }
+
+        return '';
     }
 
     /**
@@ -99,11 +101,14 @@ class Knab extends Engine
                 && !empty($results[1])
         ) {
             return trim($results[1]);
-        } elseif (preg_match('#/NAME/(.*?)\n?/(REMI|CSID)/#ms', $this->getCurrentTransactionData(), $results)
+        }
+        if (preg_match('#/NAME/(.*?)\n?/(REMI|CSID)/#ms', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
             return trim($results[1]);
         }
+
+        return '';
     }
 
     /**
@@ -126,6 +131,9 @@ class Knab extends Engine
         }
 
         $name = $this->parseTransactionAccountName();
+        if ($name === '') {
+            return $description;
+        }
         $accountNameIsInDescription = strpos($description, $name);
         if ($accountNameIsInDescription !== false) {
             return trim(substr($description, 0, $accountNameIsInDescription-6));

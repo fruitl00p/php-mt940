@@ -66,7 +66,7 @@ class Triodos extends Engine
     {
         $parts = $this->getDescriptionParts();
         $account = $parts[0];
-        if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[2], $results)) {
+        if (preg_match('#[A-Z]{2}[\d]{2}[A-Z]{4}(.*)#', $parts[2], $results)) {
             $account = $parts[2];
         } elseif (preg_match('#10(\d+)#', $parts[0], $results)) {
             $account = $results[1];
@@ -91,7 +91,7 @@ class Triodos extends Engine
     {
         $parts = $this->getDescriptionParts();
         array_shift($parts); // remove BBAN / BIC code
-        if (preg_match('#[A-Z]{2}[0-9]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
+        if (preg_match('#[A-Z]{2}[\d]{2}[A-Z]{4}(.*)#', $parts[1], $results)) {
             array_shift($parts); // remove IBAN too
             array_shift($parts); // remove IBAN some more
         }
@@ -136,7 +136,7 @@ class Triodos extends Engine
     protected function parseStatementData()
     {
         return preg_split(
-                '/(^:20:|^-X{,3}$|\Z)/sm',
+                '/(^:20:|^-X{,3}$|\Z)/m',
                 $this->getRawData(),
                 -1,
                 PREG_SPLIT_NO_EMPTY

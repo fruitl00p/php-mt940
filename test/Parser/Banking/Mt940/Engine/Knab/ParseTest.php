@@ -12,7 +12,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Knab
      */
-    private $engine = null;
+    private $engine;
 
     protected function setUp()
     {
@@ -31,7 +31,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         $statements = $this->engine->parse();
 
-        $this->assertEquals(1, count($statements));
+        $this->assertCount(1, $statements);
         $this->assertEquals('03-12-2015', $statements[0]->getStartTimestamp('d-m-Y'));
         $this->assertEquals('03-12-2015', $statements[0]->getStartTimestamp('d-m-Y'));
     }
