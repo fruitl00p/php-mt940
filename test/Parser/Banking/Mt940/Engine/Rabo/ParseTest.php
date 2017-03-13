@@ -96,4 +96,16 @@ PURPTEST
         $statements = $this->engine->parse();
         $this->assertSame('some descripton here thatends with', $statements[1]->getTransactions()[0]->getDescription());
     }
+
+    public function testHandlingOfEREF() {
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample4'));
+        $statements = $this->engine->parse();
+        $this->assertSame('20151208123123987 0030001100999991 Rabobank.nl - Order 347347', $statements[0]->getTransactions()[0]->getDescription());
+    }
+
+    public function testHandlingOfPREF() {
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample4'));
+        $statements = $this->engine->parse();
+        $this->assertSame('PmtInfId-20151208-987', $statements[0]->getTransactions()[1]->getDescription());
+    }
 }
