@@ -78,17 +78,17 @@ class Abn extends Engine
 
     /**
      * Overloaded: ABNAMRO uses the :61: date-part of the field for two values:
-     * Valuetimestamp (YYMMDD) and Entry date (book date) (MMDD).
-     *
+     * Valuetimestamp (YYMMDD) and Entry date (book date) (MMDD). We use the year from the value stamp
+     * and use the date from the entry date, to create the entry date.
      * @return int
      */
     protected function parseTransactionEntryTimestamp()
     {
         $results = [];
-        if (preg_match('/^:61:\d{6}(\d{4})[C|D]/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+        if (preg_match('/^:61:(\d{2})\d{4}(\d{4})[C|D]/', $this->getCurrentTransactionData(), $results)
+                && !empty($results[1]) && !empty($results[2])
         ) {
-            return $this->sanitizeTimestamp($results[1], 'md');
+            return $this->sanitizeTimestamp($results[1] . $results[2], 'ymd');
         }
 
         return 0;
