@@ -129,6 +129,17 @@ class Transaction implements \JsonSerializable
     }
 
     /**
+     * @return float
+     */
+    public function getRelativePrice()
+    {
+        if ($this->isDebit()) {
+            return -$this->price;
+        }
+        return $this->price;
+    }
+
+    /**
      * @return string
      */
     public function getDebitCredit()

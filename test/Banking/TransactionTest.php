@@ -35,6 +35,20 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $transaction->getPrice());
     }
 
+    public function testRelativePriceAssesor()
+    {
+        $expected = '6250';
+        $transaction = new Transaction();
+        $transaction->setPrice($expected);
+        $transaction->setDebitCredit('C');
+
+        $this->assertEquals($expected, $transaction->getRelativePrice());
+
+        $transaction->setDebitCredit('D');
+
+        $this->assertEquals($expected * -1, $transaction->getRelativePrice());
+    }
+
     public function testDebitCreditAssesorDebit()
     {
         $expected = 'D';
