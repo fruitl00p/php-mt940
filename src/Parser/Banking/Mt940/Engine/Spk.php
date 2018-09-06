@@ -71,7 +71,7 @@ class Spk extends Engine
     protected function parseTransactionPrice()
     {
         $results = [];
-        if (preg_match('/^:61:.*[CD][a-zA-Z]?([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
+        if (preg_match('/^:61:.*?[CD][a-zA-Z]?([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
             return $this->sanitizePrice($results[1]);

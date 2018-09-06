@@ -407,7 +407,7 @@ abstract class Engine
     protected function parseTransactionPrice()
     {
         $results = [];
-        if (preg_match('/^:61:.*[CD]([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
+        if (preg_match('/^:61:.*?[CD]([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
         ) {
             return $this->sanitizePrice($results[1]);
