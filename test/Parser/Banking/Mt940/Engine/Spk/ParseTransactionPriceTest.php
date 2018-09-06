@@ -1,6 +1,8 @@
 <?php
 
-namespace Kingsquare\Parser\Banking\Mt940\Engine;
+namespace Kingsquare\Parser\Banking\Mt940\Engine\Spk;
+
+use Kingsquare\Parser\Banking\Mt940\Engine\Spk;
 
 /**
  *
