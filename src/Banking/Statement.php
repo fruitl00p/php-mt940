@@ -18,7 +18,8 @@ class Statement implements \JsonSerializable
     private $startTimestamp = 0;
     private $endTimestamp = 0;
     private $number = '';
-
+    private $currency = '';
+    
     /**
      * @return array
      */
@@ -102,6 +103,14 @@ class Statement implements \JsonSerializable
     public function setNumber($var)
     {
         $this->number = (string) $var;
+    }
+    
+    /**
+     * @param string $var
+     */
+    public function setCurrency($var)
+    {
+        $this->currency = (string) $var;
     }
 
     /**
@@ -202,5 +211,13 @@ class Statement implements \JsonSerializable
     public function getDeltaPrice()
     {
         return $this->getStartPrice() - $this->getEndPrice();
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 }
