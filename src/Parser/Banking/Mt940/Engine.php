@@ -139,6 +139,7 @@ abstract class Engine
             $statement->setStartTimestamp($this->parseStatementStartTimestamp());
             $statement->setEndTimestamp($this->parseStatementEndTimestamp());
             $statement->setNumber($this->parseStatementNumber());
+            $statement->setCurrency($this->parseStatementCurrency());
 
             foreach ($this->parseTransactionData() as $this->currentTransactionData) {
                 $transaction = new Transaction();
@@ -296,6 +297,20 @@ abstract class Engine
             return (!empty($results[1]) && $results[1] === 'D') ? -$sanitizedPrice : $sanitizedPrice;
         }
 
+        return '';
+    }
+
+    /**
+     * The currency initials parser for statements.
+     * @param string $key
+     * @return string currency initials
+     */
+    protected function parseStatementCurrency($key = '60[FM]')
+    {
+        $results = [];
+        if (preg_match('/:' . $key . ':[CD]?.*([A-Z]{3})([\d,\.]+)*/', $this->getCurrentStatementData(), $results)) {
+            return $results[1];
+        }
         return '';
     }
 

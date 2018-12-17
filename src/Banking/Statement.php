@@ -18,6 +18,7 @@ class Statement implements \JsonSerializable
     private $startTimestamp = 0;
     private $endTimestamp = 0;
     private $number = '';
+    private $currency = '';
 
     /**
      * @return array
@@ -105,6 +106,14 @@ class Statement implements \JsonSerializable
     }
 
     /**
+     * @param string $var
+     */
+    public function setCurrency($var)
+    {
+        $this->currency = (string)$var;
+    }
+
+    /**
      * @return string
      */
     public function getBank()
@@ -186,6 +195,14 @@ class Statement implements \JsonSerializable
     public function getNumber()
     {
         return $this->number;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 
     /**
