@@ -23,13 +23,13 @@ class Triodos extends Engine
     /**
      * Overloaded: the bankaccount is always prefixed.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseStatementAccount()
     {
         $results = [];
         if (preg_match('#:25:TRIODOSBANK/([\d\.]+)#', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
         }
@@ -40,7 +40,7 @@ class Triodos extends Engine
     /**
      * Overloaded: According to spec, field :28: is always 1.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseStatementNumber()
     {
@@ -50,7 +50,7 @@ class Triodos extends Engine
     /**
      * Overloaded: According to spec, field :28: is always 000.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionCode()
     {
@@ -60,7 +60,7 @@ class Triodos extends Engine
     /**
      * Overloaded: It might be IBAN or not and depending on that return a different part of the description.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccount()
     {
@@ -78,7 +78,7 @@ class Triodos extends Engine
     /**
      * Overloaded: It might be IBAN or not and depending on that return a different part of the description.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccountName()
     {
@@ -103,7 +103,7 @@ class Triodos extends Engine
     /**
      * Crude parsing of the combined iban / non iban description field.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionDescription()
     {
@@ -131,22 +131,22 @@ class Triodos extends Engine
     /**
      * Overloaded: Do not skip a header.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseStatementData()
     {
         return preg_split(
-                '/(^:20:|^-X{,3}$|\Z)/m',
-                $this->getRawData(),
-                -1,
-                PREG_SPLIT_NO_EMPTY
+            '/(^:20:|^-X{,3}$|\Z)/m',
+            $this->getRawData(),
+            -1,
+            PREG_SPLIT_NO_EMPTY
         );
     }
 
     /**
      * Overloaded: Is applicable if second line has :25:TRIODOSBANK.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function isApplicable($string)
     {

@@ -23,20 +23,20 @@ class Rabo extends Engine
     /**
      * Overloaded: Rabo has different way of storing account info.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccount()
     {
         $results = [];
         // SEPA MT940 Structured
         if (preg_match('/^:61:.*\n(.*?)(\n|\:8)/im', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
         }
 
         if (preg_match('/^:61:.{26}(.{16})/m', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
         }
@@ -47,7 +47,7 @@ class Rabo extends Engine
     /**
      * Overloaded: Rabo has different way of storing account name.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccountName()
     {
@@ -79,7 +79,7 @@ class Rabo extends Engine
     /**
      * Overloaded: Rabo has different way of storing transaction value timestamps (ymd).
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionEntryTimestamp()
     {
@@ -94,7 +94,7 @@ class Rabo extends Engine
     /**
      * Overloaded: Rabo has different way of storing transaction value timestamps (ymd).
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionValueTimestamp()
     {
@@ -109,7 +109,7 @@ class Rabo extends Engine
     /**
      * Overloaded: Rabo uses longer strings for accountnumbers.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function sanitizeAccount($string)
     {
@@ -124,18 +124,18 @@ class Rabo extends Engine
     /**
      * Overloaded: Rabo encapsulates the description with /REMI/ for SEPA.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function sanitizeDescription($string)
     {
         $description = parent::sanitizeDescription($string);
         if (strpos($description, '/REMI/') !== false
-                && preg_match('#/REMI/(.*?)(/((PURP|ISDT|CSID|RTRN)/)|$)#s', $description, $results) && !empty($results[1])
+            && preg_match('#/REMI/(.*?)(/((PURP|ISDT|CSID|RTRN)/)|$)#s', $description, $results) && !empty($results[1])
         ) {
             return $results[1];
         }
         if (strpos($description, '/EREF/') !== false
-                && preg_match('#/EREF/(.*?)/(ORDP)/#s', $description, $results) && !empty($results[1])
+            && preg_match('#/EREF/(.*?)/(ORDP)/#s', $description, $results) && !empty($results[1])
         ) {
             return $results[1];
         }
@@ -146,7 +146,7 @@ class Rabo extends Engine
     /**
      * Overloaded: Is applicable if first line has :940:.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function isApplicable($string)
     {

@@ -19,7 +19,7 @@ class Mt940 extends Banking
     /**
      * Parse the given string into an array of Banking\Statement objects.
      *
-     * @param string               $string
+     * @param string $string
      * @param Banking\Mt940\Engine $engine
      *
      * @return \Kingsquare\Banking\Statement[]

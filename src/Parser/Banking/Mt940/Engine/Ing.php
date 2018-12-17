@@ -23,7 +23,7 @@ class Ing extends Engine
     /**
      * Overloaded: Added simple IBAN transaction handling.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccount()
     {
@@ -54,7 +54,7 @@ class Ing extends Engine
     /**
      * Overloaded: Added simple IBAN transaction handling.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccountName()
     {
@@ -106,18 +106,18 @@ class Ing extends Engine
     /**
      * Overloaded: ING encapsulates the description with /REMI/ for SEPA.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function sanitizeDescription($string)
     {
         $description = parent::sanitizeDescription($string);
         if (strpos($description, '/REMI/USTD//') !== false
-                && preg_match('#/REMI/USTD//(.*?)/#s', $description, $results) && !empty($results[1])
+            && preg_match('#/REMI/USTD//(.*?)/#s', $description, $results) && !empty($results[1])
         ) {
             return $results[1];
         }
         if (strpos($description, '/REMI/STRD/CUR/') !== false
-                && preg_match('#/REMI/STRD/CUR/(.*?)/#s', $description, $results) && !empty($results[1])
+            && preg_match('#/REMI/STRD/CUR/(.*?)/#s', $description, $results) && !empty($results[1])
         ) {
             return $results[1];
         }
@@ -128,7 +128,7 @@ class Ing extends Engine
     /**
      * Overloaded: Is applicable if first line has INGB.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function isApplicable($string)
     {

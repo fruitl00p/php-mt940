@@ -32,7 +32,7 @@ class Statement implements \JsonSerializable
      */
     public function setBank($var)
     {
-        $this->bank = (string) $var;
+        $this->bank = (string)$var;
     }
 
     /**
@@ -40,7 +40,7 @@ class Statement implements \JsonSerializable
      */
     public function setAccount($var)
     {
-        $this->account = (string) $var;
+        $this->account = (string)$var;
     }
 
     /**
@@ -48,7 +48,7 @@ class Statement implements \JsonSerializable
      */
     public function setTransactions($transactions)
     {
-        $this->transactions = (array) $transactions;
+        $this->transactions = (array)$transactions;
     }
 
     /**
@@ -56,7 +56,7 @@ class Statement implements \JsonSerializable
      */
     public function setStartPrice($var)
     {
-        $this->startPrice = (float) $var;
+        $this->startPrice = (float)$var;
     }
 
     /**
@@ -64,7 +64,7 @@ class Statement implements \JsonSerializable
      */
     public function setEndPrice($var)
     {
-        $this->endPrice = (float) $var;
+        $this->endPrice = (float)$var;
     }
 
     /**
@@ -74,9 +74,9 @@ class Statement implements \JsonSerializable
      */
     public function setTimestamp($var)
     {
-        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
-                'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. '.
-                'setTimestamp is now setStartTimestamp', E_USER_DEPRECATED);
+        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. ' .
+            'Please use setStartTimestamp($format) or setEndTimestamp($format) instead. ' .
+            'setTimestamp is now setStartTimestamp', E_USER_DEPRECATED);
         return $this->setStartTimestamp($var);
     }
 
@@ -85,7 +85,7 @@ class Statement implements \JsonSerializable
      */
     public function setStartTimestamp($var)
     {
-        $this->startTimestamp = (int) $var;
+        $this->startTimestamp = (int)$var;
     }
 
     /**
@@ -93,7 +93,7 @@ class Statement implements \JsonSerializable
      */
     public function setEndTimestamp($var)
     {
-        $this->endTimestamp = (int) $var;
+        $this->endTimestamp = (int)$var;
     }
 
     /**
@@ -101,7 +101,7 @@ class Statement implements \JsonSerializable
      */
     public function setNumber($var)
     {
-        $this->number = (string) $var;
+        $this->number = (string)$var;
     }
 
     /**
@@ -153,9 +153,9 @@ class Statement implements \JsonSerializable
      */
     public function getTimestamp($format = 'U')
     {
-        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
-                'Please use getStartTimestamp($format) or getEndTimestamp($format) instead. '.
-                'getTimestamp is now getStartTimestamp', E_USER_DEPRECATED);
+        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. ' .
+            'Please use getStartTimestamp($format) or getEndTimestamp($format) instead. ' .
+            'getTimestamp is now getStartTimestamp', E_USER_DEPRECATED);
 
         return $this->getStartTimestamp($format);
     }

@@ -2,8 +2,8 @@
 
 namespace Kingsquare\Parser\Banking\Mt940;
 
-use Kingsquare\Banking\Statement as Statement;
-use Kingsquare\Banking\Transaction as Transaction;
+use Kingsquare\Banking\Statement;
+use Kingsquare\Banking\Transaction;
 use Kingsquare\Parser\Banking\Mt940;
 
 /**
@@ -46,7 +46,7 @@ abstract class Engine
      * Register a new Engine.
      *
      * @param string $engineClass Class name of Engine to be registered
-     * @param int    $priority
+     * @param int $priority
      */
     public static function registerEngine($engineClass, $priority)
     {
@@ -96,7 +96,7 @@ abstract class Engine
     private static function detectBank($string)
     {
         ksort(self::$registeredEngines, SORT_NUMERIC);
-        
+
         foreach (self::$registeredEngines as $engineClass) {
             if ($engineClass::isApplicable($string)) {
                 return new $engineClass();
@@ -170,10 +170,10 @@ abstract class Engine
     protected function parseStatementData()
     {
         $results = preg_split(
-                '/(^:20:|^-X{,3}$|\Z)/m',
-                $this->getRawData(),
-                -1,
-                PREG_SPLIT_NO_EMPTY
+            '/(^:20:|^-X{,3}$|\Z)/m',
+            $this->getRawData(),
+            -1,
+            PREG_SPLIT_NO_EMPTY
         );
         array_shift($results); // remove the header
         return $results;
@@ -189,7 +189,7 @@ abstract class Engine
         $results = [];
         preg_match_all('/^:61:(.*?)(?=^:61:|^-X{,3}$|\Z)/sm', $this->getCurrentStatementData(), $results);
 
-        return (!empty($results[0])) ? $results[0] : [];
+        return !empty($results[0]) ? $results[0] : [];
     }
 
     /**
@@ -243,14 +243,14 @@ abstract class Engine
     {
         $results = [];
         if (preg_match('/:25:([\d\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
         }
 
         // SEPA / IBAN
         if (preg_match('/:25:([A-Z0-9]{8}[\d\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
         }
@@ -281,15 +281,15 @@ abstract class Engine
     /**
      * The actual pricing parser for statements.
      *
-     * @param $key
+     * @param string $key
      *
      * @return float|string
      */
     protected function parseStatementPrice($key)
     {
         $results = [];
-        if (preg_match('/:'.$key.':([CD])?.*EUR([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[2])
+        if (preg_match('/:' . $key . ':([CD])?.*[A-Z]{3}([\d,\.]+)*/', $this->getCurrentStatementData(), $results)
+            && !empty($results[2])
         ) {
             $sanitizedPrice = $this->sanitizePrice($results[2]);
 
@@ -308,9 +308,9 @@ abstract class Engine
      */
     protected function parseStatementTimestamp()
     {
-        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. '.
-                'Please use parseStatementStartTimestamp($format) or parseStatementEndTimestamp($format) instead. '.
-                'parseStatementTimestamp is now parseStatementStartTimestamp', E_USER_DEPRECATED);
+        trigger_error('Deprecated in favor of splitting the start and end timestamps for a statement. ' .
+            'Please use parseStatementStartTimestamp($format) or parseStatementEndTimestamp($format) instead. ' .
+            'parseStatementTimestamp is now parseStatementStartTimestamp', E_USER_DEPRECATED);
 
         return $this->parseStatementStartTimestamp();
     }
@@ -338,8 +338,8 @@ abstract class Engine
     protected function parseTimestampFromStatement($key)
     {
         $results = [];
-        if (preg_match('/:'.$key.':[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
+        if (preg_match('/:' . $key . ':[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
+            && !empty($results[1])
         ) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
         }
@@ -356,7 +356,7 @@ abstract class Engine
     {
         $results = [];
         if (preg_match('/:28C?:(.*)/', $this->getCurrentStatementData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return trim($results[1]);
         }
@@ -365,6 +365,7 @@ abstract class Engine
     }
 
     // transaction parsers, these work with getCurrentTransactionData
+
     /**
      * uses the 86 field to determine account number of the transaction.
      *
@@ -374,7 +375,7 @@ abstract class Engine
     {
         $results = [];
         if (preg_match('/^:86: ?([\d\.]+)\s/im', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
         }
@@ -391,7 +392,7 @@ abstract class Engine
     {
         $results = [];
         if (preg_match('/:86: ?[\d\.]+ (.+)/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccountName($results[1]);
         }
@@ -408,7 +409,7 @@ abstract class Engine
     {
         $results = [];
         if (preg_match('/^:61:.*?[CD]([\d,\.]+)N/i', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizePrice($results[1]);
         }
@@ -425,7 +426,7 @@ abstract class Engine
     {
         $results = [];
         if (preg_match('/^:61:\d+([CD])\d+/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeDebitCredit($results[1]);
         }
@@ -438,7 +439,8 @@ abstract class Engine
      *
      * @return boolean
      */
-    protected function parseTransactionCancellation () {
+    protected function parseTransactionCancellation()
+    {
         return false;
     }
 
@@ -451,7 +453,7 @@ abstract class Engine
     {
         $results = [];
         if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeDescription(implode(PHP_EOL, $results[1]));
         }
@@ -488,8 +490,8 @@ abstract class Engine
     protected function parseTransactionTimestamp($key)
     {
         $results = [];
-        if (preg_match('/^:'.$key.':(\d{6})/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+        if (preg_match('/^:' . $key . ':(\d{6})/', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
         ) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
         }
@@ -506,7 +508,7 @@ abstract class Engine
     {
         $results = [];
         if (preg_match('/^:61:.*?N(.{3}).*/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return trim($results[1]);
         }
@@ -522,29 +524,29 @@ abstract class Engine
     protected function sanitizeAccount($string)
     {
         static $crudeReplacements = [
-                '.' => '',
-                ' ' => '',
-                'GIRO' => 'P',
+            '.' => '',
+            ' ' => '',
+            'GIRO' => 'P',
         ];
 
         // crude IBAN to 'old' converter
         if (Mt940::$removeIBAN
-                && preg_match('#[A-Z]{2}[\d]{2}[A-Z]{4}(.*)#', $string, $results)
-                && !empty($results[1])
+            && preg_match('#[A-Z]{2}[\d]{2}[A-Z]{4}(.*)#', $string, $results)
+            && !empty($results[1])
         ) {
             $string = $results[1];
         }
 
         $account = ltrim(
-                str_replace(
-                        array_keys($crudeReplacements),
-                        array_values($crudeReplacements),
-                        strip_tags(trim($string))
-                ),
-                '0'
+            str_replace(
+                array_keys($crudeReplacements),
+                array_values($crudeReplacements),
+                strip_tags(trim($string))
+            ),
+            '0'
         );
         if ($account !== '' && strlen($account) < 9 && strpos($account, 'P') === false) {
-            $account = 'P'.$account;
+            $account = 'P' . $account;
         }
 
         return $account;
@@ -571,7 +573,7 @@ abstract class Engine
         $date = \DateTime::createFromFormat($inFormat, $string);
         $date->setTime(0, 0, 0);
         if ($date !== false) {
-            return (int) $date->format('U');
+            return (int)$date->format('U');
         }
 
         return 0;
@@ -594,9 +596,9 @@ abstract class Engine
      */
     protected function sanitizeDebitCredit($string)
     {
-        $debitOrCredit = strtoupper(substr((string) $string, 0, 1));
+        $debitOrCredit = strtoupper(substr((string)$string, 0, 1));
         if ($debitOrCredit !== Transaction::DEBIT && $debitOrCredit !== Transaction::CREDIT) {
-            trigger_error('wrong value for debit/credit ('.$string.')', E_USER_ERROR);
+            trigger_error('wrong value for debit/credit (' . $string . ')', E_USER_ERROR);
             $debitOrCredit = '';
         }
 
@@ -612,6 +614,6 @@ abstract class Engine
     {
         $floatPrice = ltrim(str_replace(',', '.', strip_tags(trim($string))), '0');
 
-        return (float) $floatPrice;
+        return (float)$floatPrice;
     }
 }

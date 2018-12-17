@@ -24,7 +24,7 @@ class Abn extends Engine
      * Overloaded: ABN Amro shows the GIRO
      * includes fix for 'for GIRO 1234567 TEST 201009063689 CLIEOP 21-9' and translates that into 1234567.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccount()
     {
@@ -33,13 +33,13 @@ class Abn extends Engine
         if (empty($results)) {
             $giroMatch = $ibanMatch = [];
             if (preg_match('/^:86:GIRO(.{9})/im', $this->getCurrentTransactionData(), $giroMatch)
-                    && !empty($giroMatch[1])
+                && !empty($giroMatch[1])
             ) {
                 $results = $giroMatch[1];
             }
 
             if (preg_match('!^:86:/.*/IBAN/(.*?)/!m', $this->getCurrentTransactionData(), $ibanMatch)
-                    && !empty($ibanMatch[1])
+                && !empty($ibanMatch[1])
             ) {
                 $results = $ibanMatch[1];
             }
@@ -51,7 +51,7 @@ class Abn extends Engine
     /**
      * Overloaded: ABN Amro shows the GIRO and fixes newlines etc.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function parseTransactionAccountName()
     {
@@ -62,13 +62,13 @@ class Abn extends Engine
 
         $results = [];
         if (preg_match('/:86:(GIRO|BGC\.)\s+[\d]+ (.+)/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[2])
+            && !empty($results[2])
         ) {
             return $this->sanitizeAccountName($results[2]);
         }
 
         if (preg_match('/:86:.+\n(.*)\n/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccountName($results[1]);
         }
@@ -86,13 +86,13 @@ class Abn extends Engine
     {
         $results = [];
         if (preg_match('/^:61:(\d{2})((\d{2})\d{2})((\d{2})\d{2})[C|D]/', $this->getCurrentTransactionData(), $results)
-                && !empty($results[1])
+            && !empty($results[1])
         ) {
 
             list(, $valueDateY, $valueDateMD, $valueDateM, $entryDateMD, $entryDateM) = $results;
-            $entryDate = $valueDateY.$entryDateMD;
+            $entryDate = $valueDateY . $entryDateMD;
             if ($valueDateMD !== $entryDateMD && $valueDateM > $entryDateM) {
-                $entryDate = ($valueDateY+1).$entryDateMD;
+                $entryDate = ($valueDateY + 1) . $entryDateMD;
             }
 
             return $this->sanitizeTimestamp($entryDate, 'ymd');
@@ -104,7 +104,7 @@ class Abn extends Engine
     /**
      * Overloaded: Is applicable if first line has ABNA.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function isApplicable($string)
     {
