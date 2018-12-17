@@ -132,10 +132,8 @@ class Transaction implements \JsonSerializable
      */
     public function getRelativePrice()
     {
-        if ($this->isDebit()) {
-            return -$this->price;
-        }
-        return $this->price;
+        $price = $this->getPrice();
+        return $this->isDebit() ? -$price : $price;
     }
 
     /**
