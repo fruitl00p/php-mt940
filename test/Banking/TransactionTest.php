@@ -28,7 +28,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
     public function testPriceAssesor()
     {
-        $expected = '6250';
+        $expected = 6250;
         $transaction = new Transaction();
         $transaction->setPrice($expected);
 
@@ -37,7 +37,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
     public function testRelativePriceAssesor()
     {
-        $expected = '6250';
+        $expected = (float) 6250;
         $transaction = new Transaction();
         $transaction->setPrice($expected);
         $transaction->setDebitCredit('C');
