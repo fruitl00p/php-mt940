@@ -11,6 +11,8 @@ use Kingsquare\Parser\Banking\Mt940\Engine;
  */
 class Hsbc extends Engine
 {
+    private const PATTERN_TAG_61 = '/^:61:(\d{6})(\d{4}?)(C|D|EC|ED|RC|RD)[A-Z](\d+,\d+)(F|N|S)([A-Z]{3})(.{16})/m';
+
     /**
      * returns the name of the bank.
      *
@@ -55,28 +57,6 @@ class Hsbc extends Engine
     }
 
     /**
-     * Overloaded: (D/C Mark)(Date)(Currency)(Amount)
-     *
-     * @param $key
-     *
-     * @return float|string
-     */
-    protected function parseStatementPrice($key)
-    {
-        $results = [];
-        // eg.: :60F:C120329HKD0,00
-        // eg.: :62F:C120329HKD0,00
-        $pattern = '/:' . $key . ':([CD])(\d{6})([A-Z]{3})(\d+,\d+)/';
-        if (preg_match($pattern, $this->getCurrentStatementData(), $results)) {
-            $sanitizedPrice = $this->sanitizePrice($results[4]);
-
-            return ( ! empty($results[1]) && $results[1] === 'D') ? -$sanitizedPrice : $sanitizedPrice;
-        }
-
-        return '';
-    }
-
-    /**
      * Overloaded: HSBC has different way of storing account info.
      *
      * {@inheritdoc}
@@ -89,8 +69,7 @@ class Hsbc extends Engine
         // Reference for the Account Owner (16x): 1004688128
         // Reference of the Account Servicing Institution [//16x]: 6128522200250001
         // Supplementary Details [34x]: null
-        $pattern = '/^:61:(\d{6})(\d{4}?)(C|D|EC|ED|RC|RD)[A-Z](\d+,\d+)(F|N|S)([A-Z]{3})(.{16})/m';
-        if (preg_match($pattern, $this->getCurrentTransactionData(), $results)) {
+        if (preg_match(self::PATTERN_TAG_61, $this->getCurrentTransactionData(), $results)) {
             return $this->sanitizeAccount($results[7]);
         }
 
@@ -105,8 +84,7 @@ class Hsbc extends Engine
     protected function parseTransactionDebitCredit()
     {
         $results = [];
-        $pattern = '/^:61:(\d{6})(\d{4}?)(C|D|EC|ED|RC|RD)[A-Z](\d+,\d+)(F|N|S)([A-Z]{3})(.{16})/m';
-        if (preg_match($pattern, $this->getCurrentTransactionData(), $results)) {
+        if (preg_match(self::PATTERN_TAG_61, $this->getCurrentTransactionData(), $results)) {
             return $this->sanitizeDebitCredit($results[3]);
         }
 
@@ -168,8 +146,7 @@ class Hsbc extends Engine
     protected function parseTransactionValueTimestamp()
     {
         $results = [];
-        $pattern = '/^:61:(\d{6})(\d{4}?)(C|D|EC|ED|RC|RD)[A-Z](\d+,\d+)(F|N|S)([A-Z]{3})(.{16})/m';
-        if (preg_match($pattern, $this->getCurrentTransactionData(), $results)) {
+        if (preg_match(self::PATTERN_TAG_61, $this->getCurrentTransactionData(), $results)) {
             return $this->sanitizeTimestamp($results[1], 'ymd');
         }
 
