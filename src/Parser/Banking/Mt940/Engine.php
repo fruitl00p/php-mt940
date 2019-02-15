@@ -25,6 +25,7 @@ abstract class Engine
         400 => Engine\Spk::class,
         500 => Engine\Triodos::class,
         600 => Engine\Knab::class,
+        700 => Engine\Hsbc::class,
     ];
 
     /**
