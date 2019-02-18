@@ -156,6 +156,7 @@ abstract class Engine
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
                 $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
                 $transaction->setTransactionCode($this->parseTransactionCode());
+                $transaction->setVirtualAccount($this->parseVirtualAccount());
                 $statement->addTransaction($transaction);
             }
             $results[] = $statement;
@@ -478,6 +479,22 @@ abstract class Engine
     }
 
     /**
+     * retrieve the virtual account from full description of the transaction.
+     *
+     * @return string
+     */
+    protected function parseVirtualAccount()
+    {
+        $results = [];
+        if (preg_match('/[\n].*?(?:\/VA\/(.+)$)/m', $this->getCurrentTransactionData(), $results)) {
+            return $this->sanitizeVirtualAccount($results[1]);
+        }
+
+        return '';
+    }
+
+
+    /**
      * uses the 61 field to determine the entry timestamp.
      *
      * @return int
@@ -632,4 +649,15 @@ abstract class Engine
 
         return (float)$floatPrice;
     }
+
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function sanitizeVirtualAccount($string)
+    {
+        return $string;
+    }
+
 }
