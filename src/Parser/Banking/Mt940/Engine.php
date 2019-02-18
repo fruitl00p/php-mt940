@@ -657,7 +657,7 @@ abstract class Engine
      */
     protected function sanitizeVirtualAccount($string)
     {
-        return $string;
+        return trim($string);
     }
 
 }
