@@ -146,7 +146,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     public function testJsonSerialization()
     {
         $expected = '{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit":"D","cancellation":false,'.
-            '"description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}';
+            '"description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G","virtualAccount":"666666"}';
 
         $params = [
             'account' => '123123',
@@ -158,6 +158,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             'valueTimestamp' => 1231,
             'entryTimestamp' => 1234,
             'transactionCode' => '13G',
+            'virtualAccount' => '666666',
         ];
         $statement = new Transaction();
         foreach ($params as $key => $value) {
