@@ -15,6 +15,17 @@ class HsbcTransaction extends Transaction
     private $virtualAccount = '';
 
     /**
+     * Overloaded
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $result = parent::jsonSerialize() + get_object_vars($this);
+        return $result;
+    }
+
+    /**
      * @param string $var
      */
     public function setVirtualAccount($var)

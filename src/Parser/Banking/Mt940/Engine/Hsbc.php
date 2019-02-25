@@ -42,7 +42,7 @@ class Hsbc extends Engine
     }
 
     /**
-     * actual parsing of the data.
+     * Overloaded: add support for virtual account.
      *
      * @return Statement[]
      */
