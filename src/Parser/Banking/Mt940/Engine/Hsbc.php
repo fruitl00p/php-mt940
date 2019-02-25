@@ -2,6 +2,8 @@
 
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
+use Kingsquare\Banking\Statement;
+use Kingsquare\Banking\Hsbc\HsbcTransaction;
 use Kingsquare\Banking\Transaction;
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
@@ -36,6 +38,51 @@ class Hsbc extends Engine
             -1,
             PREG_SPLIT_NO_EMPTY
         );
+        return $results;
+    }
+
+    /**
+     * actual parsing of the data.
+     *
+     * @return Statement[]
+     */
+    public function parse()
+    {
+        $results = [];
+        foreach ($this->parseStatementData() as $this->currentStatementData) {
+            $statement = new Statement();
+            if ($this->debug) {
+                $statement->rawData = $this->currentStatementData;
+            }
+            $statement->setBank($this->parseStatementBank());
+            $statement->setAccount($this->parseStatementAccount());
+            $statement->setStartPrice($this->parseStatementStartPrice());
+            $statement->setEndPrice($this->parseStatementEndPrice());
+            $statement->setStartTimestamp($this->parseStatementStartTimestamp());
+            $statement->setEndTimestamp($this->parseStatementEndTimestamp());
+            $statement->setNumber($this->parseStatementNumber());
+            $statement->setCurrency($this->parseStatementCurrency());
+
+            foreach ($this->parseTransactionData() as $this->currentTransactionData) {
+                $transaction = new HsbcTransaction();
+                if ($this->debug) {
+                    $transaction->rawData = $this->currentTransactionData;
+                }
+                $transaction->setAccount($this->parseTransactionAccount());
+                $transaction->setAccountName($this->parseTransactionAccountName());
+                $transaction->setPrice($this->parseTransactionPrice());
+                $transaction->setDebitCredit($this->parseTransactionDebitCredit());
+                $transaction->setCancellation($this->parseTransactionCancellation());
+                $transaction->setDescription($this->parseTransactionDescription());
+                $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
+                $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
+                $transaction->setTransactionCode($this->parseTransactionCode());
+                $transaction->setVirtualAccount($this->parseVirtualAccount());
+                $statement->addTransaction($transaction);
+            }
+            $results[] = $statement;
+        }
+
         return $results;
     }
 
@@ -154,6 +201,21 @@ class Hsbc extends Engine
     }
 
     /**
+     * retrieve the virtual account from full description of the transaction.
+     *
+     * @return string
+     */
+    protected function parseVirtualAccount()
+    {
+        $results = [];
+        if (preg_match('/[\n].*?(?:\/VA\/(.+)$)/m', $this->getCurrentTransactionData(), $results)) {
+            return $this->sanitizeVirtualAccount($results[1]);
+        }
+
+        return '';
+    }
+
+    /**
      * Overloaded: HSBC encapsulates the description with /REMI/ for SEPA.
      *
      * {@inheritdoc}
@@ -191,6 +253,16 @@ class Hsbc extends Engine
         }
 
         return $debitOrCredit;
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function sanitizeVirtualAccount($string)
+    {
+        return trim($string);
     }
 
     /**
