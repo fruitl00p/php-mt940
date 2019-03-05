@@ -47,6 +47,7 @@ Currently the following engines are included:
 - RABOBANK ([here](./src/Parser/Banking/Mt940/Engine/Rabo.php))
 - SPARKASSE ([here](./src/Parser/Banking/Mt940/Engine/Spk.php))
 - TRIODOS ([here](./src/Parser/Banking/Mt940/Engine/Triodos.php))
+- HSBC ([here](./src/Parser/Banking/Mt940/Engine/Hsbc.php))
 - a default `UNKNOWN`-engine ([here](./src/Parser/Banking/Mt940/Engine/Unknown.php))
 
 ### Custom engines
