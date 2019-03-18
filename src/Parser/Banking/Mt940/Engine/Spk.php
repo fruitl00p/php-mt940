@@ -29,7 +29,7 @@ class Spk extends Engine
      */
     protected function parseStatementStartPrice()
     {
-        return parent::parseStatementPrice('60[FM]');
+        return $this->parseStatementPrice('60[FM]');
     }
 
     /**
@@ -39,7 +39,7 @@ class Spk extends Engine
      */
     protected function parseStatementStartTimestamp()
     {
-        return parent::parseTimestampFromStatement('60[FM]');
+        return $this->parseTimestampFromStatement('60[FM]');
     }
 
     /**
@@ -49,7 +49,7 @@ class Spk extends Engine
      */
     protected function parseStatementEndTimestamp()
     {
-        return parent::parseTimestampFromStatement('60[FM]');
+        return $this->parseTimestampFromStatement('60[FM]');
     }
 
     /**
@@ -59,7 +59,7 @@ class Spk extends Engine
      */
     protected function parseStatementEndPrice()
     {
-        return parent::parseStatementPrice('62[FM]');
+        return $this->parseStatementPrice('62[FM]');
     }
 
     /**

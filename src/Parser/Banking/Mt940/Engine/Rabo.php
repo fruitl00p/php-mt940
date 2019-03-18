@@ -141,7 +141,7 @@ class Rabo extends Engine
         }
 
         if (strpos($description, '/PREF/') !== false
-                    && preg_match('#/PREF/(.*)/?#s', $description, $results) && !empty($results[1])
+            && preg_match('#/PREF/(.*)/?#s', $description, $results) && !empty($results[1])
         ) {
             return $results[1];
         }

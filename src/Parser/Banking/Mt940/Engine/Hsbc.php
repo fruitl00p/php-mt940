@@ -95,7 +95,7 @@ class Hsbc extends Engine
     {
         $results = [];
         if (preg_match('/:25:([0-9X]+)*/', $this->getCurrentStatementData(), $results)
-            && ! empty($results[1])
+            && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
         }
@@ -149,21 +149,21 @@ class Hsbc extends Engine
         // SEPA MT940 Structured
         if (preg_match('#/NAME/(.+?)\n?/(REMI|ADDR|ISDT|CSID)/#ms', $this->getCurrentTransactionData(), $results)) {
             $accountName = trim($results[1]);
-            if ( ! empty($accountName)) {
+            if (!empty($accountName)) {
                 return $this->sanitizeAccountName($accountName);
             }
         }
 
         if (preg_match('/^:61:.*? (.+)/m', $this->getCurrentTransactionData(), $results)) {
             $accountName = trim($results[1]);
-            if ( ! empty($accountName)) {
+            if (!empty($accountName)) {
                 return $this->sanitizeAccountName($accountName);
             }
         }
 
         if (preg_match('/(.*) Betaalautomaat/', $this->parseTransactionDescription(), $results)) {
             $accountName = trim($results[1]);
-            if ( ! empty($accountName)) {
+            if (!empty($accountName)) {
                 return $this->sanitizeAccountName($accountName);
             }
         }
@@ -224,12 +224,12 @@ class Hsbc extends Engine
     {
         $description = parent::sanitizeDescription($string);
         if (strpos($description, '/REMI/') !== false
-            && preg_match('#/REMI/(.*?)(/((PURP|ISDT|CSID|RTRN)/)|$)#s', $description, $results) && ! empty($results[1])
+            && preg_match('#/REMI/(.*?)(/((PURP|ISDT|CSID|RTRN)/)|$)#s', $description, $results) && !empty($results[1])
         ) {
             return $results[1];
         }
         if (strpos($description, '/EREF/') !== false
-            && preg_match('#/EREF/(.*?)/(ORDP)/#s', $description, $results) && ! empty($results[1])
+            && preg_match('#/EREF/(.*?)/(ORDP)/#s', $description, $results) && !empty($results[1])
         ) {
             return $results[1];
         }
@@ -246,9 +246,9 @@ class Hsbc extends Engine
      */
     protected function sanitizeDebitCredit($string)
     {
-        $debitOrCredit = strtoupper(substr((string) $string, -1, 1));
+        $debitOrCredit = strtoupper(substr((string)$string, -1, 1));
         if ($debitOrCredit !== Transaction::DEBIT && $debitOrCredit !== Transaction::CREDIT) {
-            trigger_error('wrong value for debit/credit ('.$string.')', E_USER_ERROR);
+            trigger_error('wrong value for debit/credit (' . $string . ')', E_USER_ERROR);
             $debitOrCredit = '';
         }
 
