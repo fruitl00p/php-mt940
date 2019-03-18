@@ -1,17 +1,12 @@
 <?php
 
+namespace Kingsquare\Banking\Transaction;
 
-namespace Kingsquare\Objects;
-
-
-use ValueObjects\Enum\Enum;
-
-class TransactionType extends Enum
+class Type
 {
     const TRANSFER = 10;
     const SEPA_TRANSFER = 11;
     const SAVINGS_TRANSFER = 12;
-
 
     const SEPA_DIRECTDEBIT = 20;
 
@@ -19,13 +14,7 @@ class TransactionType extends Enum
     const BANK_COSTS = 30;
     const BANK_INTEREST = 31;
 
-
-
     const ATM_WITHDRAWAL = 40;
-
-
     const PAYMENT_TERMINAL = 50;
     const UNKNOWN = 99;
-
-
 }

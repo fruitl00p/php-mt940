@@ -3,7 +3,7 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
-use Kingsquare\Objects\TransactionType;
+use Kingsquare\Banking\Transaction\Type;
 
 /**
  * Knab parser for Kingsquare mt940 package.
@@ -152,38 +152,28 @@ class Knab extends Engine
         return strpos($firstline, 'F01KNABNL2HAXXX0000000000') !== false;
     }
 
+    /**
+     * @return int
+     */
     protected function parseTransactionType()
     {
-        $code = $this->parseTransactionCode();
-        switch ($code) {
-            case 541:
-            case 544:
-            case 547:
-                $result = TransactionType::get(TransactionType::SEPA_TRANSFER);
-                break;
-            case 64:
-                $result = TransactionType::get(TransactionType::SEPA_DIRECTDEBIT);
-                break;
-            case 93:
-                $result = TransactionType::get(TransactionType::BANK_COSTS);
-                break;
-            case 13:
-            case 30:
-                $result = TransactionType::get(TransactionType::PAYMENT_TERMINAL);
-                break;
-            case "MSC":
-                $result = TransactionType::get(TransactionType::BANK_INTEREST);
-                break;
-            case "TRF":
-                $result = TransactionType::get(TransactionType::UNKNOWN);
-                break;
-            default:
-                var_dump($code);
-                var_dump($this->getCurrentTransactionData()); die();
-                throw new \RuntimeException("Don't know code $code for RABOBANK");
-        }
+        static $map = [
+            541 => Type::SEPA_TRANSFER,
+            544 => Type::SEPA_TRANSFER,
+            547 => Type::SEPA_TRANSFER,
+            64 => Type::SEPA_DIRECTDEBIT,
+            93 => Type::BANK_COSTS,
+            13 => Type::PAYMENT_TERMINAL,
+            30 => Type::PAYMENT_TERMINAL,
+            'MSC' => Type::BANK_INTEREST,
+            'TRF' => Type::UNKNOWN,
+        ];
 
-        return $result;
+        $code = $this->parseTransactionCode();
+        if (array_key_exists($code, $map)) {
+            return $map[$code];
+        }
+        throw new \RuntimeException("Don't know code $code for this bank");
     }
 
 }

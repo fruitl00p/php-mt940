@@ -3,6 +3,7 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
+use Kingsquare\Banking\Transaction\Type;
 
 /**
  * @author Kingsquare (source@kingsquare.nl)
@@ -159,58 +160,40 @@ class Rabo extends Engine
         return strpos(strtok($string, "\r\n\t"), ':940:') !== false;
     }
 
+    /**
+     * @return int
+     */
     protected function parseTransactionType()
     {
+        static $map = [
+            102 => Type::SEPA_TRANSFER,  // "Betaalopdracht IDEAL"
+            541 => Type::SEPA_TRANSFER,
+            544 => Type::SEPA_TRANSFER,
+            547 => Type::SEPA_TRANSFER,
+            504 => Type::SAVINGS_TRANSFER,
+            691 => Type::SAVINGS_TRANSFER,
+            64 => Type::SEPA_DIRECTDEBIT,
+            93 => Type::BANK_COSTS,
+            12 => Type::PAYMENT_TERMINAL,
+            13 => Type::PAYMENT_TERMINAL,
+            30 => Type::PAYMENT_TERMINAL,
+            29 => Type::ATM_WITHDRAWAL,
+            31 => Type::ATM_WITHDRAWAL,
+            79 => Type::UNKNOWN,
+            'MSC' => Type::BANK_INTEREST,
+        ];
+
         $code = $this->parseTransactionCode();
-        switch ($code) {
-            case 541:
-            case 544:
-            case 102: // "Betaalopdracht IDEAL"
-            case 547:
-                $result = TransactionType::get(TransactionType::SEPA_TRANSFER);
-                break;
-
-            case 504:
-            case 691:
-                $result = TransactionType::get(TransactionType::SAVINGS_TRANSFER);
-                break;
-            case 64:
-                $result = TransactionType::get(TransactionType::SEPA_DIRECTDEBIT);
-                break;
-            case 93:
-                $result = TransactionType::get(TransactionType::BANK_COSTS);
-                break;
-            case 13:
-            case 12:
-            case 30:
-                $result = TransactionType::get(TransactionType::PAYMENT_TERMINAL);
-                break;
-            case 29:
-            case 31:
-                $result = TransactionType::get(TransactionType::ATM_WITHDRAWAL);
-                break;
-            case "MSC":
-                $result = TransactionType::get(TransactionType::BANK_INTEREST);
-                break;
-            case 404: // "Buitenland transactie credit"
-                if (stripos($this->getCurrentTransactionData(), 'eurobetaling') !== false) {
-                    $result = TransactionType::get(TransactionType::SEPA_TRANSFER);
-                } else {
-                    $result = TransactionType::get(TransactionType::TRANSFER);
-                }
-
-                break;
-            case 79: // "Acceptgiro Mobiel Bankieren"
-                $result = TransactionType::get(TransactionType::UNKNOWN);
-                break;
-
-            default:
-                var_dump($code);
-                var_dump($this->getCurrentTransactionData()); die();
-                throw new \RuntimeException("Don't know code $code for RABOBANK");
+        if ($code === 404) {
+            return (stripos($this->getCurrentTransactionData(),
+                    'eurobetaling') !== false) ? Type::SEPA_TRANSFER : Type::TRANSFER;
         }
 
-        return $result;
+        if (array_key_exists($code, $map)) {
+            return $map[$code];
+        }
+
+        throw new \RuntimeException("Don't know code $code for this bank");
     }
 
 }
