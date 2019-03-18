@@ -7,4 +7,11 @@ require dirname(__DIR__) . 'vendor/autoload.php';
 // and parse them from a given file, this could be any file or a posted string
 $parser = new \Kingsquare\Parser\Banking\Mt940();
 $tmpFile = __DIR__ . '/test.mta';
-$parsedStatements = $parser->parse(file_get_contents($tmpFile));
+foreach ($parser->parse(file_get_contents($tmpFile)) as $key => $statement) {
+    $transactions = $statement->getTransactions();
+    // handle the transactions
+    foreach ($transactions as $transaction) {
+        // do something per transaction $transaction->getDescription();
+        // etc
+    }
+}
