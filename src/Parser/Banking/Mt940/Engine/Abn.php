@@ -95,7 +95,7 @@ class Abn extends Engine
                 $entryDate = ($valueDateY + 1) . $entryDateMD;
             }
 
-            return $this->sanitizeTimestamp($entryDate, 'ymd');
+            return $this->sanitizeTimestamp($entryDate);
         }
 
         return 0;

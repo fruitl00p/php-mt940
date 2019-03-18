@@ -179,7 +179,7 @@ class Hsbc extends Engine
     {
         $results = [];
         if (preg_match('/^:60F:[C|D]([\d]{6})/m', $this->getCurrentStatementData(), $results)) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
+            return $this->sanitizeTimestamp($results[1]);
         }
 
         return 0;
@@ -194,7 +194,7 @@ class Hsbc extends Engine
     {
         $results = [];
         if (preg_match(self::PATTERN_TAG_61, $this->getCurrentTransactionData(), $results)) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
+            return $this->sanitizeTimestamp($results[1]);
         }
 
         return 0;

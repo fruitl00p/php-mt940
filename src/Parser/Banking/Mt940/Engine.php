@@ -104,7 +104,7 @@ abstract class Engine
             }
         }
 
-        trigger_error('Unknown mt940 parser loaded, thus reverted to default', E_USER_NOTICE);
+        trigger_error('Unknown mt940 parser loaded, thus reverted to default');
 
         return new Engine\Unknown();
     }
@@ -357,7 +357,7 @@ abstract class Engine
         if (preg_match('/:' . $key . ':[C|D](\d{6})*/', $this->getCurrentStatementData(), $results)
             && !empty($results[1])
         ) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
+            return $this->sanitizeTimestamp($results[1]);
         }
 
         return 0;
@@ -390,7 +390,7 @@ abstract class Engine
     protected function parseTransactionAccount()
     {
         $results = [];
-        if (preg_match('/^:86: ?([\d\.]+)\s/im', $this->getCurrentTransactionData(), $results)
+        if (preg_match('/^:86: ?([\d\.]+)\s/m', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
             return $this->sanitizeAccount($results[1]);
@@ -509,7 +509,7 @@ abstract class Engine
         if (preg_match('/^:' . $key . ':(\d{6})/', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
+            return $this->sanitizeTimestamp($results[1]);
         }
 
         return 0;
@@ -528,7 +528,6 @@ abstract class Engine
         ) {
             return trim($results[1]);
         }
-
         return '';
     }
 
@@ -587,7 +586,7 @@ abstract class Engine
     protected function sanitizeTimestamp($string, $inFormat = 'ymd')
     {
         $date = \DateTime::createFromFormat($inFormat, $string);
-        $date->setTime(0, 0, 0);
+        $date->setTime(0, 0);
         if ($date !== false) {
             return (int)$date->format('U');
         }

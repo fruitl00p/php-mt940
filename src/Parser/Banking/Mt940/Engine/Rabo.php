@@ -85,7 +85,7 @@ class Rabo extends Engine
     {
         $results = [];
         if (preg_match('/^:60F:[C|D]([\d]{6})/m', $this->getCurrentStatementData(), $results) && !empty($results[1])) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
+            return $this->sanitizeTimestamp($results[1]);
         }
 
         return 0;
@@ -100,7 +100,7 @@ class Rabo extends Engine
     {
         $results = [];
         if (preg_match('/^:61:([\d]{6})[C|D]/', $this->getCurrentTransactionData(), $results) && !empty($results[1])) {
-            return $this->sanitizeTimestamp($results[1], 'ymd');
+            return $this->sanitizeTimestamp($results[1]);
         }
 
         return 0;
