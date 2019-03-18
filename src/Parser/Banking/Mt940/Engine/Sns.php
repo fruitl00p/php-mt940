@@ -1,9 +1,13 @@
 <?php
+
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 /**
+ * **CAUTION** This is an untested / experimental engine for SNS
+ *
+ *
  * @package Kingsquare\Parser\Banking\Mt940\Engine
  * @author Paul Olthof (hpolthof@gmail.com)
  * @license http://opensource.org/licenses/MIT MIT
@@ -19,11 +23,18 @@ class Sns extends Engine
         return 'SNS';
     }
 
+    /**
+     * @override just return the unsanitized IBAN string
+     * @inheritdoc
+     */
     protected function sanitizeAccount($string)
     {
         return $string;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function parseTransactionAccount()
     {
         $results = [];
@@ -36,6 +47,9 @@ class Sns extends Engine
         return '';
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function parseTransactionAccountName()
     {
         $results = [];
@@ -48,26 +62,25 @@ class Sns extends Engine
         return '';
     }
 
+    /**
+     * @override filter out the first two meta-data lines
+     * @inheritdoc
+     */
     protected function parseTransactionDescription()
     {
         $results = [];
         if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
-            $this->filterMetaDataFromDescription($results);
+            // filter out meta data
+            $lines = explode("\r\n", $results[1][0]);
+            unset($lines[0], $lines[1]);
+            $results[1][0] = implode("\r\n", $lines);
 
             return $this->sanitizeDescription(implode(PHP_EOL, $results[1]));
         }
 
         return '';
-    }
-
-    private function filterMetaDataFromDescription(&$results)
-    {
-        $lines = explode("\r\n", $results[1][0]);
-        unset($lines[0]);
-        unset($lines[1]);
-        $results[1][0] = implode("\r\n", $lines);
     }
 
 }
