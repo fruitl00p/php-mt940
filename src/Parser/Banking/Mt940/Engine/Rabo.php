@@ -161,6 +161,7 @@ class Rabo extends Engine
     }
 
     /**
+     * @TODO WIP get this into the transaction somehow.. (possibly as a decorator over the transactions?)
      * @return int
      */
     protected function parseTransactionType()
