@@ -110,19 +110,30 @@ class Ing extends Engine
      */
     protected function sanitizeDescription($string)
     {
+        $descriptionStart = $descriptionEnd = '';
         $description = parent::sanitizeDescription($string);
-        if (strpos($description, '/REMI/USTD//') !== false
-            && preg_match('#/REMI/USTD//(.*?)/#s', $description, $results) && !empty($results[1])
+        if (strpos($description, '/PREF/') !== false
+            && preg_match('#/PREF/(.*?)/#s', $description, $results) && !empty($results[1])
         ) {
-            return $results[1];
+            $descriptionStart = $results[1];
+        }
+        if (strpos($description, '/EREF/') !== false
+            && preg_match('#/EREF/(.*?)/#s', $description, $results) && !empty($results[1])
+        ) {
+            $descriptionStart = $results[1];
+        }
+        if (strpos($description, '/REMI/USTD//') !== false
+            && preg_match('#/REMI/USTD//(.*?)/$#s', $description, $results) && !empty($results[1])
+        ) {
+            $descriptionEnd = $results[1];
         }
         if (strpos($description, '/REMI/STRD/CUR/') !== false
             && preg_match('#/REMI/STRD/CUR/(.*?)/#s', $description, $results) && !empty($results[1])
         ) {
-            return $results[1];
+            $descriptionEnd = $results[1];
         }
 
-        return $description;
+        return trim($descriptionStart.' '.$descriptionEnd);
     }
 
     /**
