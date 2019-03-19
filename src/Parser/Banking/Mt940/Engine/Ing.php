@@ -123,7 +123,7 @@ class Ing extends Engine
             $descriptionStart = $results[1];
         }
         if (strpos($description, '/REMI/USTD//') !== false
-            && preg_match('#/REMI/USTD//(.*?)/$#s', $description, $results) && !empty($results[1])
+            && preg_match('#/REMI/USTD//(.*?)/#s', $description, $results) && !empty($results[1])
         ) {
             $descriptionEnd = $results[1];
         }
