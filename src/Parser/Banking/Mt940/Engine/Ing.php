@@ -80,6 +80,30 @@ class Ing extends Engine
     }
 
     /**
+     * Overloaded: ING uses the :61: date-part of the field for two values:
+     * Valuetimestamp (YYMMDD) and Entry date (book date) (MMDD).
+     *
+     * @return int
+     */
+    protected function parseTransactionEntryTimestamp()
+    {
+        $results = [];
+        if (preg_match('/^:61:(\d{2})((\d{2})\d{2})((\d{2})\d{2})[C|D]/', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+
+            list(, $valueDateY, $valueDateMD, $valueDateM, $entryDateMD, $entryDateM) = $results;
+            $entryDate = $valueDateY . $entryDateMD;
+            if ($valueDateMD !== $entryDateMD && $valueDateM > $entryDateM) {
+                $entryDate = ($valueDateY + 1) . $entryDateMD;
+            }
+
+            return $this->sanitizeTimestamp($entryDate, 'ymd');
+        }
+        return 0;
+    }
+
+    /**
      * @param $transactionData
      *
      * @return string
