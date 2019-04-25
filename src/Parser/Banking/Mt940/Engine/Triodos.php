@@ -150,9 +150,10 @@ class Triodos extends Engine
      */
     public static function isApplicable($string)
     {
-        strtok($string, "\r\n\t");
-        $secondline = strtok("\r\n\t");
-
+        static $token = "\r\n\t";
+        /** @noinspection UnusedFunctionResultInspection */
+        strtok($string, $token);
+        $secondline = strtok($token);
         return strpos($secondline, ':25:TRIODOSBANK') !== false;
     }
 }
