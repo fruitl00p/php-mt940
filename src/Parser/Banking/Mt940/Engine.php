@@ -555,7 +555,7 @@ abstract class Engine
         $account = ltrim(
             str_replace(
                 array_keys($crudeReplacements),
-                array_values($crudeReplacements),
+                $crudeReplacements,
                 strip_tags(trim($string))
             ),
             '0'
