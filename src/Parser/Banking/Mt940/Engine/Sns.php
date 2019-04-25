@@ -38,6 +38,7 @@ class Sns extends Engine
     protected function parseTransactionAccount()
     {
         $results = [];
+        /** @noinspection NotOptimalRegularExpressionsInspection */
         if (preg_match('/^:86:\s?([A-z\d]+)\s/im', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
@@ -53,6 +54,7 @@ class Sns extends Engine
     protected function parseTransactionAccountName()
     {
         $results = [];
+        /** @noinspection NotOptimalRegularExpressionsInspection */
         if (preg_match('/^:86:\s?[A-z\d]+\s(.*?)$/im', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
@@ -69,7 +71,7 @@ class Sns extends Engine
     protected function parseTransactionDescription()
     {
         $results = [];
-        if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $results)
+        if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6([12]))|$)/s', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
             // filter out meta data

@@ -468,7 +468,7 @@ abstract class Engine
     protected function parseTransactionDescription()
     {
         $results = [];
-        if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $results)
+        if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6([12]))|$)/s', $this->getCurrentTransactionData(), $results)
             && !empty($results[1])
         ) {
             return $this->sanitizeDescription(implode(PHP_EOL, $results[1]));

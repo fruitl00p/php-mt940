@@ -13,7 +13,7 @@ use Kingsquare\Parser\Banking\Mt940\Engine;
  */
 class Hsbc extends Engine
 {
-    const PATTERN_TAG_61 = '/^:61:(\d{6})(\d{4}?)(C|D|EC|ED|RC|RD)[A-Z](\d+,\d+)(F|N|S)([A-Z]{3})(.{16})/m';
+    const PATTERN_TAG_61 = '/^:61:(\d{6})(\d{4}?)(C|D|EC|ED|RC|RD)[A-Z](\d+,\d+)([FNS])([A-Z]{3})(.{16})/m';
 
     /**
      * returns the name of the bank.
