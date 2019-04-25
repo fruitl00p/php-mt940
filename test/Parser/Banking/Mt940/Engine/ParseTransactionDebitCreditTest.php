@@ -10,6 +10,10 @@ class ParseTransactionDebitCreditTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getTransactions
+     *
+     * @param $inputString
+     * @param $expected
+     * @throws \ReflectionException
      */
     public function test($inputString, $expected) {
         $engine = new Unknown();

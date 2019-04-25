@@ -20,7 +20,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         $engine = new Triodos();
         $engine->loadString(file_get_contents(__DIR__.'/sample'));
-        $transactions = array_map(function(Statement $statement) {
+        $transactions = array_map(static function(Statement $statement) {
             return $statement->getTransactions();
         }, $engine->parse());
         $this->transactions = call_user_func_array('array_merge', $transactions);

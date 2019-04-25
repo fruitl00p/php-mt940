@@ -2,6 +2,8 @@
 
 namespace Kingsquare\Parser\Banking\Mt940;
 
+use Kingsquare\Parser\Banking\Mt940\Engine\Unknown;
+
 /**
  *
  */
@@ -48,7 +50,7 @@ class GetInstanceTest extends \PHPUnit_Framework_TestCase
     {
         Engine::resetEngines();
         $engine = @Engine::__getInstance($source);
-        $this->assertInstanceOf('\\Kingsquare\\Parser\\Banking\\Mt940\\Engine\\Unknown', $engine);
+        $this->assertInstanceOf(Unknown::class, $engine);
     }
 
     /**

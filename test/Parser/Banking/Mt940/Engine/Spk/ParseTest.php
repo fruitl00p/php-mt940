@@ -33,7 +33,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $statements = $this->engine->parse();
         $this->assertCount(4, $statements);
 
-        $transactions = array_map(function(Statement $statement) {
+        $transactions = array_map(static function(Statement $statement) {
             return $statement->getTransactions();
         }, $statements);
         $tranactions = call_user_func_array('array_merge', $transactions);

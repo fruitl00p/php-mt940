@@ -12,6 +12,10 @@ class ParseTransactionPriceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getTransactions
+     *
+     * @param string $inputString
+     * @param float $expected
+     * @throws \ReflectionException
      */
     public function test($inputString, $expected) {
         $engine = new Spk;

@@ -5,7 +5,7 @@ namespace Kingsquare\Parser\Banking\Mt940\Engine;
 use Kingsquare\Banking\Statement;
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
-class SingleStatementEngine extends \Kingsquare\Parser\Banking\Mt940\Engine
+class SingleStatementEngine extends Engine
 {
     protected function parseStatementData()
     {
@@ -20,6 +20,9 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider singleStatementProvider
+     *
+     * @param $expected
+     * @param $input
      */
     public function singleStatement($expected, $input)
     {
@@ -103,13 +106,16 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider multipleStatementsProvider
      * @test
+     *
+     * @param array $currencies
+     * @param $input
      */
     public function multipleStatements(array $currencies, $input)
     {
         $engine = @Engine::__getInstance($input);
         $this->assertEquals(
             $currencies,
-            array_reduce($engine->parse(), function (array $carry, Statement $statement) {
+            array_reduce($engine->parse(), static function (array $carry, Statement $statement) {
                 $carry[] = $statement->getCurrency();
                 return $carry;
             }, [])
