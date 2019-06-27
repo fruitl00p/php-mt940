@@ -74,6 +74,12 @@ class Rabo extends Engine
                 return $this->sanitizeAccountName($accountName);
             }
         }
+        
+        if (preg_match('#/NAME/(.+?)/#ms',$this->getCurrentTransactionData(), $results)) // Last chance test to see if we get something from the AM04 or something
+        {
+          $accountName = trim($results[1]);
+          return $this->sanitizeAccountName($accountName);
+        }
         return '';
     }
 
