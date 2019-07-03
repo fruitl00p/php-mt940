@@ -38,4 +38,20 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('23-07-2010', $first->getEndTimestamp('d-m-Y'));
         $this->assertEquals(-3.47, $first->getDeltaPrice());
     }
+
+    /**
+     *
+     */
+    public function testParseTransactionEntryTimestamp()
+    {
+        $statements = $this->engine->parse();
+        $transactions = reset($statements)->getTransactions();
+        // the first has no entryTimestamp
+        $firstTransaction = reset($transactions);
+        $this->assertEquals(0, $firstTransaction->getEntryTimestamp());
+
+        // the last does have an entryTimestamp (custom edited)
+        $lastTransaction = end($transactions);
+        $this->assertEquals('2010-07-21', $lastTransaction->getEntryTimestamp('Y-m-d'));
+    }
 }
