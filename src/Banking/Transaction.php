@@ -15,6 +15,7 @@ class Transaction implements \JsonSerializable
 
     private $account = '';
     private $accountName = '';
+    private $accountBic = '';
     private $price = 0.0;
     private $debitcredit = '';
     private $cancellation = false;
@@ -45,6 +46,14 @@ class Transaction implements \JsonSerializable
     public function setAccountName($var)
     {
         $this->accountName = (string)$var;
+    }
+
+    /**
+     * @param string $var
+     */
+    public function setAccountBic($var)
+    {
+        $this->accountBic = (string)$var;
     }
 
     /**
@@ -117,6 +126,14 @@ class Transaction implements \JsonSerializable
     public function getAccountName()
     {
         return $this->accountName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountBic()
+    {
+        return $this->accountBic;
     }
 
     /**
