@@ -23,6 +23,23 @@ class Spk extends Engine
     }
 
     /**
+     * Overloaded: the bankaccount may be "BLZ/Account".
+     *
+     * @inheritdoc
+     */
+    protected function parseStatementAccount()
+    {
+        $results = [];
+        if (preg_match('#:25:(\d{8}/\d+)#', $this->getCurrentStatementData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizeAccount($results[1]);
+        }
+
+        return parent::parseStatementAccount();
+    }
+
+    /**
      * Overloaded: Sparkasse uses 60M and 60F.
      *
      * @inheritdoc
