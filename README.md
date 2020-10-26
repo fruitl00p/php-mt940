@@ -50,6 +50,7 @@ Currently the following engines are included:
 - HSBC ([here](./src/Parser/Banking/Mt940/Engine/Hsbc.php))
 - SNS ([here](./src/Parser/Banking/Mt940/Engine/Sns.php)) **Experimental**
 - BUNQ ([here](./src/Parser/Banking/Mt940/Engine/Bunq.php))
+- PENTA ([here](./src/Parser/Banking/Mt940/Engine/Penta.php))
 - a default `UNKNOWN`-engine ([here](./src/Parser/Banking/Mt940/Engine/Unknown.php))
 
 ### Custom engines
