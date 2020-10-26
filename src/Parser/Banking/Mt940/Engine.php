@@ -27,6 +27,7 @@ abstract class Engine
         600 => Engine\Knab::class,
         700 => Engine\Hsbc::class,
         800 => Engine\Bunq::class,
+        900 => Engine\Penta::class,
     ];
 
     /**
