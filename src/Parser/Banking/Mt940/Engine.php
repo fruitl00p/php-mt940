@@ -28,6 +28,7 @@ abstract class Engine
         700 => Engine\Hsbc::class,
         800 => Engine\Bunq::class,
         900 => Engine\Penta::class,
+        1000 => Engine\Asn::class,
     ];
 
     /**
