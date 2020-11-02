@@ -1,11 +1,11 @@
 <?php
+
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Parser\Banking\Mt940\Engine;
 
 class Bunq extends Engine
 {
-
     /**
      *
      * {@inheritdoc}
