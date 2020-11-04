@@ -30,7 +30,7 @@ class Knab extends Engine
      */
     protected function parseStatementStartPrice()
     {
-        return $this->parseStatementPrice('60M');
+        return $this->parseStatementPrice('60[FM]');
     }
 
     /**
@@ -38,7 +38,7 @@ class Knab extends Engine
      */
     protected function parseStatementEndPrice()
     {
-        return $this->parseStatementPrice('62M');
+        return $this->parseStatementPrice('62[FM]');
     }
 
     /**
@@ -46,7 +46,7 @@ class Knab extends Engine
      */
     protected function parseStatementStartTimestamp()
     {
-        return $this->parseTimestampFromStatement('60M');
+        return $this->parseTimestampFromStatement('60[FM]');
     }
 
     /**
@@ -54,7 +54,7 @@ class Knab extends Engine
      */
     protected function parseStatementEndTimestamp()
     {
-        return $this->parseTimestampFromStatement('62M');
+        return $this->parseTimestampFromStatement('62[FM]');
     }
 
     /**
