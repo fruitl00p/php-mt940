@@ -64,4 +64,29 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ACHMEA SCHADEVERZEKERINGEN N.V.', $structuredTransaction->getAccountName());
         $this->assertEquals('EERSTE MAAND, MAART VERZEKERING 5002100023 310160', $structuredTransaction->getDescription());
     }
+
+
+    public function testStartPrice() {
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample'));
+        $statements = $this->engine->parse();
+        $start_price_m = $statements[0]->getStartPrice();
+        $this->assertSame(1000.21 , $start_price_m);
+
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample2'));
+        $statements = $this->engine->parse();
+        $start_price_f = $statements[0]->getStartPrice();
+        $this->assertSame(12490.07 , $start_price_f);
+    }
+
+    public function testEndPrice() {
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample'));
+        $statements = $this->engine->parse();
+        $price_m = $statements[0]->getEndPrice();
+        $this->assertSame(945.21 , $price_m);
+
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample2'));
+        $statements = $this->engine->parse();
+        $price_f = $statements[0]->getEndPrice();
+        $this->assertSame(13057.49 , $price_f);
+    }
 }
