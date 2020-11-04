@@ -7,7 +7,7 @@
 [![wercker status](https://app.wercker.com/status/1b20215cc9fee0e4effbe7ad81da1328/s/ "wercker status")](https://app.wercker.com/project/bykey/1b20215cc9fee0e4effbe7ad81da1328)
 
 # php-mt940?
-The php-mt940 package provides a lightweight parser for mt940 (dutch bank file format) parsing. The output
+The php-mt940 package provides a lightweight parser for [MT940](https://en.wikipedia.org/wiki/MT940) format which is used by [SWIFT](https://en.wikipedia.org/wiki/SWIFT). The output
 is transformed into easy to use dataclasses Transaction_banking which itself contains Statement_banking objects. Pretty
 straight forward.
 
