@@ -12,7 +12,7 @@ is transformed into easy to use dataclasses Transaction_banking which itself con
 straight forward.
 
 ## Requirements
-* Atleast PHP 5.5.
+* At least PHP 7
 
 ## Installation
 If composer is not yet on your system, follow the instructions on [getcomposer.org](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) to do so.
