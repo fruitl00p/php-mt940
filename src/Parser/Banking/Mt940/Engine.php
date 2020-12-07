@@ -29,6 +29,7 @@ abstract class Engine
         800 => Engine\Bunq::class,
         900 => Engine\Penta::class,
         1000 => Engine\Asn::class,
+        1100 => Engine\Kbs::class,
     ];
 
     /**
