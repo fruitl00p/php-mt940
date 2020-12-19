@@ -116,7 +116,7 @@ class Kbs extends Engine
     {
         $firstline = strtok($string, "\r\n\t");
 
-        return strpos($firstline, 'F01KOBSMK2XAXXX1201000000') !== false;
+        return strpos($firstline, 'F01KOBSMK2XAXXX') !== false;
     }
 
     /**
