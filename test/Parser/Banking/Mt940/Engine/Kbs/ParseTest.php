@@ -34,6 +34,17 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('01-12-2020', $first->getStartTimestamp('d-m-Y'));
         $this->assertEquals('01-12-2020', $first->getEndTimestamp('d-m-Y'));
         $this->assertEquals(-1870, $first->getDeltaPrice());
+
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample2'));
+        
+        $statements = $this->engine->parse();
+
+        $this->assertCount(1, $statements);
+        $first = $statements[0];
+
+        $this->assertEquals('09-10-2020', $first->getStartTimestamp('d-m-Y'));
+        $this->assertEquals('09-10-2020', $first->getEndTimestamp('d-m-Y'));
+        $this->assertEquals(-22755, $first->getDeltaPrice());
     }
 
     public function testParseTransactionEntryTimestamp()
@@ -47,5 +58,17 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         // the last does have an entryTimestamp (custom edited)
         $lastTransaction = end($transactions);
         $this->assertEquals('01-12-2020', $lastTransaction->getEntryTimestamp('d-m-Y'));
+        
+        $this->engine->loadString(file_get_contents(__DIR__.'/sample2'));
+        
+        $statements = $this->engine->parse();
+        $transactions = reset($statements)->getTransactions();
+        // the first has no entryTimestamp
+        $firstTransaction = reset($transactions);
+        $this->assertEquals('09-10-2020', $firstTransaction->getEntryTimestamp('d-m-Y'));
+
+        // the last does have an entryTimestamp (custom edited)
+        $lastTransaction = end($transactions);
+        $this->assertEquals('09-10-2020', $lastTransaction->getEntryTimestamp('d-m-Y'));
     }
 }
