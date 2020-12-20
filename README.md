@@ -53,6 +53,7 @@ Currently the following engines are included:
 - PENTA ([here](./src/Parser/Banking/Mt940/Engine/Penta.php))
 - ASN ([here](./src/Parser/Banking/Mt940/Engine/Asn.php))
 - KBS ([here](./src/Parser/Banking/Mt940/Engine/Kbs.php))
+- ZETB ([here](./src/Parser/Banking/Mt940/Engine/Zetb.php))
 - a default `UNKNOWN`-engine ([here](./src/Parser/Banking/Mt940/Engine/Unknown.php))
 
 ### Custom engines
