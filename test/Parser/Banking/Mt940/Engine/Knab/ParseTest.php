@@ -98,4 +98,13 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('D', $firstTransaction->getDebitCredit());
     }
+    
+    public function testParseTransactionPrice()
+    {
+        $statements = $this->engine->parse();
+        $transactions = reset($statements)->getTransactions();
+        $firstTransaction = reset($transactions);
+
+        $this->assertEquals(15, $firstTransaction->getPrice());
+    }
 }

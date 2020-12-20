@@ -117,4 +117,13 @@ PURPTEST
 
         $this->assertEquals('C', $firstTransaction->getDebitCredit());
     }
+    
+    public function testParseTransactionPrice()
+    {
+        $statements = $this->engine->parse();
+        $transactions = $statements[5]->getTransactions();
+        $firstTransaction = reset($transactions);
+
+        $this->assertEquals(500, $firstTransaction->getPrice());
+    }
 }

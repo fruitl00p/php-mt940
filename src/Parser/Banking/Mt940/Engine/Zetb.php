@@ -169,4 +169,22 @@ class Zetb extends Engine
 
         return '';
     }
+    
+    /**
+     * uses the 61 field to determine amount/value of the transaction.
+     *
+     * @return float
+     */
+    protected function parseTransactionPrice()
+    {
+        $results = [];
+        
+        if (preg_match('/^:61:.*?[\D*]([\d,\.]+)/i', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizePrice($results[1]);
+        }
+
+        return 0;
+    }
 }
