@@ -52,4 +52,22 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $lastTransaction = end($transactions);
         $this->assertEquals('30-09-2020', $lastTransaction->getEntryTimestamp('d-m-Y'));
     }
+    
+    public function testParseTransactionDebitCredit()
+    {
+        $statements = $this->engine->parse();
+        $transactions = reset($statements)->getTransactions();
+        $firstTransaction = reset($transactions);
+
+        $this->assertEquals('D', $firstTransaction->getDebitCredit());
+    }
+    
+    public function testParseTransactionPrice()
+    {
+        $statements = $this->engine->parse();
+        $transactions = reset($statements)->getTransactions();
+        $firstTransaction = reset($transactions);
+
+        $this->assertEquals(20, $firstTransaction->getPrice());
+    }
 }
