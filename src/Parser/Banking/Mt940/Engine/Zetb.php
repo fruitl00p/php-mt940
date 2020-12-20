@@ -151,4 +151,22 @@ class Zetb extends Engine
 
         throw new \RuntimeException("Don't know code $code for this bank");
     }
+    
+    /**
+     * uses the 61 field to determine debit or credit of the transaction.
+     *
+     * @return string
+     */
+    protected function parseTransactionDebitCredit()
+    {
+        $results = [];
+
+        if (preg_match('/^:61:\d+([CD])\w+/', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizeDebitCredit($results[1]);
+        }
+
+        return '';
+    }
 }

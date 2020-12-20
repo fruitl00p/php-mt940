@@ -108,4 +108,13 @@ PURPTEST
         $statements = $this->engine->parse();
         $this->assertSame('PmtInfId-20151208-987', $statements[0]->getTransactions()[1]->getDescription());
     }
+    
+    public function testParseTransactionDebitCredit()
+    {
+        $statements = $this->engine->parse();
+        $transactions = $statements[5]->getTransactions();
+        $firstTransaction = reset($transactions);
+
+        $this->assertEquals('C', $firstTransaction->getDebitCredit());
+    }
 }
