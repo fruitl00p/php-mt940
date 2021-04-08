@@ -51,13 +51,4 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('18-02-2010', $last->getStartTimestamp('d-m-Y'));
         $this->assertEquals('18-02-2010', $last->getEndTimestamp('d-m-Y'));
     }
-
-    public function testParseTransactionDebitCredit()
-    {
-        $statements = $this->engine->parse();
-        $transactions = reset($statements)->getTransactions();
-        $firstTransaction = reset($transactions);
-
-        $this->assertEquals('C', $firstTransaction->getDebitCredit());
-    }
 }

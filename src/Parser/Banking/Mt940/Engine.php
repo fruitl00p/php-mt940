@@ -29,9 +29,7 @@ abstract class Engine
         800 => Engine\Bunq::class,
         900 => Engine\Penta::class,
         1000 => Engine\Asn::class,
-        1100 => Engine\Kbs::class,
-        1200 => Engine\Zetb::class,
-        1300 => Engine\Kontist::class,
+        1100 => Engine\Btrl::class,
     ];
 
     /**
@@ -594,7 +592,7 @@ abstract class Engine
         $date = \DateTime::createFromFormat($inFormat, $string);
         $date->setTime(0, 0);
         if ($date !== false) {
-            return (int) $date->format('U');
+            return (int)$date->format('U');
         }
 
         return 0;
@@ -617,7 +615,7 @@ abstract class Engine
      */
     protected function sanitizeDebitCredit($string)
     {
-        $debitOrCredit = strtoupper(substr((string) $string, 0, 1));
+        $debitOrCredit = strtoupper(substr((string)$string, 0, 1));
         if ($debitOrCredit !== Transaction::DEBIT && $debitOrCredit !== Transaction::CREDIT) {
             trigger_error('wrong value for debit/credit (' . $string . ')', E_USER_ERROR);
             $debitOrCredit = '';
@@ -635,6 +633,6 @@ abstract class Engine
     {
         $floatPrice = ltrim(str_replace(',', '.', strip_tags(trim($string))), '0');
 
-        return (float) $floatPrice;
+        return (float)$floatPrice;
     }
 }
