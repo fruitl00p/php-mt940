@@ -4,18 +4,19 @@ namespace Kingsquare\Parser\Banking\Mt940\Engine\Spk;
 
 use Kingsquare\Banking\Statement;
 use Kingsquare\Parser\Banking\Mt940\Engine\Spk;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
     /**
      * @var Spk
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Spk();
         $this->engine->loadString(file_get_contents(__DIR__.'/sample'));

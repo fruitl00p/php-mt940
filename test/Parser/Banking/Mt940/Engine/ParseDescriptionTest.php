@@ -2,10 +2,12 @@
 
 namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  */
-class ParseDescriptionTest extends \PHPUnit_Framework_TestCase
+class ParseDescriptionTest extends TestCase
 {
     /**
      * @dataProvider statementProvider

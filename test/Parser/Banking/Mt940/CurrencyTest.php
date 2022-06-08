@@ -4,6 +4,7 @@ namespace Kingsquare\Parser\Banking\Mt940\Engine;
 
 use Kingsquare\Banking\Statement;
 use Kingsquare\Parser\Banking\Mt940\Engine;
+use PHPUnit\Framework\TestCase;
 
 class SingleStatementEngine extends Engine
 {
@@ -16,7 +17,7 @@ class SingleStatementEngine extends Engine
 /**
  *
  */
-class CurrencyTest extends \PHPUnit_Framework_TestCase
+class CurrencyTest extends TestCase
 {
     /**
      * @dataProvider singleStatementProvider

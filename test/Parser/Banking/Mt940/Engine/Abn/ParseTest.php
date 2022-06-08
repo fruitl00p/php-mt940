@@ -3,18 +3,19 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Abn;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Abn;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
     /**
      * @var Abn
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Abn();
         $this->engine->loadString(file_get_contents(__DIR__.'/sample'));

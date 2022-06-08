@@ -160,7 +160,7 @@ abstract class Engine
                 $transaction->setCancellation($this->parseTransactionCancellation());
                 $transaction->setDescription($this->parseTransactionDescription());
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
-                $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
+                $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp($transaction->getValueTimestamp()));
                 $transaction->setTransactionCode($this->parseTransactionCode());
                 $statement->addTransaction($transaction);
             }
@@ -490,7 +490,20 @@ abstract class Engine
      */
     protected function parseTransactionEntryTimestamp()
     {
-        return $this->parseTransactionTimestamp('61');
+        $results = [];
+        if (preg_match('/^:61:(\d{2})((\d{2})\d{2})((\d{2})\d{2})[C|D]/', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+
+            list(, $valueDateY, $valueDateMD, $valueDateM, $entryDateMD, $entryDateM) = $results;
+            $entryDate = $valueDateY . $entryDateMD;
+            if ($valueDateMD !== $entryDateMD && $valueDateM > $entryDateM) {
+                $entryDate = ($valueDateY + 1) . $entryDateMD;
+            }
+
+            return $this->sanitizeTimestamp($entryDate, 'ymd');
+        }
+        return $this->parseTransactionValuta('61');
     }
 
     /**
@@ -500,7 +513,7 @@ abstract class Engine
      */
     protected function parseTransactionValueTimestamp()
     {
-        return $this->parseTransactionTimestamp('61');
+        return $this->parseTransactionValuta('61');
     }
 
     /**
@@ -509,7 +522,7 @@ abstract class Engine
      * @param string $key
      * @return int
      */
-    protected function parseTransactionTimestamp($key)
+    protected function parseTransactionValuta($key)
     {
         $results = [];
         if (preg_match('/^:' . $key . ':(\d{6})/', $this->getCurrentTransactionData(), $results)

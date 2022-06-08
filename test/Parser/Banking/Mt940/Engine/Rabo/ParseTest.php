@@ -3,18 +3,19 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Rabo;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Rabo;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
     /**
      * @var Rabo
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Rabo();
         $this->engine->loadString(file_get_contents(__DIR__.'/sample'));

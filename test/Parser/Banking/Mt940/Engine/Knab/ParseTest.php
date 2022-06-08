@@ -3,18 +3,19 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Knab;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Knab;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
     /**
      * @var Knab
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Knab();
         $this->engine->loadString(file_get_contents(__DIR__.'/sample'));

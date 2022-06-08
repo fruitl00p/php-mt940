@@ -2,11 +2,13 @@
 
 namespace Kingsquare\Banking;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Kingsquare (source@kingsquare.nl)
  * @copyright Copyright (c) Kingsquare BV (http://www.kingsquare.nl)
  */
-class TransactionTest extends \PHPUnit_Framework_TestCase
+class TransactionTest extends TestCase
 {
     public function testAccountAssesor()
     {

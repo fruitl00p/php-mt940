@@ -3,18 +3,19 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Hsbc;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Hsbc;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
     /**
      * @var Hsbc
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Hsbc();
         $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));

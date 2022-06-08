@@ -5,18 +5,19 @@ namespace Kingsquare\Parser\Banking\Mt940\Engine\Triodos;
 use Kingsquare\Banking\Statement;
 use Kingsquare\Banking\Transaction;
 use Kingsquare\Parser\Banking\Mt940\Engine\Triodos;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class TransactionTest extends \PHPUnit_Framework_TestCase
+class TransactionTest extends TestCase
 {
     /**
      * @var Transaction[]
      */
     private $transactions = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $engine = new Triodos();
         $engine->loadString(file_get_contents(__DIR__.'/sample'));

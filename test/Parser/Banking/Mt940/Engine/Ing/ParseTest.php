@@ -3,18 +3,19 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Ing;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Ing;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
     /**
      * @var Ing
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Ing();
         $this->engine->loadString(file_get_contents(__DIR__.'/sample'));

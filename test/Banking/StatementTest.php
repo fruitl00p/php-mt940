@@ -2,10 +2,12 @@
 
 namespace Kingsquare\Banking;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  */
-class StatementTest extends \PHPUnit_Framework_TestCase
+class StatementTest extends TestCase
 {
     public function testBankAssesor()
     {
@@ -143,54 +145,6 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             'startPrice' => 16250,
             'endPrice' => 6250,
             'startTimestamp' => 123,
-            'number' => '2665487AAF',
-        ];
-        $statement = new Statement();
-        foreach ($params as $key => $value) {
-            $statement->{'set'.$key}($value);
-        }
-        $this->assertSame($expected, json_encode($statement));
-    }
-
-    /**
-     * @depends testJsonSerialization
-     * @expectedException PHPUnit_Framework_Error_Deprecated
-     */
-    public function testJsonSerializationWithTransactions()
-    {
-        $expected = '{"bank":"ABN","account":"62.90.64.393","transactions":[{"account":"123123","accountName":'.
-            '"Kingsquare BV","price":110,"debitcredit":"D","description":"test","valueTimestamp":1231,"entryTimestamp"'.
-            ':1234,"transactionCode":"13G"},{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit"'.
-            ':"D","description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}],'.
-            '"startPrice":16250,"endPrice":6250,"number":"2665487AAF"}';
-        $params = [
-            'bank' => 'ABN',
-            'account' => '62.90.64.393',
-            'transactions' => [
-                [
-                    'account' => '123123',
-                    'accountName' => 'Kingsquare BV',
-                    'price' => 110.0,
-                    'debitcredit' => Transaction::DEBIT,
-                    'description' => 'test',
-                    'valueTimestamp' => 1231,
-                    'entryTimestamp' => 1234,
-                    'transactionCode' => '13G',
-                ],
-                [
-                    'account' => '123123',
-                    'accountName' => 'Kingsquare BV',
-                    'price' => 110.0,
-                    'debitcredit' => Transaction::DEBIT,
-                    'description' => 'test',
-                    'valueTimestamp' => 1231,
-                    'entryTimestamp' => 1234,
-                    'transactionCode' => '13G',
-                ],
-            ],
-            'startPrice' => 16250,
-            'endPrice' => 6250,
-            'timestamp' => 123,
             'number' => '2665487AAF',
         ];
         $statement = new Statement();

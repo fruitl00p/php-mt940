@@ -3,10 +3,11 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Kontist;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Kontist;
+use PHPUnit\Framework\TestCase;
 
 /**
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
 
     /**
@@ -15,7 +16,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Kontist();
         $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));

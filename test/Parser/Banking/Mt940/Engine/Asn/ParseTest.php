@@ -3,15 +3,16 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Asn;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Asn;
+use PHPUnit\Framework\TestCase;
 
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
     /**
      * @var Asn
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Asn();
         $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));

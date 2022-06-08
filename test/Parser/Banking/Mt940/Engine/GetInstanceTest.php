@@ -3,31 +3,14 @@
 namespace Kingsquare\Parser\Banking\Mt940;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Unknown;
+use PHPUnit\Framework\Error;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class GetInstanceTest extends \PHPUnit_Framework_TestCase
+class GetInstanceTest extends TestCase
 {
-    /**
-     *
-     */
-    public function testUnknownEngineRaisesANotice()
-    {
-        $error_reporting = error_reporting();
-        error_reporting(E_ALL);
-        try {
-            Engine::__getInstance('this is an unknown format :)');
-        } catch (\PHPUnit_Framework_Error $exptected) {
-            error_reporting($error_reporting);
-            $this->assertInstanceOf('PHPUnit_Framework_Error', $exptected);
-
-            return;
-        }
-        error_reporting($error_reporting);
-        $this->fail('Did not receive the notice');
-    }
-
     /**
      * @dataProvider enginesProvider
      *

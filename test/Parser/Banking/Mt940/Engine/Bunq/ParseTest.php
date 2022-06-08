@@ -2,10 +2,11 @@
 namespace Kingsquare\Parser\Banking\Mt940\Engine\Bunq;
 
 use Kingsquare\Parser\Banking\Mt940\Engine\Bunq;
+use PHPUnit\Framework\TestCase;
 
 /**
  */
-class ParseTest extends \PHPUnit_Framework_TestCase
+class ParseTest extends TestCase
 {
 
     /**
@@ -14,7 +15,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     private $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new Bunq();
         $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));
@@ -45,13 +46,14 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $transactions = reset($statements)->getTransactions();
         // the first has no entryTimestamp
         $firstTransaction = reset($transactions);
-        $this->assertEquals('31-01-2019', $firstTransaction->getEntryTimestamp('d-m-Y'));
+        $this->assertEquals('30-01-2019', $firstTransaction->getEntryTimestamp('d-m-Y'));
+        $this->assertEquals('31-01-2019', $firstTransaction->getValueTimestamp('d-m-Y'));
 
         // the last does have an entryTimestamp (custom edited)
         $lastTransaction = end($transactions);
         $this->assertEquals('24-05-2019', $lastTransaction->getEntryTimestamp('d-m-Y'));
     }
-    
+
     public function testParseTransactionDebitCredit()
     {
         $statements = $this->engine->parse();
@@ -60,7 +62,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('C', $firstTransaction->getDebitCredit());
     }
-    
+
     public function testParseTransactionPrice()
     {
         $statements = $this->engine->parse();
