@@ -107,4 +107,11 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(15, $firstTransaction->getPrice());
     }
+    
+    public function testSavingsAccountNumber()
+    {
+        $this->engine->loadString(file_get_contents(__DIR__ . '/sample3'));
+        $statements = $this->engine->parse();
+        $this->assertEquals('P53851317', $statements[0]->getTransactions()[0]->getAccount());
+    }
 }

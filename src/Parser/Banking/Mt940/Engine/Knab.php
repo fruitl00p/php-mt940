@@ -79,6 +79,13 @@ class Knab extends Engine
             return $results['account'];
         }
 
+        if (
+            preg_match('/^:86:.*?\/BBAN\/(\d{8})/ims', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return $this->sanitizeAccount($results[1]);
+        }
+
         return '';
     }
 
