@@ -32,6 +32,7 @@ abstract class Engine
         1100 => Engine\Kbs::class,
         1200 => Engine\Zetb::class,
         1300 => Engine\Kontist::class,
+        1400 => Engine\Wise::class,
     ];
 
     /**

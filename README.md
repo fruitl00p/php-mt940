@@ -55,6 +55,7 @@ Currently the following engines are included:
 - KBS ([here](./src/Parser/Banking/Mt940/Engine/Kbs.php))
 - ZETB ([here](./src/Parser/Banking/Mt940/Engine/Zetb.php))
 - KONTIST ([here](./src/Parser/Banking/Mt940/Engine/Kontist.php))
+- WISE ([here](./src/Parser/Banking/Mt940/Engine/Wise.php))
 - a default `UNKNOWN`-engine ([here](./src/Parser/Banking/Mt940/Engine/Unknown.php))
 
 ### Custom engines
