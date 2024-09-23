@@ -11,6 +11,7 @@ use Kingsquare\Parser\Banking\Mt940\Engine\Triodos;
  */
 class TransactionTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @var Transaction[]
      */
@@ -19,11 +20,15 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $engine = new Triodos();
-        $engine->loadString(file_get_contents(__DIR__.'/sample'));
-        $transactions = array_map(static function(Statement $statement) {
-            return $statement->getTransactions();
-        }, $engine->parse());
-        $this->transactions = call_user_func_array('array_merge', $transactions);
+        $engine->loadString(file_get_contents(__DIR__ . '/sample'));
+        $transactions = array_map(
+          static fn(Statement $statement) => $statement->getTransactions(),
+          $engine->parse()
+        );
+        $this->transactions = call_user_func_array(
+          'array_merge',
+          $transactions
+        );
     }
 
     public function testParsesAllFoundStatements()
@@ -35,14 +40,14 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         /* @var Transaction $transaction */
         $known = [
-            '555555555',
-            '555555555',
-            '555555555',
-            '555555555',
-            '888888888',
-            '888888888',
-            '888888888',
-            '888888888',
+          '555555555',
+          '555555555',
+          '555555555',
+          '555555555',
+          '888888888',
+          '888888888',
+          '888888888',
+          '888888888',
         ];
 
         foreach ($this->transactions as $i => $transaction) {
@@ -54,7 +59,10 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         /* @var Transaction $transaction */
         foreach ($this->transactions as $i => $transaction) {
-            $this->assertSame('TENAAMSTELLING TEGENREKENIN', $transaction->getAccountName());
+            $this->assertSame(
+              'TENAAMSTELLING TEGENREKENIN',
+              $transaction->getAccountName()
+            );
         }
     }
 
@@ -62,14 +70,14 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         /* @var Transaction $transaction */
         $known = [
-            10.0,
-            250.0,
-            150.0,
-            40.0,
-            8.95,
-            25.25,
-            150.0,
-            56.78,
+          10.0,
+          250.0,
+          150.0,
+          40.0,
+          8.95,
+          25.25,
+          150.0,
+          56.78,
         ];
         foreach ($this->transactions as $i => $transaction) {
             $this->assertSame($known[$i], $transaction->getPrice());
@@ -80,14 +88,14 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         /* @var Transaction $transaction */
         $known = [
-            Transaction::DEBIT,
-            Transaction::DEBIT,
-            Transaction::CREDIT,
-            Transaction::DEBIT,
-            Transaction::DEBIT,
-            Transaction::DEBIT,
-            Transaction::CREDIT,
-            Transaction::DEBIT,
+          Transaction::DEBIT,
+          Transaction::DEBIT,
+          Transaction::CREDIT,
+          Transaction::DEBIT,
+          Transaction::DEBIT,
+          Transaction::DEBIT,
+          Transaction::CREDIT,
+          Transaction::DEBIT,
         ];
         foreach ($this->transactions as $i => $transaction) {
             $this->assertSame($known[$i], $transaction->getDebitCredit());
@@ -98,14 +106,14 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         /* @var Transaction $transaction */
         $known = [
-            'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
-            'TENAAMSTELLING TEGENREKENING 1111222233334444',
-            'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
-            'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE 1111222233334444',
-            'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
-            'TENAAMSTELLING TEGENREKENING 1111222233334444',
-            'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
-            'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE 1111222233334444',
+          'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
+          'TENAAMSTELLING TEGENREKENING 1111222233334444',
+          'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
+          'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE 1111222233334444',
+          'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
+          'TENAAMSTELLING TEGENREKENING 1111222233334444',
+          'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE',
+          'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE TRANSACTIE 1111222233334444',
         ];
         foreach ($this->transactions as $i => $transaction) {
             $this->assertSame($known[$i], $transaction->getDescription());
@@ -135,4 +143,5 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             $this->assertSame('000', $transaction->getTransactionCode());
         }
     }
+
 }

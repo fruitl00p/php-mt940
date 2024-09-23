@@ -10,6 +10,7 @@ use Kingsquare\Parser\Banking\Mt940\Engine\Spk;
  */
 class ParseTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @var Spk
      */
@@ -18,7 +19,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->engine = new Spk();
-        $this->engine->loadString(file_get_contents(__DIR__.'/sample'));
+        $this->engine->loadString(file_get_contents(__DIR__ . '/sample'));
     }
 
     public function testParseStatementBank()
@@ -33,9 +34,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $statements = $this->engine->parse();
         $this->assertCount(4, $statements);
 
-        $transactions = array_map(static function(Statement $statement) {
-            return $statement->getTransactions();
-        }, $statements);
+        $transactions = array_map(
+          static fn(Statement $statement) => $statement->getTransactions(),
+          $statements
+        );
         $tranactions = call_user_func_array('array_merge', $transactions);
 
         $this->assertCount(10, $tranactions);
@@ -60,4 +62,5 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('C', $firstTransaction->getDebitCredit());
     }
+
 }

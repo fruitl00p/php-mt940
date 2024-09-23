@@ -11,5 +11,5 @@ return RectorConfig::configure()
         __DIR__ . '/test',
     ])
     // uncomment to reach your current PHP version
-    ->withSets([\Rector\Set\ValueObject\SetList::PHP_71])
+    ->withSets([\Rector\Set\ValueObject\SetList::PHP_74])
     ->withTypeCoverageLevel(0);
