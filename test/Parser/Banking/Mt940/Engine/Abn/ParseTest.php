@@ -49,7 +49,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         $statements = $this->engine->parse();
 
         $this->assertCount(1, $statements);
-        list($sameday, $nextDay, $nextMonth, $nextYear) = $statements[0]->getTransactions();
+        [$sameday, $nextDay, $nextMonth, $nextYear] = $statements[0]->getTransactions();
 
         $this->assertEquals('01-01-2009', $sameday->getValueTimestamp('d-m-Y'));
         $this->assertEquals('01-01-2009', $sameday->getEntryTimestamp('d-m-Y'));

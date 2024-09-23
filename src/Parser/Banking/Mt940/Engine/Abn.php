@@ -89,7 +89,7 @@ class Abn extends Engine
             && !empty($results[1])
         ) {
 
-            list(, $valueDateY, $valueDateMD, $valueDateM, $entryDateMD, $entryDateM) = $results;
+            [, $valueDateY, $valueDateMD, $valueDateM, $entryDateMD, $entryDateM] = $results;
             $entryDate = $valueDateY . $entryDateMD;
             if ($valueDateMD !== $entryDateMD && $valueDateM > $entryDateM) {
                 $entryDate = ($valueDateY + 1) . $entryDateMD;
